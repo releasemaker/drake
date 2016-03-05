@@ -55,6 +55,18 @@ gem "github_api"
 # Version number manipulation
 gem "versionomy"
 
+# Style
+gem 'foundation-rails', "~> 6.0"
+gem 'foundation_rails_helper'
+
+# Authentication
+gem 'sorcery'
+gem 'omniauth'
+gem 'omniauth-github'
+
+# Templates
+gem 'slim'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -75,6 +87,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'dotenv-rails'
   gem 'rspec_junit_formatter'
+  gem 'capybara'
 end
 
 group :development do

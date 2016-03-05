@@ -1,0 +1,2 @@
+class AuthIdentityAlreadyTakenError < StandardError
+end

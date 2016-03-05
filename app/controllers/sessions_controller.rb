@@ -1,0 +1,70 @@
+class SessionsController < ApplicationController
+  do_not_require_login
+  # skip_authorization_check
+
+  def create
+    find_and_store_identity! do |user_identity, new_identity, new_user|
+      redirect_to root_url
+    end
+    auto_login user_identity.user unless logged_in?
+  rescue AuthIdentityAlreadyTakenError
+    redirect_to root_url, notice: "That #{provider_name} account "\
+      "is already taken by another user."
+  end
+
+  def failure
+    redirect_to root_url, notice: failure_message
+  end
+
+  def destroy
+    logout
+    redirect_to root_url
+  end
+
+  private
+
+  def authdata
+    request.env["omniauth.auth"]
+  end
+
+  def user_identity
+    @user_identity ||= UserIdentity.find_or_initialize_by(
+      provider: authdata['provider'],
+      uid: authdata['uid'],
+    )
+  end
+
+  def existing_user
+    @existing_user ||= user_identity.user
+  end
+
+  def new_user
+    @new_user ||= User.new
+  end
+
+  def find_and_store_identity!
+    UserIdentity.transaction do
+      if logged_in? && user_identity.user && user_identity.user != current_user
+        fail AuthIdentityAlreadyTakenError
+      end
+      user_identity.data = authdata
+      user_identity.user = current_user || existing_user || new_user
+      if block_given?
+        yield(user_identity, !user_identity.persisted?, !user_identity.user.persisted?)
+      end
+      user_identity.user.save!
+      user_identity.save!
+    end
+  end
+
+  def failure_message
+    case params[:message]
+    when 'invalid_credentials'
+      "Sorry, something went wrong during authentication with #{params[:strategy].to_s.titleize}."
+    end
+  end
+
+  def provider_name
+    authdata['provider'].to_s.titleize
+  end
+end

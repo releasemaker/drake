@@ -1,0 +1,13 @@
+h1 Hello
+
+= display_flash_messages
+
+- if logged_in?
+  p Signed in as #{current_user.nickname}
+p
+  - if logged_in?
+    = link_to sign_out_path, method: :delete do
+      | Sign Out
+  - else
+    = link_to github_auth_path do
+      | Sign In
