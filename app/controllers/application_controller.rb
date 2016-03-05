@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # Users must be logged in to the app unless the controller calls {#do_not_require_login}.
   before_action :require_login
 
-  # check_authorization
+  check_authorization
 
   class << self
     def do_not_require_login(*options)

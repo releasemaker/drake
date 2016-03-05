@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   do_not_require_login
-  # skip_authorization_check
+  skip_authorization_check
 
   def create
     find_and_store_identity! do |user_identity, new_identity, new_user|
