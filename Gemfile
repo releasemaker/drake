@@ -86,7 +86,7 @@ group :development, :test do
   # Testing. These are also needed in development so that Rails generators are available.
   gem 'rspec'
   gem 'rspec-rails'
-  gem 'shoulda'
+  gem 'shoulda-matchers'
   gem 'factory_girl_rails'
   gem 'dotenv-rails'
   gem 'rspec_junit_formatter'

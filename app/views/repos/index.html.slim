@@ -1,0 +1,12 @@
+h1 Projects
+p
+  = link_to new_repo_path
+    | Add Project
+table
+  thead
+    tr
+      th Name
+  tbody
+    - repos.each do |repo|
+      tr
+        td = repo.name

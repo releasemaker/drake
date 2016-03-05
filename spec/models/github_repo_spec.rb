@@ -3,42 +3,24 @@ require 'rails_helper'
 RSpec.describe GithubRepo, type: :model do
   it { expect(described_class).to be < Repo }
 
-  context 'a user' do
-    subject(:ability) { Ability.new(user) }
-    let(:user) { FactoryGirl.create(:user) }
-    let(:repo) { FactoryGirl.create(described_class) }
+  describe '::new_from_api' do
+    subject { described_class.new_from_api(repository) }
+    let(:api_data) { File.read Rails.root.join(*%w(spec fixtures github_repositories.json)) }
+    let!(:api_request) {
+      stub_request(:get, "https://api.github.com/user/repos?access_token=12345")
+        .to_return(body: api_data, status: 200)
+    }
+    let(:github_client) { Github.new(oauth_token: '12345') }
+    let(:repository) { github_client.repositories.list.first }
 
-    it { is_expected.to be_able_to(:create, described_class) }
-
-    it { is_expected.to_not be_able_to(:read, repo) }
-    it { is_expected.to_not be_able_to(:update, repo) }
-    it { is_expected.to_not be_able_to(:delete, repo) }
-
-    context 'that is a member of the repo' do
-      let!(:repo_membership) {
-        FactoryGirl.create(:repo_membership, repo: repo, user: user)
-      }
-
-      it { is_expected.to be_able_to(:read, repo) }
-      it { is_expected.to_not be_able_to(:update, repo) }
-      it { is_expected.to_not be_able_to(:delete, repo) }
-
-      context 'and is an admin' do
-        let!(:repo_membership) {
-          FactoryGirl.create(:repo_membership, :admin, repo: repo, user: user)
-        }
-
-        it { is_expected.to be_able_to(:update, repo) }
-        it { is_expected.to be_able_to(:delete, repo) }
-      end
+    it { is_expected.to be_kind_of(described_class) }
+    it 'assigns the name from the API' do
+      expect(subject.name).to eq("octocat/Hello-World")
     end
-
-    context 'that is a super admin' do
-      let(:user) { FactoryGirl.create(:user, :super_admin) }
-
-      it { is_expected.to be_able_to(:read, repo) }
-      it { is_expected.to be_able_to(:update, repo) }
-      it { is_expected.to be_able_to(:delete, repo) }
+    it 'assigns data the API response' do
+      expect(subject.provider_data.name).to eq("Hello-World")
+      expect(subject.provider_data.fork).to be_truthy
+      expect(subject.provider_data.owner.login).to eq("octocat")
     end
   end
 end

@@ -8,4 +8,8 @@ class UserIdentity < ActiveRecord::Base
   def email
     data['info']['email']
   end
+
+  def token
+    data.try(:[], 'credentials').try(:[], 'token')
+  end
 end

@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   delete '/sign_out', :to => 'sessions#destroy'
 
   resource :github_webhooks, only: :create, defaults: { formats: :json }
+
+  resources :repos
 end
