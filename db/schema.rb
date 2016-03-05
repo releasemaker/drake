@@ -15,6 +15,27 @@ ActiveRecord::Schema.define(version: 20160305193238) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "repo_memberships", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "repo_id"
+    t.boolean  "write"
+    t.boolean  "admin"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "repo_memberships", ["user_id", "repo_id"], name: "index_repo_memberships_on_user_id_and_repo_id", unique: true, using: :btree
+
+  create_table "repos", force: :cascade do |t|
+    t.string   "type"
+    t.string   "name"
+    t.boolean  "enabled"
+    t.string   "provider_uid_or_url"
+    t.json     "provider_data"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
   create_table "user_identities", force: :cascade do |t|
     t.bigint "user_id"
     t.string "provider"
@@ -33,5 +54,7 @@ ActiveRecord::Schema.define(version: 20160305193238) do
     t.boolean  "super_admin", default: false
   end
 
+  add_foreign_key "repo_memberships", "repos"
+  add_foreign_key "repo_memberships", "users"
   add_foreign_key "user_identities", "users"
 end

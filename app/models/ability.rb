@@ -22,6 +22,10 @@ class Ability
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 
     if user.persisted?
+      can :create, GithubRepo
+      can :read, GithubRepo, repo_memberships: { user_id: user.id }
+      can %i(update delete), GithubRepo, repo_memberships: { user_id: user.id, admin: true }
+
       if user.super_admin?
         can :manage, :all
       end
