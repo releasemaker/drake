@@ -1,5 +1,5 @@
 tabSize = 2
 softTabs = true
-excludeDirectories = "{$excludeDirectories,tmp,log,public/assets}"
+excludeDirectories = "{$excludeDirectories,tmp,log,public/assets,coverage,doc}"
 includeDirectories = "{$includeDirectories,.circleci}"
 includeFiles = "{$includeFiles,.rspec,.powder,.powenv,.rubocop.yml,.codacy.yaml,.ruby-version,.gitignore,.env*}"

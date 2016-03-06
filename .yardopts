@@ -1,0 +1,4 @@
+# .yardopts
+'app/**/*.rb'
+'lib/**/*.rb'
+'db/schema.rb'

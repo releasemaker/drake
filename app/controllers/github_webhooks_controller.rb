@@ -1,3 +1,4 @@
+# Handles webhooks sent by Github.
 class GithubWebhooksController < ActionController::API
   include GithubWebhook::Processor
 

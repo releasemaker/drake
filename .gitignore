@@ -41,3 +41,4 @@ capybara-*.html
 /coverage/
 /spec/tmp/*
 spec/examples.txt
+/.yardoc

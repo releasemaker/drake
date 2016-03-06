@@ -86,6 +86,10 @@ group :development, :test do
   # gem 'pry-stack_explorer'
   gem 'pry-clipboard'
 
+  # Documentation!
+  gem 'yard'
+  gem 'yard-activerecord'
+
   # Testing. These are also needed in development so that Rails generators are available.
   gem 'rspec'
   gem 'rspec-rails'

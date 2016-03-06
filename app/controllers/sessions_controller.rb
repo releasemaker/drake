@@ -1,3 +1,5 @@
+# Handles signing in and out of the application.
+# Relies on OmniAuth[https://github.com/intridea/omniauth] for the heavy lifiting.
 class SessionsController < ApplicationController
   do_not_require_login
   skip_authorization_check

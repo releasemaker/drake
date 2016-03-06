@@ -1,3 +1,4 @@
+# A {Repo} record that is associated with a Github repository.
 class GithubRepo < Repo
   def self.new_from_api(data)
     new do |repo|

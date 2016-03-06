@@ -1,3 +1,4 @@
+# A person who can log in to the application.
 class User < ActiveRecord::Base
   include Concerns::User::GithubAccount
 

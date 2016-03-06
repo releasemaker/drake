@@ -1,3 +1,6 @@
+# Connection of a {User} to a specific account at an authentication provider.
+# @todo When a record is deleted, remove {RepoMembership} records that belong to the user
+#   if they are based on this identity.
 class UserIdentity < ActiveRecord::Base
   belongs_to :user
 

@@ -1,3 +1,4 @@
+# Our expression of the permissions model that CanCan uses to authorize user actions.
 class Ability
   include CanCan::Ability
 
