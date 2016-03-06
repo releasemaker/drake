@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Repo, type: :model do
   it { is_expected.to have_many(:repo_memberships) }
   it { is_expected.to serialize(:provider_data) }
+  it { is_expected.to validate_uniqueness_of(:provider_uid_or_url).scoped_to(:type) }
 
   describe '#provider_data=' do
     before do
