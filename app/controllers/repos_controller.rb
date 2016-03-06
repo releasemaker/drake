@@ -3,6 +3,7 @@
 # create a {Repo} record for it.
 class ReposController < ApplicationController
   load_and_authorize_resource :repo
+  include PaginationHelper
 
   # Lists the current user's repositories.
   def index
