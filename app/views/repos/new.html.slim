@@ -1,7 +1,7 @@
 h1 Add Projects
 table
   tbody
-    - available_repos.each do |repo|
+    - @available_repos.each do |repo|
       tr
         td = repo.name
         td
@@ -11,4 +11,4 @@ table
             = f.hidden_field :name
             = f.submit "Add"
 
-= paginate available_repos_response
+= paginate @available_repos_response
