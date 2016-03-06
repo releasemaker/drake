@@ -3,18 +3,22 @@ module ReposHelper
     @repos #.page(page).per_page(per_page)
   end
 
-  def available_repos
-    @available_repos ||= current_user.github_client.
+  def available_repos_response
+    @available_repos_response ||= current_user.github_client.
       repositories.
-      list. #.all(page: page, per_page: per_page)
+      all(page: page, per_page: per_page)
+  end
+
+  def available_repos
+    @available_repos ||= available_repos_response.
       map { |data| GithubRepo.new_from_api(data) }
   end
 
   def page
-    params[:p] || 1
+    params[:page] || 1
   end
 
   def per_page
-    params[:rpp] || 25
+    params[:per_page] || 25
   end
 end

@@ -1,9 +1,8 @@
-h1 Projects
+h1 Add Projects
 table
-  thead
-    tr
-      th Name
   tbody
     - available_repos.each do |repo|
       tr
         td = repo.name
+
+= paginate available_repos_response
