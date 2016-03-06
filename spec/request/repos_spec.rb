@@ -91,4 +91,32 @@ RSpec.describe "Repos", type: :request do
       end
     end
   end
+
+  describe 'GET /repos/:id' do
+    let(:do_the_thing) { get "/repos/#{repo.to_param}" }
+    let!(:repo) { FactoryGirl.create(:repo) }
+
+    context 'when logged in' do
+      before(:each) do
+        login_user user
+      end
+      context 'with a repo that the user is a member of' do
+        let!(:membership) { FactoryGirl.create(:repo_membership, repo: repo, user: user) }
+        it 'shows the repo' do
+          do_the_thing
+          expect(response.body).to include(repo.name)
+        end
+      end
+      context 'with a repo that the user is not a member of' do
+        it 'does not show the repo' do
+          expect { do_the_thing }.to raise_error(CanCan::AccessDenied)
+        end
+      end
+    end
+    context 'without logging in' do
+      it 'redirects to authentication' do
+        expect(do_the_thing).to redirect_to(root_path)
+      end
+    end
+  end
 end

@@ -37,6 +37,13 @@ class ReposController < ApplicationController
     redirect_to @repo
   end
 
+  # Shows the repository to the user.
+  # @todo If the user doesn't currently have a {RepoMembership} in the repository, check the SCM
+  #   to see if they have permission, and create that {RepoMembership} record.
+  def show
+    
+  end
+
   private
 
   def create_params
