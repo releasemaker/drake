@@ -22,15 +22,20 @@ class Ability
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 
-    if user.persisted?
-      can :create, Repo
-      can :read, Repo, repo_memberships: { user_id: user.id }
-      can %i(update delete), Repo, repo_memberships: { user_id: user.id, admin: true }
+    real_user if user.persisted?
+    super_admin if user.super_admin?
+  end
 
-      if user.super_admin?
-        can :manage, :all
-      end
-    end
+  private
+
+  def real_user
+    can :create, Repo
+    can :read, Repo, repo_memberships: { user_id: user.id }
+    can %i(update delete), Repo, repo_memberships: { user_id: user.id, admin: true }
+  end
+
+  def super_admin
+    can :manage, :all
   end
 
   def user
