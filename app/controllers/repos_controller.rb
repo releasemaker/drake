@@ -64,9 +64,22 @@ class ReposController < ApplicationController
     
   end
 
+  def update
+    if @repo.update_attributes(update_params)
+      flash[:notice] = "Settings saved."
+      redirect_to action: :edit
+    else
+      render :show
+    end
+  end
+
   private
 
   def create_params
     params.require(:repo).permit(:type, :name, :provider_uid_or_url)
+  end
+
+  def update_params
+    params.require(:repo).permit(:enabled)
   end
 end

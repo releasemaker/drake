@@ -147,4 +147,69 @@ RSpec.describe "Repos", type: :request do
       end
     end
   end
+
+  describe 'GET /repos/:id/edit' do
+    let(:do_the_thing) { get "/repos/#{repo.to_param}/edit" }
+    let!(:repo) { FactoryGirl.create(:repo) }
+
+    context 'when logged in' do
+      before(:each) do
+        login_user user
+      end
+      context 'with a repo that the user is an admin of' do
+        let!(:membership) { FactoryGirl.create(:repo_membership, :admin, repo: repo, user: user) }
+        it 'shows the repo settings' do
+          do_the_thing
+          expect(response.body).to include(repo.name)
+          expect(response.body).to have_tag("input[type=checkbox]")
+        end
+      end
+      context 'with a repo that the user is not a member of' do
+        it 'does not show the repo' do
+          expect { do_the_thing }.to raise_error(CanCan::AccessDenied)
+        end
+      end
+    end
+    context 'without logging in' do
+      it 'redirects to authentication' do
+        expect(do_the_thing).to redirect_to(root_path)
+      end
+    end
+  end
+
+  describe 'PUT /repos/:id/update' do
+    let(:do_the_thing) { put "/repos/#{repo.to_param}", params: { repo: repo_attributes } }
+    let(:repo) { FactoryGirl.create(:repo) }
+    let(:repo_attributes) { {} }
+
+    context 'when logged in' do
+      before(:each) do
+        login_user user
+      end
+
+      context 'with a repo that the user is an admin of' do
+        let!(:membership) { FactoryGirl.create(:repo_membership, :admin, repo: repo, user: user) }
+
+        context 'changing enabled' do
+          let(:repo_attributes) { { enabled: false } }
+
+          it 'updates the repo' do
+            do_the_thing
+            repo.reload
+            expect(repo).to_not be_enabled
+          end
+        end
+      end
+      context 'with a repo that the user is not a member of' do
+        it 'does not show the repo' do
+          expect { do_the_thing }.to raise_error(CanCan::AccessDenied)
+        end
+      end
+    end
+    context 'without logging in' do
+      it 'redirects to authentication' do
+        expect(do_the_thing).to redirect_to(root_path)
+      end
+    end
+  end
 end
