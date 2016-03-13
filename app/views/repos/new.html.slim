@@ -5,10 +5,13 @@ table
       tr
         td = repo.name
         td
-          = form_for repo.becomes(Repo) do |f|
-            = f.hidden_field :type
-            = f.hidden_field :provider_uid_or_url
-            = f.hidden_field :name
-            = f.submit "Add"
+          - if repo.persisted?
+            = link_to "Existing", repo
+          - else
+            = form_for repo.becomes(Repo) do |f|
+              = f.hidden_field :type
+              = f.hidden_field :provider_uid_or_url
+              = f.hidden_field :name
+              = f.submit "Add"
 
 = paginate @available_repos_response

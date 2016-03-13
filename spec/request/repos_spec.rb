@@ -43,6 +43,20 @@ RSpec.describe "Repos", type: :request do
         do_the_thing
         expect(response.body).to include("octocat/Hello-World")
       end
+      context 'with an existing matching repo' do
+        let!(:existing_matching_repo) {
+          FactoryGirl.create(
+            :github_repo,
+            provider_uid_or_url: "1296269",
+            name: 'octocat/Hello-World',
+          )
+        }
+
+        it 'includes the persisted repo' do
+          do_the_thing
+          expect(response.body).to include('octocat/Hello-World')
+        end
+      end
     end
     context 'without logging in' do
       it 'redirects to authentication' do

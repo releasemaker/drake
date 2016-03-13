@@ -21,10 +21,24 @@ class ReposController < ApplicationController
         repositories.
         all(page: page, per_page: per_page)
 
-    # A list of unpersisted {Repo} records representing repositories in the response.
+    # Unpersisted {Repo} records representing repositories in the response.
     # The response just needs to support Enumerable.
     # @todo Augment with repos that already exist as {Repo} records.
-    @available_repos = @available_repos_response.map { |data| GithubRepo.new_from_api(data) }
+    matching_repos = @available_repos_response.
+      map { |data| GithubRepo.new_from_api(data) }
+
+    # Any existing {Repo} objects that match the list of available repositories being shown.
+    matching_existing_repos = matching_repos.map(&:type).uniq.map { |repo_class|
+      uids = matching_repos.select { |r| r.type == repo_class }.map(&:provider_uid_or_url)
+      repo_class.constantize.where(provider_uid_or_url: uids).all
+    }.flatten
+
+    # {Repo}s that match the current search. Some may be persisted.
+    @available_repos = matching_repos.map { |available_repo|
+      matching_existing_repos.find { |r|
+        r.type == available_repo.type && r.provider_uid_or_url == available_repo.provider_uid_or_url
+      } || available_repo
+    }
   end
 
   # Creates a {Repo} record based on the form submission from the {#new} view.
