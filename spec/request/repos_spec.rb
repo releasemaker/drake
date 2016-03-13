@@ -86,15 +86,29 @@ RSpec.describe "Repos", type: :request do
         end
       end
       context 'when the Repo already exists' do
-        let!(:existing_repo) { FactoryGirl.create(:repo, new_repo_attributes) }
+        let!(:existing_repo) {
+          FactoryGirl.create(:repo, new_repo_attributes.merge(enabled: false))
+        }
+
         it 'does not create the Repo' do
-          pending "TODO"
           expect { do_the_thing }.to_not change { Repo.count }
         end
+        it 'enables the repo' do
+          expect { do_the_thing; existing_repo.reload }.to change { existing_repo.enabled }
+          expect(existing_repo).to be_enabled
+        end
         it 'adds a RepoMembership for the current user' do
-          pending "TODO"
           do_the_thing
-          expect(RepoMembership.last).to have_attributes(user: current_user, repo: existing_repo)
+          expect(RepoMembership.last).to have_attributes(user: user, repo: existing_repo)
+        end
+        context 'when a RepoMembership for the current user already exists' do
+          let!(:existing_repo_membership) {
+            FactoryGirl.create(:repo_membership, user: user, repo: existing_repo)
+          }
+          it 'remains' do
+            do_the_thing
+            expect(RepoMembership.last).to have_attributes(user: user, repo: existing_repo)
+          end
         end
       end
     end

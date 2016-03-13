@@ -8,7 +8,7 @@ table
       tr
         td = repo.name
         td
-          - if repo.persisted?
+          - if repo.persisted? && repo.enabled?
             = link_to "Existing", repo
           - else
             = form_for repo.becomes(Repo) do |f|
