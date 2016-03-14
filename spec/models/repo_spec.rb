@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Repo, type: :model do
   it { is_expected.to have_many(:repo_memberships) }
-  it { is_expected.to serialize(:provider_data) }
   it { is_expected.to validate_uniqueness_of(:provider_uid_or_url).scoped_to(:type) }
 
+  it { is_expected.to serialize(:provider_data) }
   describe '#provider_data=' do
     before do
       subject.provider_data = new_data
@@ -12,6 +12,17 @@ RSpec.describe Repo, type: :model do
     let(:new_data) { { "stuff" => "thing" } }
     it 'converts the assigned value' do
       expect(subject.provider_data).to have_attributes(stuff: "thing")
+    end
+  end
+
+  it { is_expected.to serialize(:provider_webhook_data) }
+  describe '#provider_webhook_data=' do
+    before do
+      subject.provider_webhook_data = new_data
+    end
+    let(:new_data) { { "stuff" => "thing" } }
+    it 'converts the assigned value' do
+      expect(subject.provider_webhook_data).to have_attributes(stuff: "thing")
     end
   end
 

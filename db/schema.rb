@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20170926135212) do
     t.json "provider_data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "provider_webhook_data"
     t.index ["type", "provider_uid_or_url"], name: "index_repos_on_type_and_provider_uid_or_url", unique: true
   end
 
