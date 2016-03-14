@@ -67,9 +67,7 @@ class ReposController < ApplicationController
   def update
     if @repo.update_attributes(update_params)
       flash[:notice] = "Settings saved."
-      redirect_to action: :edit
-    else
-      render :show
+      redirect_to action: :show
     end
   end
 

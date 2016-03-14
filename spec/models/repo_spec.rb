@@ -26,6 +26,21 @@ RSpec.describe Repo, type: :model do
     end
   end
 
+  describe '#admin_user' do
+    context 'with a read-only member' do
+      let!(:read_membership) { FactoryGirl.create(:repo_membership, repo: subject) }
+      it 'returns nil' do
+        expect(subject.admin_user).to be_nil
+      end
+      context 'and an admin member' do
+        let!(:admin_membership) { FactoryGirl.create(:repo_membership, :admin, repo: subject) }
+        it 'returns the admin user' do
+          expect(subject.admin_user).to eq(admin_membership.user)
+        end
+      end
+    end
+  end
+
   context 'a user' do
     subject(:ability) { Ability.new(user) }
     let(:user) { FactoryGirl.create(:user) }

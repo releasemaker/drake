@@ -7,4 +7,16 @@ class GithubRepo < Repo
       repo.provider_data = data
     end
   end
+
+  def owner_name
+    name.split('/').first
+  end
+
+  def repo_name
+    name.split('/').last
+  end
+
+  def github_client
+    admin_user.github_client
+  end
 end

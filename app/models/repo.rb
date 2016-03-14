@@ -18,4 +18,9 @@ class Repo < ActiveRecord::Base
   def provider_webhook_data=(new_value)
     self[:provider_webhook_data] = Hashie::Mash.new new_value
   end
+
+  # A user whose API token will be used for this repo.
+  def admin_user
+    @admin_user ||= repo_memberships.joins(:user).includes(:user).find_by(admin: true).try(:user)
+  end
 end

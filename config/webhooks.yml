@@ -1,0 +1,13 @@
+default: &default
+  host: <%= ENV['WEBHOOK_HOST'] %>
+  protocol: <%= ENV['WEBHOOK_PROTOCOL'] || 'https' %>
+  github_secret: <%= ENV['GITHUB_WEBHOOK_SECRET'] %>
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
