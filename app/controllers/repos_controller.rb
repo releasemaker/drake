@@ -54,6 +54,8 @@ class ReposController < ApplicationController
       @repo.repo_memberships.create!(user: current_user, admin: true)
     end
 
+    RepoProviderWebhookService.new(@repo).perform!
+
     redirect_to @repo
   end
 
@@ -65,7 +67,10 @@ class ReposController < ApplicationController
   end
 
   def update
-    if @repo.update_attributes(update_params)
+    @repo.assign_attributes(update_params)
+    need_to_update_webhook = @repo.enabled_changed?
+    if @repo.save
+      RepoProviderWebhookService.new(@repo).perform! if need_to_update_webhook
       flash[:notice] = "Settings saved."
       redirect_to action: :show
     end

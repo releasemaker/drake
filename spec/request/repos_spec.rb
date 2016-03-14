@@ -75,17 +75,28 @@ RSpec.describe "Repos", type: :request do
       let(:new_repo_attributes) { repo_attributes.slice(:name, :provider_uid_or_url) }
       let(:new_repo) { Repo.find_by(repo_attributes.slice(:type, :provider_uid_or_url)) }
 
+      before(:each) do
+        allow(RepoProviderWebhookService).to receive(:new).and_return(repo_provider_webhook_service)
+      end
+      let(:repo_provider_webhook_service) {
+        instance_double(RepoProviderWebhookService, perform!: true)
+      }
+
       context 'when the Repo does not exist' do
         it 'creates the Repo' do
           expect { do_the_thing }.to change { Repo.count }.by(1)
           expect(new_repo).to have_attributes(name: new_repo_attributes[:name])
+        end
+        it 'updates the webhook' do
+          do_the_thing
+          expect(RepoProviderWebhookService).to have_received(:new).with(new_repo)
         end
         it 'adds a RepoMembership for the current user' do
           do_the_thing
           expect(RepoMembership.last).to have_attributes(user: user, repo: new_repo)
         end
       end
-      context 'when the Repo already exists' do
+      context 'when the Repo already exists and is disabled' do
         let!(:existing_repo) {
           FactoryGirl.create(:repo, new_repo_attributes.merge(enabled: false))
         }
@@ -96,6 +107,10 @@ RSpec.describe "Repos", type: :request do
         it 'enables the repo' do
           expect { do_the_thing; existing_repo.reload }.to change { existing_repo.enabled }
           expect(existing_repo).to be_enabled
+        end
+        it 'updates the webhook for the new repo' do
+          expect(RepoProviderWebhookService).to receive(:new).with(new_repo)
+          do_the_thing
         end
         it 'adds a RepoMembership for the current user' do
           do_the_thing
@@ -187,16 +202,50 @@ RSpec.describe "Repos", type: :request do
         login_user user
       end
 
+      before(:each) do
+        allow(RepoProviderWebhookService).to receive(:new).and_return(repo_provider_webhook_service)
+      end
+      let(:repo_provider_webhook_service) {
+        instance_double(RepoProviderWebhookService, perform!: true)
+      }
+
       context 'with a repo that the user is an admin of' do
         let!(:membership) { FactoryGirl.create(:repo_membership, :admin, repo: repo, user: user) }
 
-        context 'changing enabled' do
+        context 'disabling' do
           let(:repo_attributes) { { enabled: false } }
 
           it 'updates the repo' do
             do_the_thing
             repo.reload
             expect(repo).to_not be_enabled
+          end
+          it 'updates the webhook' do
+            expect(RepoProviderWebhookService).to receive(:new).with(repo)
+            do_the_thing
+          end
+        end
+        context 'enabling' do
+          let(:repo) { FactoryGirl.create(:repo, enabled: false) }
+          let(:repo_attributes) { { enabled: true } }
+
+          it 'updates the repo' do
+            do_the_thing
+            repo.reload
+            expect(repo).to be_enabled
+          end
+          it 'updates the webhook' do
+            expect(RepoProviderWebhookService).to receive(:new).with(repo)
+            do_the_thing
+          end
+        end
+        context 'changing nothing' do
+          let(:repo) { FactoryGirl.create(:repo) }
+          let(:repo_attributes) { { enabled: true } }
+
+          it 'does not update the webhook' do
+            expect(RepoProviderWebhookService).to_not receive(:new).with(repo)
+            do_the_thing
           end
         end
       end
