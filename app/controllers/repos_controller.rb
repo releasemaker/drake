@@ -45,13 +45,15 @@ class ReposController < ApplicationController
   # There is an assumption that this will succeed, since there is no user-editable form.
   # @todo Use the permissions given by Github instead of assuming admin.
   def create
-    existing_repo = Repo.find_by(type: @repo.type, provider_uid_or_url: @repo.provider_uid_or_url)
-    @repo = existing_repo if existing_repo
-    @repo.enabled = true
-    @repo.save!
+    Repo.transaction do
+      existing_repo = Repo.find_by(type: @repo.type, provider_uid_or_url: @repo.provider_uid_or_url)
+      @repo = existing_repo if existing_repo
+      @repo.enabled = true
+      @repo.save!
 
-    unless @repo.repo_memberships.find_by(user: current_user)
-      @repo.repo_memberships.create!(user: current_user, admin: true)
+      unless @repo.repo_memberships.find_by(user: current_user)
+        @repo.repo_memberships.create!(user: current_user, admin: true)
+      end
     end
 
     RepoProviderWebhookService.new(@repo).perform!
