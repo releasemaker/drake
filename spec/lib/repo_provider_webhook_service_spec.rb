@@ -8,7 +8,7 @@ RSpec.describe RepoProviderWebhookService do
     Rails.configuration.x.webhooks.host = 'goldi.test'
     Rails.configuration.x.webhooks.secret = 'abcd12345'
   end
-  let(:api_endpoint) { double('api_endpoint') }
+  let(:api_endpoint) { double('api_endpoint', create: true, delete: true) }
 
   describe '#perform!' do
     let(:do_the_thing) { subject.perform! }
@@ -25,9 +25,18 @@ RSpec.describe RepoProviderWebhookService do
 
       context 'when provider webhook data is empty' do
         let(:provider_webhook_data) { nil }
+        before do
+          allow(api_endpoint).to receive(:create).and_return(Hashie::Mash.new(id: 42))
+        end
+
         it 'adds a github webhook' do
           expect(api_endpoint).to receive(:create)
           do_the_thing
+        end
+        it 'updates provider_webhook_data' do
+          do_the_thing
+          repo.reload
+          expect(repo.provider_webhook_data.id).to eq(42)
         end
       end
       context 'when provider webhook data is set' do
@@ -55,6 +64,11 @@ RSpec.describe RepoProviderWebhookService do
         it 'removes the github webhook' do
           expect(api_endpoint).to receive(:delete).with(repo.owner_name, repo.repo_name, 42)
           do_the_thing
+        end
+        it 'updates provider_webhook_data' do
+          do_the_thing
+          repo.reload
+          expect(repo.provider_webhook_data).to be_empty
         end
       end
     end
