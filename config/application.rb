@@ -34,6 +34,7 @@ module ReleaseMaker
     # Don't generate system test files.
     config.generators.system_tests = nil
 
+    config.x.github = Hashie::Mash.new config_for(:github)
     config.x.webhooks = Hashie::Mash.new config_for(:webhooks)
   end
 end

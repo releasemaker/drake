@@ -3,8 +3,8 @@ OmniAuth.config.logger = Rails.logger
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider(
     :github,
-    ENV['GITHUB_OAUTH_CLIENT_ID'],
-    ENV['GITHUB_OAUTH_SECRET'],
+    Rails.configuration.x.github.oauth_client_id,
+    Rails.configuration.x.github.oauth_secret,
     scope: "user:email,repo",
   )
 end
