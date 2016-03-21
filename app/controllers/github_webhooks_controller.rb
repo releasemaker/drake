@@ -1,5 +1,5 @@
 # Handles webhooks sent by Github.
-class GithubWebhooksController < ActionController::API
+class GithubWebhooksController < ApplicationApiController
   include GithubWebhook::Processor
 
   rescue_from ::GithubWebhook::Processor::SignatureError, with: :signature_error
