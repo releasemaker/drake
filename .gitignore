@@ -13,7 +13,31 @@
 !/log/.keep
 !/tmp/.keep
 
-/node_modules
-/yarn-error.log
-
+# Ignore Byebug command history file.
 .byebug_history
+
+# Rails specific artifacts
+**.war
+*.rbc
+*.sassc
+.rspec
+.redcar/
+.sass-cache
+capybara-*.html
+.rvmrc
+.env*
+/.bundle
+/vendor/bundle
+/log/**
+/tmp/**
+/db/*.javadb/
+/db/*.sqlite3
+/public/system/*
+/public/cache
+/public/stylesheets/compiled
+/public/uploads/tmp
+/public/assets
+/coverage.data
+/coverage/
+/spec/tmp/*
+spec/examples.txt

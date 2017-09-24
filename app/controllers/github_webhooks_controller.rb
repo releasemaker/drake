@@ -1,8 +1,14 @@
 class GithubWebhooksController < ActionController::API
   include GithubWebhook::Processor
 
+  rescue_from ::GithubWebhook::Processor::SignatureError, with: :signature_error
+
   def github_push(payload)
-    binding.pry
+    PushHandler.new(payload).handle!
+  end
+
+  def signature_error
+    render plain: "Signature mismatch", status: :forbidden
   end
 
   private

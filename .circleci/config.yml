@@ -1,0 +1,50 @@
+version: 2
+jobs:
+  test:
+    working_directory: ~/release_maker
+    docker:
+      - image: ruby:2.4.1
+        environment:
+          DATABASE_URL: postgresql://ubuntu@localhost/release_maker_test?sslmode=disable
+          RAILS_ENV: test
+          RACK_ENV: test
+      - image: postgres:9.6.2
+        environment:
+          POSTGRES_USER: ubuntu
+          POSTGRES_DB: release_maker_test
+          POSTGRES_PASSWORD: ""
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - release_maker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+          - release_maker-master-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: install specific bundler
+          command: gem install bundler -v "~> 1.13.7"
+      - run:
+          name: bundle install
+          command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3 
+      - save_cache:
+          key: release_maker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+          paths:
+            - "~/release_maker/vendor/bundle"
+      - run:
+          name: set up database
+          command: bundle exec rake db:create db:schema:load --trace
+      - run:
+          name: results folder
+          command: mkdir /tmp/test-reports
+      - run:
+          name: rspec
+          command: bundle exec rspec --color --require rails_helper --format RspecJunitFormatter --out /tmp/test-reports/rspec.xml spec --format doc
+      - store_artifacts:
+          path: /tmp/artifacts
+          destination: build
+      - store_test_results:
+          path: /tmp/test-reports
+workflows:
+  version: 2
+  test-and-deploy:
+    jobs:
+      - test

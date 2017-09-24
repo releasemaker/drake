@@ -40,9 +40,35 @@ gem 'jbuilder', '~> 2.5'
 # Authenticate webhooks
 gem 'github_webhook', github: 'RandomServices/github_webhook'
 
+# A useful console
+gem 'pry-rails'
+
+# Performance monitoring and exception reporting
+gem 'newrelic_rpm'
+
+# Exception reporting to Sentry
+gem "sentry-raven"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+
+  gem 'dotenv-rails'
+
+  gem 'pry-byebug'
+  gem 'pry-doc'
+  # gem 'pry-remote'
+  gem 'pry-rescue'
+  # gem 'pry-stack_explorer'
+  gem 'pry-clipboard'
+
+  # Testing. These are also needed in development so that Rails generators are available.
+  gem 'rspec'
+  gem 'rspec-rails'
+  gem 'shoulda'
+  gem 'factory_girl_rails'
+  gem 'dotenv-rails'
+  gem 'rspec_junit_formatter'
 end
 
 group :development do
@@ -50,9 +76,34 @@ group :development do
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '>= 3.0.5', '< 3.2'
 
+  # Access an IRB console on exception pages
+  gem 'better_errors'
+  gem 'binding_of_caller'
+
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+  gem 'guard', require: false
+  gem 'guard-rubocop', require: false
+  gem 'guard-bundler', require: false
+  gem 'guard-pow', require: false
+  gem 'guard-rspec', require: false
+  install_if -> { RUBY_PLATFORM =~ /darwin/ } do
+    gem 'terminal-notifier-guard', require: false
+    gem 'terminal-notifier', require: false
+    gem 'launchy', require: false
+  end
+end
+
+group :test do
+  gem 'rspec-html-matchers'
+  gem 'rspec-collection_matchers'
+  gem 'rspec-mocks'
+  gem 'rspec-json_matchers'
+  gem 'timecop'
+  gem 'database_cleaner'
+  gem 'webmock'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

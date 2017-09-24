@@ -1,0 +1,76 @@
+#
+# For more information see https://github.com/bbatsov/rubocop/blob/master/config/default.yml
+#
+# However, do not include entire blocks here just because you want to change them.
+# Include only the specific lines that you're changing from the defaults.
+#
+---
+AllCops:
+  Exclude:
+  - "Gemfile.lock"
+  - "db/schema.rb"
+  - "tmp/**/*"
+  - "config.ru"
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  StyleGuideCopsOnly: false
+Rails:
+  Enabled: true
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Bundler/OrderedGems:
+  Enabled: false
+Style/IfUnlessModifier:
+  MaxLineLength: 100
+Style/WhileUntilModifier:
+  MaxLineLength: 100
+Style/Documentation:
+  Exclude:
+  - 'db/**/*.rb'
+Style/SymbolArray:
+  Enabled: false
+Metrics/LineLength:
+  Max: 100
+  Exclude:
+  - 'db/**/*.rb'
+Metrics/MethodLength:
+  Exclude:
+  - 'db/**/*.rb'
+Metrics/BlockLength:
+  Exclude:
+  - 'spec/**/*.rb'
+  - 'app/controllers/api/**/*.rb'
+Metrics/AbcSize:
+  Exclude:
+  - 'db/**/*.rb'
+Style/BracesAroundHashParameters:
+  Enabled: false
+Style/ClassCheck:
+  Enabled: false
+Metrics/ClassLength:
+  Exclude:
+  - "app/controllers/api/*"
+Style/DotPosition:
+  EnforcedStyle: leading
+Style/IndentHash:
+  EnforcedStyle: consistent
+Style/MultilineOperationIndentation:
+  EnforcedStyle: indented
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+Style/BlockDelimiters:
+  EnforcedStyle: semantic
+  Exclude:
+  - 'spec/factories/**/*.rb'
+Style/StringLiterals:
+  Enabled: false
+Style/StringLiteralsInInterpolation:
+  Enabled: false
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+Style/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
