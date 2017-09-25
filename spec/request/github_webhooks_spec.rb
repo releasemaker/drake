@@ -7,32 +7,18 @@ RSpec.describe "Github Webhooks", type: :request do
     let(:the_request) {
       send(action, path, params: params.to_json, headers: headers)
     }
-    let(:params) {
-      {
-        "zen" => "Keep it logically awesome.",
-        "hook_id" => 16348977,
-        "hook" => {
-          "type" => "Repository",
-          "id" => 16348977,
-          "name" => "web",
-          "active" => true,
-          "events" => [
-            "push",
-          ],
-        },
-      }
-    }
+    let(:params) { json_fixture('hooks/merged_pull_request') }
     let(:headers) {
       {
         'CONTENT_TYPE' => 'application/json',
-        'X-GitHub-Event' => 'push',
+        'X-GitHub-Event' => 'pull_request',
       }
     }
 
     before do
-      allow(PushHandler).to receive(:new).and_return(push_handler)
+      allow(PullRequestHandler).to receive(:new).and_return(push_handler)
     end
-    let(:push_handler) { instance_double(PushHandler, handle!: true) }
+    let(:push_handler) { instance_double(PullRequestHandler, handle!: true) }
 
     it 'validates the signature using github_webhooks'
 
@@ -47,9 +33,9 @@ RSpec.describe "Github Webhooks", type: :request do
         expect(response).to have_http_status(:ok)
       end
 
-      it 'creates a PushHandler and calls handle!' do
+      it 'creates a PullRequestHandler and calls handle!' do
         the_request
-        expect(PushHandler).to have_received(:new).with(params)
+        expect(PullRequestHandler).to have_received(:new).with(hook_payload: params)
         expect(push_handler).to have_received(:handle!)
       end
     end

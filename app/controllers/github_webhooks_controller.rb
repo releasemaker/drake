@@ -4,7 +4,7 @@ class GithubWebhooksController < ActionController::API
   rescue_from ::GithubWebhook::Processor::SignatureError, with: :signature_error
 
   def github_pull_request(payload)
-    PullRequestHandler.new(payload).handle!
+    PullRequestHandler.new(hook_payload: payload).handle!
   end
 
   def signature_error
