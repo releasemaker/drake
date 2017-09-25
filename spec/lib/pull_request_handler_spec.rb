@@ -27,7 +27,7 @@ RSpec.describe PullRequestHandler do
       end
       context 'and it was merged into a branch other than the default branch' do
         before do
-          hook_payload.pull_request.base.ref = "other_branch"
+          hook_payload["pull_request"]["base"]["ref"] = "other_branch"
         end
 
         it 'does not create a DraftRelease' do

@@ -1,6 +1,6 @@
 class PullRequestHandler
   def initialize(hook_payload:)
-    self.hook = hook_payload
+    self.hook = Hashie::Mash.new hook_payload
   end
 
   def handle!
