@@ -49,6 +49,12 @@ gem 'newrelic_rpm'
 # Exception reporting to Sentry
 gem "sentry-raven"
 
+# Use the github API
+gem "github_api"
+
+# Version number manipulation
+gem "versionomy"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -104,6 +110,7 @@ group :test do
   gem 'timecop'
   gem 'database_cleaner'
   gem 'webmock'
+  gem 'vcr'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

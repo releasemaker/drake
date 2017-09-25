@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/RandomServices/github_webhook.git
-  revision: 72aac3517f6dbb052caad26bc1610ca5863dbbae
+  revision: 12f19fed94b32621de629f531f605ee77c1bd67e
   specs:
     github_webhook (1.0.5)
       activesupport (>= 4)
@@ -48,8 +48,7 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    addressable (2.5.2)
-      public_suffix (>= 2.0.2, < 4.0)
+    addressable (2.4.0)
     arel (8.0.0)
     ast (2.3.0)
     awesome_print (1.8.0)
@@ -60,6 +59,7 @@ GEM
     bindex (0.5.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    blockenspiel (0.5.0)
     builder (3.2.3)
     byebug (9.1.0)
     clipboard (1.1.1)
@@ -70,6 +70,8 @@ GEM
     crass (1.0.2)
     database_cleaner (1.6.1)
     debug_inspector (0.0.3)
+    descendants_tracker (0.0.4)
+      thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.3)
     dotenv (2.2.1)
     dotenv-rails (2.2.1)
@@ -82,10 +84,17 @@ GEM
     factory_girl_rails (4.8.0)
       factory_girl (~> 4.8.0)
       railties (>= 3.0.0)
-    faraday (0.13.1)
+    faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.18)
     formatador (0.2.5)
+    github_api (0.17.0)
+      addressable (~> 2.4.0)
+      descendants_tracker (~> 0.0.4)
+      faraday (~> 0.8, < 0.10)
+      hashie (>= 3.4)
+      mime-types (>= 1.16, < 3.0)
+      oauth2 (~> 1.0)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
     guard (2.14.1)
@@ -112,30 +121,31 @@ GEM
       guard (~> 2.0)
       rubocop (~> 0.20)
     hashdiff (0.3.6)
+    hashie (3.5.6)
     i18n (0.8.6)
     interception (0.5)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
+    jwt (1.5.6)
     launchy (2.4.3)
       addressable (~> 2.3)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    loofah (2.1.0)
+    loofah (2.1.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     lumberjack (1.0.12)
     mail (2.6.6)
       mime-types (>= 1.16, < 4)
     method_source (0.8.2)
-    mime-types (3.1)
-      mime-types-data (~> 3.2015)
-    mime-types-data (3.2016.0521)
+    mime-types (2.99.3)
     mini_portile2 (2.3.0)
     minitest (5.10.3)
     multi_json (1.12.2)
+    multi_xml (0.6.0)
     multipart-post (2.0.0)
     nenv (0.3.0)
     newrelic_rpm (4.4.0.336)
@@ -145,6 +155,12 @@ GEM
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    oauth2 (1.4.0)
+      faraday (>= 0.8, < 0.13)
+      jwt (~> 1.0)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (>= 1.2, < 3)
     parallel (1.12.0)
     parser (2.4.0.0)
       ast (~> 2.2)
@@ -167,7 +183,6 @@ GEM
     pry-rescue (1.4.5)
       interception (>= 0.5)
       pry
-    public_suffix (3.0.0)
     puma (3.10.0)
     rack (2.0.3)
     rack-test (0.7.0)
@@ -286,6 +301,9 @@ GEM
     uglifier (3.2.0)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.3.0)
+    vcr (3.0.3)
+    versionomy (0.5.0)
+      blockenspiel (~> 0.5)
     web-console (3.5.1)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -310,6 +328,7 @@ DEPENDENCIES
   database_cleaner
   dotenv-rails
   factory_girl_rails
+  github_api
   github_webhook!
   guard
   guard-bundler
@@ -344,6 +363,8 @@ DEPENDENCIES
   terminal-notifier-guard
   timecop
   uglifier (>= 1.3.0)
+  vcr
+  versionomy
   web-console (>= 3.3.0)
   webmock
 

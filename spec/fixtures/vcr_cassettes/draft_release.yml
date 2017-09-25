@@ -1,0 +1,511 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.github.com/repos/RobinDaugherty/release-maker-tester-with-prior-release/releases?access_token=<GITHUB_AUTH_TOKEN>
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json,application/vnd.github.beta+json;q=0.5,application/json;q=0.1
+      Accept-Charset:
+      - utf-8
+      User-Agent:
+      - Github API Ruby Gem 0.17.0
+      Authorization:
+      - token <GITHUB_AUTH_TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Mon, 25 Sep 2017 16:30:19 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4956'
+      X-Ratelimit-Reset:
+      - '1506357928'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - W/"db256300bf05c5302071d6a61029788b"
+      X-Oauth-Scopes:
+      - repo
+      X-Accepted-Oauth-Scopes:
+      - ''
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.044259'
+      X-Github-Request-Id:
+      - C177:509C:2AF483F:5F75041:59C92F1B
+    body:
+      encoding: ASCII-8BIT
+      string: '[{"url":"https://api.github.com/repos/RobinDaugherty/release-maker-tester-with-prior-release/releases/7879526","assets_url":"https://api.github.com/repos/RobinDaugherty/release-maker-tester-with-prior-release/releases/7879526/assets","upload_url":"https://uploads.github.com/repos/RobinDaugherty/release-maker-tester-with-prior-release/releases/7879526/assets{?name,label}","html_url":"https://github.com/RobinDaugherty/release-maker-tester-with-prior-release/releases/tag/v1.2.3","id":7879526,"tag_name":"v1.2.3","target_commitish":"master","name":"v1.2.3","draft":false,"author":{"login":"RobinDaugherty","id":1005280,"avatar_url":"https://avatars3.githubusercontent.com/u/1005280?v=4","gravatar_id":"","url":"https://api.github.com/users/RobinDaugherty","html_url":"https://github.com/RobinDaugherty","followers_url":"https://api.github.com/users/RobinDaugherty/followers","following_url":"https://api.github.com/users/RobinDaugherty/following{/other_user}","gists_url":"https://api.github.com/users/RobinDaugherty/gists{/gist_id}","starred_url":"https://api.github.com/users/RobinDaugherty/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/RobinDaugherty/subscriptions","organizations_url":"https://api.github.com/users/RobinDaugherty/orgs","repos_url":"https://api.github.com/users/RobinDaugherty/repos","events_url":"https://api.github.com/users/RobinDaugherty/events{/privacy}","received_events_url":"https://api.github.com/users/RobinDaugherty/received_events","type":"User","site_admin":false},"prerelease":false,"created_at":"2017-09-24T05:10:12Z","published_at":"2017-09-25T14:55:30Z","assets":[],"tarball_url":"https://api.github.com/repos/RobinDaugherty/release-maker-tester-with-prior-release/tarball/v1.2.3","zipball_url":"https://api.github.com/repos/RobinDaugherty/release-maker-tester-with-prior-release/zipball/v1.2.3","body":"This
+        is a full release, so the next release should be the next minor version after
+        this one (v1.3.0).\r\n\r\n- Fixed something"}]'
+    http_version: 
+  recorded_at: Mon, 25 Sep 2017 16:30:19 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/RobinDaugherty/release-maker-tester-with-prior-release/releases/latest?access_token=<GITHUB_AUTH_TOKEN>
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json,application/vnd.github.beta+json;q=0.5,application/json;q=0.1
+      Accept-Charset:
+      - utf-8
+      User-Agent:
+      - Github API Ruby Gem 0.17.0
+      Authorization:
+      - token <GITHUB_AUTH_TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Mon, 25 Sep 2017 16:30:20 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4955'
+      X-Ratelimit-Reset:
+      - '1506357928'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - W/"6d83f1b47b83d57fa7d11eb8384ccf52"
+      Last-Modified:
+      - Mon, 25 Sep 2017 15:00:15 GMT
+      X-Oauth-Scopes:
+      - repo
+      X-Accepted-Oauth-Scopes:
+      - ''
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.040507'
+      X-Github-Request-Id:
+      - C179:509B:3C8C621:8218F47:59C92F1C
+    body:
+      encoding: ASCII-8BIT
+      string: '{"url":"https://api.github.com/repos/RobinDaugherty/release-maker-tester-with-prior-release/releases/7879526","assets_url":"https://api.github.com/repos/RobinDaugherty/release-maker-tester-with-prior-release/releases/7879526/assets","upload_url":"https://uploads.github.com/repos/RobinDaugherty/release-maker-tester-with-prior-release/releases/7879526/assets{?name,label}","html_url":"https://github.com/RobinDaugherty/release-maker-tester-with-prior-release/releases/tag/v1.2.3","id":7879526,"tag_name":"v1.2.3","target_commitish":"master","name":"v1.2.3","draft":false,"author":{"login":"RobinDaugherty","id":1005280,"avatar_url":"https://avatars3.githubusercontent.com/u/1005280?v=4","gravatar_id":"","url":"https://api.github.com/users/RobinDaugherty","html_url":"https://github.com/RobinDaugherty","followers_url":"https://api.github.com/users/RobinDaugherty/followers","following_url":"https://api.github.com/users/RobinDaugherty/following{/other_user}","gists_url":"https://api.github.com/users/RobinDaugherty/gists{/gist_id}","starred_url":"https://api.github.com/users/RobinDaugherty/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/RobinDaugherty/subscriptions","organizations_url":"https://api.github.com/users/RobinDaugherty/orgs","repos_url":"https://api.github.com/users/RobinDaugherty/repos","events_url":"https://api.github.com/users/RobinDaugherty/events{/privacy}","received_events_url":"https://api.github.com/users/RobinDaugherty/received_events","type":"User","site_admin":false},"prerelease":false,"created_at":"2017-09-24T05:10:12Z","published_at":"2017-09-25T14:55:30Z","assets":[],"tarball_url":"https://api.github.com/repos/RobinDaugherty/release-maker-tester-with-prior-release/tarball/v1.2.3","zipball_url":"https://api.github.com/repos/RobinDaugherty/release-maker-tester-with-prior-release/zipball/v1.2.3","body":"This
+        is a full release, so the next release should be the next minor version after
+        this one (v1.3.0).\r\n\r\n- Fixed something"}'
+    http_version: 
+  recorded_at: Mon, 25 Sep 2017 16:30:20 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/RobinDaugherty/release-maker-tester-with-draft-release/releases?access_token=<GITHUB_AUTH_TOKEN>
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json,application/vnd.github.beta+json;q=0.5,application/json;q=0.1
+      Accept-Charset:
+      - utf-8
+      User-Agent:
+      - Github API Ruby Gem 0.17.0
+      Authorization:
+      - token <GITHUB_AUTH_TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Mon, 25 Sep 2017 16:30:20 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4954'
+      X-Ratelimit-Reset:
+      - '1506357928'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - W/"25205faa81cee329569a8a370e6d3336"
+      X-Oauth-Scopes:
+      - repo
+      X-Accepted-Oauth-Scopes:
+      - ''
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.041174'
+      X-Github-Request-Id:
+      - C17A:509E:4E0AB57:B7D46A5:59C92F1C
+    body:
+      encoding: ASCII-8BIT
+      string: '[{"url":"https://api.github.com/repos/RobinDaugherty/release-maker-tester-with-draft-release/releases/7879592","assets_url":"https://api.github.com/repos/RobinDaugherty/release-maker-tester-with-draft-release/releases/7879592/assets","upload_url":"https://uploads.github.com/repos/RobinDaugherty/release-maker-tester-with-draft-release/releases/7879592/assets{?name,label}","html_url":"https://github.com/RobinDaugherty/release-maker-tester-with-draft-release/releases/tag/untagged-2413e3ecff89f12541da","id":7879592,"tag_name":"v2.3.4","target_commitish":"master","name":"v2.3.4","draft":true,"author":{"login":"RobinDaugherty","id":1005280,"avatar_url":"https://avatars3.githubusercontent.com/u/1005280?v=4","gravatar_id":"","url":"https://api.github.com/users/RobinDaugherty","html_url":"https://github.com/RobinDaugherty","followers_url":"https://api.github.com/users/RobinDaugherty/followers","following_url":"https://api.github.com/users/RobinDaugherty/following{/other_user}","gists_url":"https://api.github.com/users/RobinDaugherty/gists{/gist_id}","starred_url":"https://api.github.com/users/RobinDaugherty/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/RobinDaugherty/subscriptions","organizations_url":"https://api.github.com/users/RobinDaugherty/orgs","repos_url":"https://api.github.com/users/RobinDaugherty/repos","events_url":"https://api.github.com/users/RobinDaugherty/events{/privacy}","received_events_url":"https://api.github.com/users/RobinDaugherty/received_events","type":"User","site_admin":false},"prerelease":false,"created_at":"2017-09-25T14:59:24Z","published_at":null,"assets":[],"tarball_url":null,"zipball_url":null,"body":"This
+        is a draft release, so new PRs will be appended to it.\r\n\r\n- Previous pull
+        request was merged."}]'
+    http_version: 
+  recorded_at: Mon, 25 Sep 2017 16:30:20 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/RobinDaugherty/release-maker-tester-no-releases/releases?access_token=<GITHUB_AUTH_TOKEN>
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json,application/vnd.github.beta+json;q=0.5,application/json;q=0.1
+      Accept-Charset:
+      - utf-8
+      User-Agent:
+      - Github API Ruby Gem 0.17.0
+      Authorization:
+      - token <GITHUB_AUTH_TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Mon, 25 Sep 2017 16:30:20 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '2'
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4953'
+      X-Ratelimit-Reset:
+      - '1506357928'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - '"a8b84203bc48fe5ef1a2a3d7e635820b"'
+      X-Oauth-Scopes:
+      - repo
+      X-Accepted-Oauth-Scopes:
+      - ''
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.028988'
+      X-Github-Request-Id:
+      - C17C:509B:3C8C6AE:8219087:59C92F1C
+    body:
+      encoding: UTF-8
+      string: "[]"
+    http_version: 
+  recorded_at: Mon, 25 Sep 2017 16:30:20 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/RobinDaugherty/release-maker-tester-no-releases/releases/latest?access_token=<GITHUB_AUTH_TOKEN>
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json,application/vnd.github.beta+json;q=0.5,application/json;q=0.1
+      Accept-Charset:
+      - utf-8
+      User-Agent:
+      - Github API Ruby Gem 0.17.0
+      Authorization:
+      - token <GITHUB_AUTH_TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Mon, 25 Sep 2017 16:30:21 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 404 Not Found
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4952'
+      X-Ratelimit-Reset:
+      - '1506357928'
+      X-Oauth-Scopes:
+      - repo
+      X-Accepted-Oauth-Scopes:
+      - repo
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.048984'
+      X-Github-Request-Id:
+      - C17D:509C:2AF48FB:5F751F2:59C92F1C
+    body:
+      encoding: ASCII-8BIT
+      string: '{"message":"Not Found","documentation_url":"https://developer.github.com/v3"}'
+    http_version: 
+  recorded_at: Mon, 25 Sep 2017 16:30:21 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/RobinDaugherty/not_a_real_repo/releases?access_token=<GITHUB_AUTH_TOKEN>
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json,application/vnd.github.beta+json;q=0.5,application/json;q=0.1
+      Accept-Charset:
+      - utf-8
+      User-Agent:
+      - Github API Ruby Gem 0.17.0
+      Authorization:
+      - token <GITHUB_AUTH_TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Mon, 25 Sep 2017 16:30:21 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 404 Not Found
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4951'
+      X-Ratelimit-Reset:
+      - '1506357928'
+      X-Oauth-Scopes:
+      - repo
+      X-Accepted-Oauth-Scopes:
+      - repo
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.023109'
+      X-Github-Request-Id:
+      - C17E:509D:519DAF6:A6D758F:59C92F1D
+    body:
+      encoding: ASCII-8BIT
+      string: '{"message":"Not Found","documentation_url":"https://developer.github.com/v3"}'
+    http_version: 
+  recorded_at: Mon, 25 Sep 2017 16:30:21 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/RobinDaugherty/not_a_real_repo/releases/latest?access_token=<GITHUB_AUTH_TOKEN>
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json,application/vnd.github.beta+json;q=0.5,application/json;q=0.1
+      Accept-Charset:
+      - utf-8
+      User-Agent:
+      - Github API Ruby Gem 0.17.0
+      Authorization:
+      - token <GITHUB_AUTH_TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Mon, 25 Sep 2017 16:30:21 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 404 Not Found
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4950'
+      X-Ratelimit-Reset:
+      - '1506357928'
+      X-Oauth-Scopes:
+      - repo
+      X-Accepted-Oauth-Scopes:
+      - repo
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.035391'
+      X-Github-Request-Id:
+      - C17F:509E:4E0ACAA:B7D499A:59C92F1D
+    body:
+      encoding: ASCII-8BIT
+      string: '{"message":"Not Found","documentation_url":"https://developer.github.com/v3"}'
+    http_version: 
+  recorded_at: Mon, 25 Sep 2017 16:30:21 GMT
+recorded_with: VCR 3.0.3
