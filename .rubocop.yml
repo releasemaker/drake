@@ -42,28 +42,27 @@ Metrics/BlockLength:
   Exclude:
   - 'spec/**/*.rb'
   - 'app/controllers/api/**/*.rb'
-Metrics/AbcSize:
-  Exclude:
-  - 'db/**/*.rb'
 Style/BracesAroundHashParameters:
   Enabled: false
 Style/ClassCheck:
   Enabled: false
-Metrics/ClassLength:
-  Exclude:
-  - "app/controllers/api/*"
-Style/DotPosition:
-  EnforcedStyle: leading
-Style/IndentHash:
+Layout/DotPosition:
+  EnforcedStyle: trailing
+Layout/IndentHash:
   EnforcedStyle: consistent
-Style/MultilineOperationIndentation:
+Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
-Style/AlignParameters:
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+Layout/AlignParameters:
   EnforcedStyle: with_fixed_indentation
 Style/BlockDelimiters:
   EnforcedStyle: semantic
   Exclude:
   - 'spec/factories/**/*.rb'
+Style/NumericLiterals:
+  Exclude:
+  - 'spec/**/*.rb'
 Style/StringLiterals:
   Enabled: false
 Style/StringLiteralsInInterpolation:
@@ -72,5 +71,3 @@ Style/TrailingCommaInLiteral:
   EnforcedStyleForMultiline: comma
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
-Style/MultilineMethodCallIndentation:
-  EnforcedStyle: indented
