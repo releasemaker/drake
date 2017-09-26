@@ -81,6 +81,15 @@ RSpec.describe DraftRelease do
     subject(:append_to_body) { instance.append_to_body(new_content) }
     let(:new_content) { "- New content" }
 
+    context 'when the body is the default: one newline' do
+      before do
+        instance.body = "\r\n"
+      end
+      it 'appends the new content to the body, ending with a newline' do
+        expect { append_to_body }.to change(instance, :body).
+          to("- New content\r\n")
+      end
+    end
     context 'when the body ends with a newline' do
       before do
         instance.body = "- Existing content\r\n"

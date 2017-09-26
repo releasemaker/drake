@@ -10,7 +10,10 @@ class DraftRelease
   end
 
   def append_to_body(new_content)
-    self.body = body.sub(/(\r?\n)*\Z/, "\r\n#{new_content}\r\n")
+    self.body = body
+      .sub(/(\r\n)*\Z/, "\r\n") # Get rid of duplicate newlines at the end.
+      .sub(/\A\r\n\Z/, "") # If the entire body is just a newline, get rid of it.
+    self.body += "#{new_content}\r\n" # Add the content to the end.
     self
   end
 
