@@ -7,11 +7,13 @@ class User < ActiveRecord::Base
   has_many :repo_memberships
   has_many :repos, through: :repo_memberships
 
+  validates :email, uniqueness: true, allow_nil: true
+
   def nickname
     user_identities.find(&:nickname).try(:nickname)
   end
 
   def email
-    user_identities.find(&:email).try(:email)
+    super || user_identities.find(&:email).try(:email)
   end
 end

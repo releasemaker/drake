@@ -4,7 +4,27 @@ class SessionsController < ApplicationController
   do_not_require_login
   skip_authorization_check
 
+  def new
+    @user = User.new
+  end
+
   def create
+    respond_to do |format|
+      if @user = login(credentials[:email], credentials[:password])
+        format.html do
+          redirect_back_or_to(:root)
+        end
+      else
+        @user = User.new
+        format.html do
+          flash.now[:alert] = "The email and password you entered are not valid."
+          render action: "new", status: :unprocessable_entity
+        end
+      end
+    end
+  end
+
+  def create_oauth
     find_and_store_identity! do |user_identity, new_identity, new_user|
       redirect_to root_url
     end
@@ -14,7 +34,7 @@ class SessionsController < ApplicationController
       "is already taken by another user."
   end
 
-  def failure
+  def failure_oauth
     redirect_to root_url, notice: failure_message
   end
 
@@ -68,5 +88,9 @@ class SessionsController < ApplicationController
 
   def provider_name
     authdata['provider'].to_s.titleize
+  end
+
+  def credentials
+    params.require(:user).permit(:email, :password)
   end
 end

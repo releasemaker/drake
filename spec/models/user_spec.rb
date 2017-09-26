@@ -9,6 +9,7 @@ RSpec.describe User, type: :model do
     let(:user) { FactoryGirl.create(:user) }
     let!(:user_identity) { FactoryGirl.create(:user_identity, user: user, nickname: 'abcd') }
     it 'returns the identity nickname' do
+      user.user_identities.reload
       expect(user.nickname).to eq(user_identity.nickname)
     end
   end
@@ -17,6 +18,7 @@ RSpec.describe User, type: :model do
     let(:user) { FactoryGirl.create(:user) }
     let!(:user_identity) { FactoryGirl.create(:user_identity, user: user, email: '123@e.com') }
     it 'returns the identity email' do
+      user.user_identities.reload
       expect(user.email).to eq(user_identity.email)
     end
   end

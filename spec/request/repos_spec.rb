@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe ReposController, type: :controller do
-  let(:user) { FactoryGirl.create(:user) }
+RSpec.describe "Repos", type: :request do
+  let(:user) { FactoryGirl.create(:user, :with_credentials) }
 
-  describe 'GET index' do
-    let(:do_the_thing) { get :index }
+  describe 'GET /repos' do
+    let(:do_the_thing) { get '/repos' }
     context 'when logged in' do
       before(:each) do
         login_user user
@@ -15,8 +15,8 @@ RSpec.describe ReposController, type: :controller do
 
       it 'shows the repos that the user is a member of' do
         do_the_thing
-        expect(assigns(:repos)).to include(member_repo)
-        expect(assigns(:repos)).to_not include(nonmember_repo)
+        expect(response.body).to include(member_repo.name)
+        expect(response.body).to_not include(nonmember_repo.name)
       end
     end
     context 'without logging in' do
@@ -26,8 +26,8 @@ RSpec.describe ReposController, type: :controller do
     end
   end
 
-  describe 'GET new' do
-    let(:do_the_thing) { get :new }
+  describe 'GET /repos/new' do
+    let(:do_the_thing) { get '/repos/new' }
     context 'when logged in' do
       before(:each) do
         login_user user
@@ -41,7 +41,7 @@ RSpec.describe ReposController, type: :controller do
 
       it 'includes a list of repositories from Github' do
         do_the_thing
-        expect(assigns(:available_repos).first).to have_attributes(name: 'octocat/Hello-World')
+        expect(response.body).to include("octocat/Hello-World")
       end
     end
     context 'without logging in' do
@@ -51,8 +51,8 @@ RSpec.describe ReposController, type: :controller do
     end
   end
 
-  describe 'POST create' do
-    let(:do_the_thing) { post :create, repo: new_repo_attributes }
+  describe 'POST /repos' do
+    let(:do_the_thing) { post '/repos', params: { repo: new_repo_attributes } }
     context 'when logged in' do
       before(:each) do
         login_user user

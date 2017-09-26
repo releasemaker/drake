@@ -5,6 +5,10 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
+RSpec.configure do |config|
+  config.include Shoulda::Matchers::ActionController, type: :request
+end
+
 module Shoulda
   module Matchers
     RailsShim.class_eval do

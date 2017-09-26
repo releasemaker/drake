@@ -10,33 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160306064629) do
+ActiveRecord::Schema.define(version: 20170926135212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "repo_memberships", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "repo_id"
-    t.boolean  "write"
-    t.boolean  "admin"
+    t.bigint "user_id"
+    t.bigint "repo_id"
+    t.boolean "write"
+    t.boolean "admin"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["repo_id"], name: "index_repo_memberships_on_repo_id"
+    t.index ["user_id", "repo_id"], name: "index_repo_memberships_on_user_id_and_repo_id", unique: true
+    t.index ["user_id"], name: "index_repo_memberships_on_user_id"
   end
-
-  add_index "repo_memberships", ["user_id", "repo_id"], name: "index_repo_memberships_on_user_id_and_repo_id", unique: true, using: :btree
 
   create_table "repos", force: :cascade do |t|
-    t.string   "type"
-    t.string   "name"
-    t.boolean  "enabled"
-    t.string   "provider_uid_or_url"
-    t.json     "provider_data"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.string "type"
+    t.string "name"
+    t.boolean "enabled"
+    t.string "provider_uid_or_url"
+    t.json "provider_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["type", "provider_uid_or_url"], name: "index_repos_on_type_and_provider_uid_or_url", unique: true
   end
-
-  add_index "repos", ["type", "provider_uid_or_url"], name: "index_repos_on_type_and_provider_uid_or_url", unique: true, using: :btree
 
   create_table "user_identities", force: :cascade do |t|
     t.bigint "user_id"
@@ -51,9 +51,14 @@ ActiveRecord::Schema.define(version: 20160306064629) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.boolean  "super_admin", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "super_admin", default: false
+    t.string "email"
+    t.string "name"
+    t.string "crypted_password"
+    t.string "salt"
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
   add_foreign_key "repo_memberships", "repos"

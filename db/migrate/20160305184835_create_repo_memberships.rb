@@ -1,4 +1,4 @@
-class CreateRepoMemberships < ActiveRecord::Migration
+class CreateRepoMemberships < ActiveRecord::Migration[5.1]
   def change
     create_table :repo_memberships do |t|
       t.references :user
