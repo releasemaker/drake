@@ -69,12 +69,18 @@ class ReposController < ApplicationController
   end
 
   def update
-    @repo.assign_attributes(update_params)
-    need_to_update_webhook = @repo.enabled_changed?
-    if @repo.save
-      RepoProviderWebhookService.new(@repo).perform! if need_to_update_webhook
-      flash[:notice] = "Settings saved."
-      redirect_to action: :show
+    Repo.transaction do
+      @repo.assign_attributes(update_params)
+      need_to_update_webhook = @repo.enabled_changed?
+      if @repo.save
+        RepoProviderWebhookService.new(@repo).perform! if need_to_update_webhook
+
+        flash[:notice] = "Settings saved."
+        redirect_to action: :show
+      else
+        flash[:alert] = "There was a problem saving your changes."
+        render :show
+      end
     end
   end
 
