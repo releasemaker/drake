@@ -22,8 +22,7 @@ RSpec.describe RepoProviderWebhookService do
       )
     }
 
-    context 'making API calls' do
-      use_vcr_cassette "webhook_service"
+    context 'making API calls', vcr: { cassette_name: 'webhook_service' } do
       let(:repo_provider_webhook_data) { nil }
       let(:repo_enabled) { true }
       let!(:user) { FactoryGirl.create(:user) }

@@ -1,8 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe DraftRelease do
-  use_vcr_cassette "draft_release"
-
+RSpec.describe DraftRelease, vcr: { cassette_name: 'draft_release' } do
   subject(:instance) { described_class.new(repo: repo) }
 
   let(:repo) {

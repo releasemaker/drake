@@ -52,7 +52,6 @@ RSpec.configure do |config|
 
   config.include Rails.application.routes.url_helpers
   config.include RSpecHtmlMatchers
-  config.extend VCR::RSpec::Macros
 
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
