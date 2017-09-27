@@ -8,6 +8,14 @@ RSpec.describe PullRequestHandler do
       allow(draft_release).to receive_message_chain('append_to_body.save')
     end
     let(:draft_release) { instance_double(DraftRelease) }
+    let(:repo) {
+      FactoryGirl.create(
+        :github_repo,
+        provider_uid_or_url: Rails.configuration.x.github.test_repo_uid,
+        name: "#{Rails.configuration.x.github.test_repo_owner_name}/#{repo_name}",
+      )
+    }
+    let(:repo_name) { 'release-maker-tester-no-releases' }
 
     context 'when the pull request was closed and merged' do
       let(:hook_payload) { parsed_json_fixture('github/hooks/merged_pull_request') }
@@ -15,8 +23,7 @@ RSpec.describe PullRequestHandler do
       context 'and it was merged into master' do
         it 'creates a DraftRelease and calls append_to_body' do
           expect(DraftRelease).to receive(:new).with(
-            user_name: 'RobinDaugherty',
-            repo_name: 'release-maker-tester-no-releases',
+            repo: repo,
           )
           expect(draft_release).to receive(:append_to_body)
             .with('- Update README.md and do amazing stuff #1')

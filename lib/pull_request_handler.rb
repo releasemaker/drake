@@ -26,6 +26,10 @@ class PullRequestHandler
   end
 
   def draft_release
-    @draft_release ||= DraftRelease.new(user_name: user_name, repo_name: repo_name)
+    @draft_release ||= DraftRelease.new(repo: repo)
+  end
+
+  def repo
+    GithubRepo.find_by(provider_uid_or_url: hook.repository.id)
   end
 end

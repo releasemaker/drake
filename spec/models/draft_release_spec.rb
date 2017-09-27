@@ -3,30 +3,28 @@ require 'rails_helper'
 RSpec.describe DraftRelease do
   use_vcr_cassette "draft_release"
 
-  subject(:instance) { described_class.new(user_name: user_name, repo_name: repo_name) }
-  let(:user_name) { 'RobinDaugherty' }
+  subject(:instance) { described_class.new(repo: repo) }
+
+  let(:repo) {
+    FactoryGirl.create(
+      :github_repo,
+      provider_uid_or_url: Rails.configuration.x.github.test_repo_uid,
+      name: "#{Rails.configuration.x.github.test_repo_owner_name}/#{repo_name}",
+    )
+  }
+  let!(:user) { FactoryGirl.create(:user) }
+  let!(:user_identity) {
+    FactoryGirl.create(
+      :user_identity,
+      :github,
+      user: user,
+      token: Rails.configuration.x.github.test_auth_token,
+    )
+  }
+  let!(:repo_membership) {
+    FactoryGirl.create(:repo_membership, :admin, repo: repo, user: user)
+  }
   let(:repo_name) { 'release-maker-tester-with-prior-release' }
-
-  describe '.for_repository' do
-    subject(:instance) {
-      described_class.for_repository(user_name: user_name, repo_name: repo_name)
-    }
-
-    context 'given the name of a repository that is recognized' do
-      it 'returns an instance' do
-        expect(instance).to be_kind_of(DraftRelease)
-      end
-    end
-
-    context 'given the name of a repository that is not recognized' do
-      let(:repo_name) { 'not_a_real_repo' }
-
-      it 'raises an exception' do
-        pending "We're not storing repository information in the database yet."
-        expect { instance }.to raise_error
-      end
-    end
-  end
 
   describe '.new' do
     context 'when a draft release does not exist' do

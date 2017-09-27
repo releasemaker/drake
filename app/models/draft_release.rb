@@ -1,11 +1,6 @@
 class DraftRelease
-  def self.for_repository(user_name:, repo_name:)
-    new(user_name: user_name, repo_name: repo_name)
-  end
-
-  def initialize(user_name:, repo_name:)
-    self.user_name = user_name
-    self.repo_name = repo_name
+  def initialize(repo:)
+    self.repo = repo
     self.draft_release = existing_draft_release || empty_draft_release
   end
 
@@ -21,9 +16,9 @@ class DraftRelease
 
   def save
     if draft_release.id
-      github.repos.releases.edit(user_name, repo_name, draft_release.id, draft_release)
+      github.repos.releases.edit(repo.owner_name, repo.repo_name, draft_release.id, draft_release)
     else
-      github.repos.releases.create(user_name, repo_name, draft_release)
+      github.repos.releases.create(repo.owner_name, repo.repo_name, draft_release)
     end
   end
 
@@ -33,18 +28,15 @@ class DraftRelease
 
   private
 
-  attr_accessor :user_name
-  attr_accessor :repo_name
+  attr_accessor :repo
   attr_accessor :draft_release
 
   def github
-    @github ||= Github.new do |config|
-      config.oauth_token = ENV['GITHUB_AUTH_TOKEN']
-    end
+    repo.github_client
   end
 
   def existing_draft_release
-    github.repos.releases.list(user_name, repo_name).each_page do |page|
+    github.repos.releases.list(repo.owner_name, repo.repo_name).each_page do |page|
       page.each do |release|
         return release if release.draft
       end
@@ -65,7 +57,7 @@ class DraftRelease
   end
 
   def latest_release
-    github.repos.releases.latest(user_name, repo_name)
+    github.repos.releases.latest(repo.owner_name, repo.repo_name)
   rescue Github::Error::NotFound
     nil
   end
