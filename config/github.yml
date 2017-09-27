@@ -8,6 +8,9 @@ development:
 
 test:
   <<: *default
+  test_repo_name: RobinDaugherty/release-maker-tester-no-releases
+  test_repo_uid: 104763724
+  test_auth_token: <%= ENV['GITHUB_AUTH_TOKEN'] %>
 
 staging:
   <<: *default

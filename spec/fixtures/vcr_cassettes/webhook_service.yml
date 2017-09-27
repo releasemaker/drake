@@ -1,0 +1,147 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.github.com/repos/RobinDaugherty/release-maker-tester-no-releases/hooks?access_token=<GITHUB_AUTH_TOKEN>
+    body:
+      encoding: UTF-8
+      string: '{"name":"web","events":["push","pull_request"],"active":true,"config":{"url":"https://release-maker.test/github_webhooks?id=7\u0026type=repo","content_type":"json","secret":null}}'
+    headers:
+      Accept:
+      - application/vnd.github.v3+json,application/vnd.github.beta+json;q=0.5,application/json;q=0.1
+      Accept-Charset:
+      - utf-8
+      User-Agent:
+      - Github API Ruby Gem 0.17.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - token <GITHUB_AUTH_TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Wed, 27 Sep 2017 15:17:54 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '669'
+      Status:
+      - 201 Created
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4980'
+      X-Ratelimit-Reset:
+      - '1506525673'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - '"61005fdbbd1cca9bc4601ea23acdc93e"'
+      X-Oauth-Scopes:
+      - repo
+      X-Accepted-Oauth-Scopes:
+      - admin:repo_hook, public_repo, repo, write:repo_hook
+      Location:
+      - https://api.github.com/repos/RobinDaugherty/release-maker-tester-no-releases/hooks/16432472
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.043250'
+      X-Github-Request-Id:
+      - D330:509E:74CA713:10F6DD54:59CBC122
+    body:
+      encoding: UTF-8
+      string: '{"type":"Repository","id":16432472,"name":"web","active":true,"events":["push","pull_request"],"config":{"url":"https://release-maker.test/github_webhooks?id=7&type=repo","content_type":"json","insecure_ssl":"0"},"updated_at":"2017-09-27T15:17:54Z","created_at":"2017-09-27T15:17:54Z","url":"https://api.github.com/repos/RobinDaugherty/release-maker-tester-no-releases/hooks/16432472","test_url":"https://api.github.com/repos/RobinDaugherty/release-maker-tester-no-releases/hooks/16432472/test","ping_url":"https://api.github.com/repos/RobinDaugherty/release-maker-tester-no-releases/hooks/16432472/pings","last_response":{"code":null,"status":"unused","message":null}}'
+    http_version: 
+  recorded_at: Wed, 27 Sep 2017 15:17:54 GMT
+- request:
+    method: delete
+    uri: https://api.github.com/repos/RobinDaugherty/release-maker-tester-no-releases/hooks/16432472?access_token=<GITHUB_AUTH_TOKEN>
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json,application/vnd.github.beta+json;q=0.5,application/json;q=0.1
+      Accept-Charset:
+      - utf-8
+      User-Agent:
+      - Github API Ruby Gem 0.17.0
+      Authorization:
+      - token <GITHUB_AUTH_TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 204
+      message: No Content
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Wed, 27 Sep 2017 15:17:55 GMT
+      Content-Type:
+      - application/octet-stream
+      Status:
+      - 204 No Content
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4979'
+      X-Ratelimit-Reset:
+      - '1506525673'
+      X-Oauth-Scopes:
+      - repo
+      X-Accepted-Oauth-Scopes:
+      - admin:repo_hook, public_repo, repo
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.046075'
+      X-Github-Request-Id:
+      - D331:509C:426C524:935AFBA:59CBC122
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Wed, 27 Sep 2017 15:17:55 GMT
+recorded_with: VCR 3.0.3

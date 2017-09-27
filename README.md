@@ -30,6 +30,7 @@ The `pg` gem requires that Postgres client libraries be installed.
 The following environment variables are used:
 
 - `WEBHOOK_PROTOCOL`: 'https' by default.
+- `GITHUB_AUTH_TOKEN`: used during tests where the Github API is going to be called. When recording VCR episodes, this will need to be set.
 
 The following are required in production:
 

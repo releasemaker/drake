@@ -28,7 +28,7 @@ class RepoProviderWebhookService
         secret: Rails.configuration.x.github.webhook_secret,
       },
     )
-    repo.update_attributes! provider_webhook_data: webhook_data
+    repo.update_attributes! provider_webhook_data: webhook_data.to_h
   end
 
   def webhook_url
