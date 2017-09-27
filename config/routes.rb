@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   root 'pages#index'
 
@@ -13,4 +15,10 @@ Rails.application.routes.draw do
   resources :repos
   # TODO: get '/gh/*provider_uid' => 'repos#show', as: :github_repo
   resources :repos, controller: 'repos', type: 'GithubRepo', as: :github_repos
+
+  namespace :admin do
+    constraints CanAccessSidekiq do
+      mount Sidekiq::Web, at: "sidekiq"
+    end
+  end
 end

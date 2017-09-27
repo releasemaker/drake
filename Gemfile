@@ -73,6 +73,12 @@ gem 'cancancan'
 # Pagination
 gem 'kaminari'
 
+# Background jobs
+gem 'sidekiq'
+
+# Lightweight web framework, needed for sidekiq web UI
+gem 'sinatra', require: false
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -98,6 +104,9 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'rspec_junit_formatter'
   gem 'capybara'
+
+  # Namespacing in development since we share a single Redis instance in development.
+  gem 'redis-namespace', require: false
 end
 
 group :development do
@@ -134,6 +143,7 @@ group :test do
   gem 'database_cleaner'
   gem 'webmock'
   gem 'vcr'
+  gem 'rspec-sidekiq'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
