@@ -54,9 +54,9 @@ class ReposController < ApplicationController
       unless @repo.repo_memberships.find_by(user: current_user)
         @repo.repo_memberships.create!(user: current_user, admin: true)
       end
-    end
 
-    RepoProviderWebhookService.new(@repo).perform!
+      RepoProviderWebhookService.new(@repo).perform!
+    end
 
     redirect_to @repo
   end
