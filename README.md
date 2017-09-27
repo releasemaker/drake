@@ -1,3 +1,6 @@
+[![CircleCI](https://circleci.com/gh/RobinDaugherty/release_maker-ruby.svg?style=shield&circle-token=fec31c3a0c46b668a8338b1c935e3d4c4654259e)](https://circleci.com/gh/RobinDaugherty/release_maker-ruby)
+[![Cloud66](https://app.cloud66.com/stacks/badge/fc15b8d8451e3b583d329cc88678e10c.svg)](https://app.cloud66.com/stacks/47717)
+
 # Release Maker
 
 When notified by Github that a pull request was merged, creates or adds to a draft
