@@ -10,7 +10,7 @@ RSpec.describe PullRequestHandler do
     let(:draft_release) { instance_double(DraftRelease) }
 
     context 'when the pull request was closed and merged' do
-      let(:hook_payload) { json_fixture('hooks/merged_pull_request') }
+      let(:hook_payload) { parsed_json_fixture('github/hooks/merged_pull_request') }
 
       context 'and it was merged into master' do
         it 'creates a DraftRelease and calls append_to_body' do
@@ -37,7 +37,7 @@ RSpec.describe PullRequestHandler do
       end
     end
     context 'when the pull request was closed without merging' do
-      let(:hook_payload) { json_fixture('hooks/closed_pull_request') }
+      let(:hook_payload) { parsed_json_fixture('github/hooks/closed_pull_request') }
 
       it 'does not create a DraftRelease' do
         expect(DraftRelease).to_not receive(:new)
@@ -45,7 +45,7 @@ RSpec.describe PullRequestHandler do
       end
     end
     context 'when the pull request was opened' do
-      let(:hook_payload) { json_fixture('hooks/new_pull_request') }
+      let(:hook_payload) { parsed_json_fixture('github/hooks/new_pull_request') }
 
       it 'does not create a DraftRelease' do
         expect(DraftRelease).to_not receive(:new)

@@ -7,7 +7,7 @@ RSpec.describe "Github Webhooks", type: :request do
     let(:the_request) {
       send(action, path, params: params.to_json, headers: headers)
     }
-    let(:params) { json_fixture('hooks/merged_pull_request') }
+    let(:params) { parsed_json_fixture('github/hooks/merged_pull_request') }
     let(:headers) {
       {
         'CONTENT_TYPE' => 'application/json',

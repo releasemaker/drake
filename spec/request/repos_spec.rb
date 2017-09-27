@@ -33,7 +33,7 @@ RSpec.describe "Repos", type: :request do
         login_user user
       end
       let!(:user_identity) { FactoryGirl.create(:user_identity, :github, user: user) }
-      let(:api_data) { File.read Rails.root.join(*%w(spec fixtures github_repositories.json)) }
+      let(:api_data) { json_fixture('github/repositories') }
       let!(:api_request) {
         stub_request(:get, %r{https://api\.github\.com/user/repos\?access_token=.+})
           .to_return(body: api_data, status: 200)

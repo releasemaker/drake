@@ -5,7 +5,7 @@ RSpec.describe GithubRepo, type: :model do
 
   describe '::new_from_api' do
     subject { described_class.new_from_api(repository) }
-    let(:api_data) { File.read Rails.root.join(*%w(spec fixtures github_repositories.json)) }
+    let(:api_data) { json_fixture('github/repositories') }
     let!(:api_request) {
       stub_request(:get, "https://api.github.com/user/repos?access_token=12345")
         .to_return(body: api_data, status: 200)
