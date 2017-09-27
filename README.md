@@ -29,10 +29,15 @@ The `pg` gem requires that Postgres client libraries be installed.
 
 The following environment variables are used:
 
+- `WEBHOOK_PROTOCOL`: 'https' by default.
+
+The following are required in production:
+
 - `DATABASE_URL`: Database used to store operational data.
 - `GITHUB_OAUTH_CLIENT_ID`
 - `GITHUB_OAUTH_SECRET`
 - `GITHUB_WEBHOOK_SECRET`: Webhook secret configured on Github
+- `WEBHOOK_HOST`
 - `NEW_RELIC_LICENSE_KEY`: Used by New Relic. Should not be set in development unless developing changes to New Relic integration. Should never be set in test environment.
 - `NEW_RELIC_APP_NAME`: Used by New Relic.
 - `SENTRY_DSN`: Used by Sentry. Should not be set in development unless developing changes to Sentry integration.

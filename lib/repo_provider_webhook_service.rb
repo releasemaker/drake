@@ -25,7 +25,7 @@ class RepoProviderWebhookService
       config: {
         url: webhook_url,
         content_type: 'json',
-        secret: Rails.configuration.x.webhooks.github_secret,
+        secret: Rails.configuration.x.github.webhook_secret,
       },
     )
     repo.update_attributes! provider_webhook_data: webhook_data

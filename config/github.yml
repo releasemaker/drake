@@ -1,6 +1,7 @@
 default: &default
   oauth_client_id: <%= ENV['GITHUB_OAUTH_CLIENT_ID'] %>
   oauth_secret: <%= ENV['GITHUB_OAUTH_SECRET'] %>
+  webhook_secret: <%= ENV['GITHUB_WEBHOOK_SECRET'] %>
 
 development:
   <<: *default
