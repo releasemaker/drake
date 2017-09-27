@@ -8,8 +8,9 @@ development:
 
 test:
   <<: *default
-  test_repo_name: RobinDaugherty/release-maker-tester-no-releases
-  test_repo_uid: 104763724
+  test_repo_owner_name: <%= ENV['GITHUB_TEST_REPO_OWNER'] || 'RobinDaugherty' %>
+  test_repo_name: release-maker-tester-no-releases
+  test_repo_uid: <%= ENV['GITHUB_TEST_REPO_UID'] || 104763724 %>
   test_auth_token: <%= ENV['GITHUB_AUTH_TOKEN'] %>
 
 staging:

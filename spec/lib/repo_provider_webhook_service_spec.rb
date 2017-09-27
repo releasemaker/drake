@@ -15,7 +15,8 @@ RSpec.describe RepoProviderWebhookService do
       FactoryGirl.create(
         :github_repo,
         provider_uid_or_url: Rails.configuration.x.github.test_repo_uid,
-        name: Rails.configuration.x.github.test_repo_name,
+        name: "#{Rails.configuration.x.github.test_repo_owner_name}/"\
+          "#{Rails.configuration.x.github.test_repo_name}",
         enabled: repo_enabled,
         provider_webhook_data: repo_provider_webhook_data,
       )

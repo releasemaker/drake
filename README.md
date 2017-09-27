@@ -30,7 +30,7 @@ The `pg` gem requires that Postgres client libraries be installed.
 The following environment variables are used:
 
 - `WEBHOOK_PROTOCOL`: 'https' by default.
-- `GITHUB_AUTH_TOKEN`: used during tests where the Github API is going to be called. When recording VCR episodes, this will need to be set.
+- `GITHUB_AUTH_TOKEN`: Personal Access Token used during tests where the Github API is going to be called. When recording VCR episodes, this will need to be set.
 
 The following are required in production:
 
@@ -80,4 +80,15 @@ When this occurs, it's necessary to restart Pow.
 ### Tests
 
 We use [rspec](https://www.relishapp.com/rspec).
+
+VCR is used to record actual API responses and play them back during test runs.
+
+If the VCR episodes need to be re-recorded, you will need to have:
+
+- `GITHUB_AUTH_TOKEN` environment variable set to your personal access token.
+- `GITHUB_TEST_REPO_OWNER` environment variable set to your Github username
+- `GITHUB_TEST_REPO_UID` set to the uid of the `release-maker-tester-no-releases` repo.
+- Repository named `release-maker-tester-no-releases`
+- Repository named `release-maker-tester-with-draft-release` with one draft release.
+- Repository named `release-maker-tester-with-prior-release` with one completed release.
 
