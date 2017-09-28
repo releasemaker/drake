@@ -2,10 +2,14 @@
   | Add Project
 
 h1 Add Project
+= form_tag('', method: 'get') do |form|
+  = search_field_tag 'q', params[:q]
+  = submit_tag 'Search'
+
 table
   tbody
     - @available_repos.each do |repo|
-      tr
+      tr data-provider-uid=repo.provider_uid_or_url
         td = repo.name
         td
           - if repo.persisted? && repo.enabled?
@@ -17,4 +21,5 @@ table
               = f.hidden_field :name
               = f.submit "Add"
 
-= paginate @available_repos_response
+- if @available_repos_response
+  = paginate @available_repos_response

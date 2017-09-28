@@ -16,29 +16,26 @@ class ReposController < ApplicationController
   def new
     # The paginated API request that is returning repositories.
     # This object will be paginated using Kaminari, so it must respond to the various methods
-    # that expects.
-    @available_repos_response = current_user.github_client.
-        repositories.
-        all(page: page, per_page: per_page)
+    # that Kaminari expects.
+    if params[:q].present?
+      all_repos = Rails.cache.fetch(
+        "github_all_repos/for_user/#{current_user.nickname}",
+        expires_in: 5.minutes,
+      ) do
+        current_user.github_client.
+          repositories.
+          list(auto_pagination: true)
+      end
+      @available_repos = repo_list_from_response(
+        all_repos.select { |repo| repo.full_name.downcase.include? params[:q].downcase },
+      )
+    else
+      @available_repos_response = current_user.github_client.
+          repositories.
+          all(page: page, per_page: per_page)
 
-    # Unpersisted {Repo} records representing repositories in the response.
-    # The response just needs to support Enumerable.
-    # @todo Augment with repos that already exist as {Repo} records.
-    matching_repos = @available_repos_response.
-      map { |data| GithubRepo.new_from_api(data) }
-
-    # Any existing {Repo} objects that match the list of available repositories being shown.
-    matching_existing_repos = matching_repos.map(&:type).uniq.map { |repo_class|
-      uids = matching_repos.select { |r| r.type == repo_class }.map(&:provider_uid_or_url)
-      repo_class.constantize.where(provider_uid_or_url: uids).all
-    }.flatten
-
-    # {Repo}s that match the current search. Some may be persisted.
-    @available_repos = matching_repos.map { |available_repo|
-      matching_existing_repos.find { |r|
-        r.type == available_repo.type && r.provider_uid_or_url == available_repo.provider_uid_or_url
-      } || available_repo
-    }
+      @available_repos = repo_list_from_response @available_repos_response
+    end
   end
 
   # Creates a {Repo} record based on the form submission from the {#new} view.
@@ -92,5 +89,25 @@ class ReposController < ApplicationController
 
   def update_params
     params.require(:repo).permit(:enabled)
+  end
+
+  # Array of {Repo}s that match those in the response. Some may be persisted.
+  def repo_list_from_response(response)
+    # Unpersisted {Repo} records representing repositories in the response.
+    # The response just needs to support Enumerable.
+    matching_repos = response.
+      map { |data| GithubRepo.new_from_api(data) }
+
+    # Any existing {Repo} objects that match the list of available repositories being shown.
+    matching_existing_repos = matching_repos.map(&:type).uniq.map { |repo_class|
+      uids = matching_repos.select { |r| r.type == repo_class }.map(&:provider_uid_or_url)
+      repo_class.constantize.where(provider_uid_or_url: uids).all
+    }.flatten
+
+    matching_repos.map { |available_repo|
+      matching_existing_repos.find { |r|
+        r.type == available_repo.type && r.provider_uid_or_url == available_repo.provider_uid_or_url
+      } || available_repo
+    }
   end
 end

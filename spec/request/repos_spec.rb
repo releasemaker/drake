@@ -27,7 +27,9 @@ RSpec.describe "Repos", type: :request do
   end
 
   describe 'GET /repos/new' do
-    let(:do_the_thing) { get '/repos/new' }
+    let(:do_the_thing) { get '/repos/new', params: params }
+    let(:params) { {} }
+
     context 'when logged in' do
       before(:each) do
         login_user user
@@ -39,22 +41,128 @@ RSpec.describe "Repos", type: :request do
           .to_return(body: api_data, status: 200)
       }
 
-      it 'includes a list of repositories from Github' do
-        do_the_thing
-        expect(response.body).to include("octocat/Hello-World")
-      end
-      context 'with an existing matching repo' do
-        let!(:existing_matching_repo) {
-          FactoryGirl.create(
-            :github_repo,
-            provider_uid_or_url: "1296269",
-            name: 'octocat/Hello-World',
-          )
-        }
-
-        it 'includes the persisted repo' do
+      context 'without a search term' do
+        it 'includes a list of repositories from Github with Add buttons' do
           do_the_thing
-          expect(response.body).to include('octocat/Hello-World')
+          expect(response.body).to have_tag('tr[data-provider-uid="1296269"]') do
+            with_tag('td', 'octocat/Hello-World')
+            with_submit('Add')
+          end
+        end
+        context 'when the user does not have admin access to the repo' do
+          it 'does not include the Add button'
+        end
+        context 'with an existing matching repo' do
+          context 'that is disabled' do
+            let!(:existing_matching_repo) {
+              FactoryGirl.create(
+                :github_repo,
+                enabled: false,
+                provider_uid_or_url: "1296269",
+                name: 'octocat/Hello-World',
+              )
+            }
+
+            it 'shows the persisted repo with an Add button' do
+              do_the_thing
+              expect(response.body).to have_tag('tr[data-provider-uid="1296269"]') do
+                with_tag('td', 'octocat/Hello-World')
+                with_submit('Add')
+              end
+            end
+          end
+          context 'that is enabled' do
+            let!(:existing_matching_repo) {
+              FactoryGirl.create(
+                :github_repo,
+                enabled: true,
+                provider_uid_or_url: "1296269",
+                name: 'octocat/Hello-World',
+              )
+            }
+
+            it 'shows the persisted repo without an Add button' do
+              do_the_thing
+              expect(response.body).to have_tag('tr[data-provider-uid="1296269"]') do
+                with_tag('td', 'octocat/Hello-World')
+                with_tag('a', 'Existing')
+                without_submit('Add')
+              end
+            end
+          end
+        end
+      end
+      context 'with a search term' do
+        let(:params) { { q: search_term } }
+
+        context 'that matches a repo' do
+          let(:search_term) { "Hello" }
+
+          it 'includes a list of matching repositories with Add buttons' do
+            do_the_thing
+            expect(response.body).to have_tag('tr[data-provider-uid="1296269"]') do
+              with_tag('td', 'octocat/Hello-World')
+              with_submit('Add')
+            end
+          end
+          it 'does not show nonmatching repositories' do
+            expect(response.body).to_not have_tag('tr[data-provider-uid="1296270"]')
+          end
+
+          context 'with a matching repo exists locally' do
+            context 'and is disabled' do
+              let!(:existing_matching_repo) {
+                FactoryGirl.create(
+                  :github_repo,
+                  enabled: false,
+                  provider_uid_or_url: "1296269",
+                  name: 'octocat/Hello-World',
+                )
+              }
+
+              it 'shows the persisted repo with an Add button' do
+                do_the_thing
+                expect(response.body).to have_tag('tr[data-provider-uid="1296269"]') do
+                  with_tag('td', 'octocat/Hello-World')
+                  with_submit('Add')
+                end
+              end
+              it 'does not show nonmatching repositories' do
+                expect(response.body).to_not have_tag('tr[data-provider-uid="1296270"]')
+              end
+            end
+            context 'and is enabled' do
+              let!(:existing_matching_repo) {
+                FactoryGirl.create(
+                  :github_repo,
+                  enabled: true,
+                  provider_uid_or_url: "1296269",
+                  name: 'octocat/Hello-World',
+                )
+              }
+
+              it 'shows the persisted repo with an Add button' do
+                do_the_thing
+                expect(response.body).to have_tag('tr[data-provider-uid="1296269"]') do
+                  with_tag('td', 'octocat/Hello-World')
+                  with_tag('a', 'Existing')
+                  without_submit('Add')
+                end
+              end
+              it 'does not show nonmatching repositories' do
+                expect(response.body).to_not have_tag('tr[data-provider-uid="1296270"]')
+              end
+            end
+          end
+        end
+        context 'that does not match any repos' do
+          let(:search_term) { "zen" }
+
+          it 'does not show any repositories' do
+            do_the_thing
+            expect(response.body).to_not have_tag('tr[data-provider-uid="1296269"]')
+            expect(response.body).to_not have_tag('tr[data-provider-uid="1296270"]')
+          end
         end
       end
     end
