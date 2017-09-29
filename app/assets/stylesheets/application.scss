@@ -15,3 +15,12 @@
  */
 
 @import "foundation_and_overrides";
+@import "font-awesome";
+
+table.repos {
+  td.name {
+    .fa {
+      margin-right: .5em;
+    }
+  }
+}

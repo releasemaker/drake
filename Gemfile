@@ -59,6 +59,9 @@ gem "versionomy"
 gem 'foundation-rails', "~> 6.0"
 gem 'foundation_rails_helper'
 
+# Add jQuery is used by Foundation's JS
+gem 'jquery-rails'
+
 # Authentication
 gem 'sorcery'
 gem 'omniauth'
@@ -75,6 +78,9 @@ gem 'kaminari'
 
 # Cache in Redis
 gem 'redis-rails'
+
+# Icons
+gem "font-awesome-rails"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
