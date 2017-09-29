@@ -2,7 +2,7 @@
 # enumerates available repos on SCM providers and allows them to
 # create a {Repo} record for it.
 class ReposController < ApplicationController
-  load_and_authorize_resource :repo
+  load_and_authorize_resource :repo, except: [:show_by_name]
   include PaginationHelper
 
   skip_load_resource only: %i(index)
@@ -58,11 +58,18 @@ class ReposController < ApplicationController
     redirect_to @repo
   end
 
-  # Shows the repository to the user.
-  # @todo If the user doesn't currently have a {RepoMembership} in the repository, check the SCM
-  #   to see if they have permission, and create that {RepoMembership} record.
   def show
     
+  end
+
+  def show_by_name
+    @repo = PresentGithubRepoByName.new(
+      owner_name: params[:owner],
+      repo_name: params[:repo],
+      user: current_user,
+    ).repo
+    authorize! :show, @repo
+    render :show
   end
 
   def update

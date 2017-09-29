@@ -271,6 +271,51 @@ RSpec.describe "Repos", type: :request do
     end
   end
 
+  describe 'GET /gh/:owner/:repo' do
+    let(:do_the_thing) { get "/gh/#{repo.owner_name}/#{repo.repo_name}" }
+    let!(:repo) { FactoryGirl.create(:github_repo) }
+
+    context 'when logged in' do
+      before(:each) do
+        login_user user
+      end
+      context 'with the name of a repo that exists' do
+        context 'that the user is a member of' do
+          let!(:membership) { FactoryGirl.create(:repo_membership, repo: repo, user: user) }
+          it 'shows the repo' do
+            do_the_thing
+            expect(response.body).to include(repo.name)
+          end
+        end
+        context 'that the user is not a member of' do
+          it 'does not show the repo' do
+            expect { do_the_thing }.to raise_error(CanCan::AccessDenied)
+          end
+        end
+      end
+      context 'with the name of a repo that does not exist' do
+        it 'looks up the repo in Github'
+        context 'when the repo exists on Github' do
+          it 'creates the repo'
+          context 'when Github indicates that the user does not have admin access to the repo' do
+            it 'creates non-admin membership for the user'
+          end
+          context 'when Github indicates that the user has admin access to the repo' do
+            it 'creates admin membership for the user'
+          end
+        end
+        context 'when the repo does not exist on Github' do
+          it 'responds with Not Found'
+        end
+      end
+    end
+    context 'without logging in' do
+      it 'redirects to authentication' do
+        expect(do_the_thing).to redirect_to(root_path)
+      end
+    end
+  end
+
   describe 'GET /repos/:id/edit' do
     let(:do_the_thing) { get "/repos/#{repo.to_param}/edit" }
     let!(:repo) { FactoryGirl.create(:repo) }
