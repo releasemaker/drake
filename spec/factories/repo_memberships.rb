@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :repo_membership do
-    repo
+    association :repo, factory: :github_repo
     user
     write false
     admin false

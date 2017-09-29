@@ -9,8 +9,8 @@ RSpec.describe "Repos", type: :request do
       before(:each) do
         login_user user
       end
-      let!(:member_repo) { FactoryGirl.create(:repo) }
-      let!(:nonmember_repo) { FactoryGirl.create(:repo) }
+      let!(:member_repo) { FactoryGirl.create(:github_repo) }
+      let!(:nonmember_repo) { FactoryGirl.create(:github_repo) }
       let!(:membership) { FactoryGirl.create(:repo_membership, repo: member_repo, user: user) }
 
       it 'shows the repos that the user is a member of' do
@@ -179,7 +179,7 @@ RSpec.describe "Repos", type: :request do
       before(:each) do
         login_user user
       end
-      let(:repo_attributes) { FactoryGirl.attributes_for(:repo) }
+      let(:repo_attributes) { FactoryGirl.attributes_for(:github_repo) }
       let(:new_repo_attributes) { repo_attributes.slice(:name, :provider_uid_or_url) }
       let(:new_repo) { Repo.find_by(repo_attributes.slice(:type, :provider_uid_or_url)) }
 
@@ -206,7 +206,7 @@ RSpec.describe "Repos", type: :request do
       end
       context 'when the Repo already exists and is disabled' do
         let!(:existing_repo) {
-          FactoryGirl.create(:repo, new_repo_attributes.merge(enabled: false))
+          FactoryGirl.create(:github_repo, new_repo_attributes.merge(enabled: false))
         }
 
         it 'does not create the Repo' do
@@ -245,7 +245,7 @@ RSpec.describe "Repos", type: :request do
 
   describe 'GET /repos/:id' do
     let(:do_the_thing) { get "/repos/#{repo.to_param}" }
-    let!(:repo) { FactoryGirl.create(:repo) }
+    let!(:repo) { FactoryGirl.create(:github_repo) }
 
     context 'when logged in' do
       before(:each) do
@@ -287,9 +287,31 @@ RSpec.describe "Repos", type: :request do
             expect(response.body).to include(repo.name)
           end
         end
-        context 'that the user is not a member of' do
-          it 'does not show the repo' do
-            expect { do_the_thing }.to raise_error(CanCan::AccessDenied)
+        context 'that the user is not a member of', vcr: { cassette_name: 'github_repo' } do
+          let!(:repo) { FactoryGirl.create(:github_repo, name: "#{owner_name}/#{repo_name}") }
+          let(:owner_name) { Rails.configuration.x.github.test_repo_owner_name }
+          let!(:user_identity) {
+            FactoryGirl.create(
+              :user_identity,
+              :github,
+              user: user,
+              token: Rails.configuration.x.github.test_auth_token,
+            )
+          }
+
+          it 'fetches the repo from github'
+          context 'when github grants the user access to the repo' do
+            let(:repo_name) { Rails.configuration.x.github.test_repo_name }
+            it 'shows the repo' do
+              do_the_thing
+              expect(response.body).to include(repo.name)
+            end
+          end
+          context 'when github returns 404' do
+            let(:repo_name) { 'definitely-not-a-real-repo--gimme-a-404' }
+            it 'does not show the repo' do
+              expect { do_the_thing }.to raise_error(ActionController::RoutingError)
+            end
           end
         end
       end
@@ -318,7 +340,7 @@ RSpec.describe "Repos", type: :request do
 
   describe 'GET /repos/:id/edit' do
     let(:do_the_thing) { get "/repos/#{repo.to_param}/edit" }
-    let!(:repo) { FactoryGirl.create(:repo) }
+    let!(:repo) { FactoryGirl.create(:github_repo) }
 
     context 'when logged in' do
       before(:each) do
@@ -347,7 +369,7 @@ RSpec.describe "Repos", type: :request do
 
   describe 'PUT /repos/:id/update' do
     let(:do_the_thing) { put "/repos/#{repo.to_param}", params: { repo: repo_attributes } }
-    let(:repo) { FactoryGirl.create(:repo) }
+    let(:repo) { FactoryGirl.create(:github_repo) }
     let(:repo_attributes) { {} }
 
     context 'when logged in' do
@@ -379,7 +401,7 @@ RSpec.describe "Repos", type: :request do
           end
         end
         context 'enabling' do
-          let(:repo) { FactoryGirl.create(:repo, enabled: false) }
+          let(:repo) { FactoryGirl.create(:github_repo, enabled: false) }
           let(:repo_attributes) { { enabled: true } }
 
           it 'updates the repo' do
@@ -393,7 +415,7 @@ RSpec.describe "Repos", type: :request do
           end
         end
         context 'changing nothing' do
-          let(:repo) { FactoryGirl.create(:repo) }
+          let(:repo) { FactoryGirl.create(:github_repo) }
           let(:repo_attributes) { { enabled: true } }
 
           it 'does not update the webhook' do
