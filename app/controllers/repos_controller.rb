@@ -57,7 +57,16 @@ class ReposController < ApplicationController
     end
 
     authorize! :create, @repo
-    redirect_to friendly_repo_url(@repo)
+
+    respond_to do |format|
+      format.html do
+        flash[:success] = "#{@repo.name} has been enabled."
+        redirect_to friendly_repo_url(@repo)
+      end
+      format.json do
+        render status: :created
+      end
+    end
   end
 
   # Redirects to the correct route for the repo

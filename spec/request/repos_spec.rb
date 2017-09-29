@@ -178,7 +178,9 @@ RSpec.describe "Repos", type: :request do
   end
 
   describe 'POST /repos' do
-    let(:do_the_thing) { post '/repos', params: { repo: new_repo_attributes } }
+    let(:do_the_thing) { post '/repos', params: params }
+    let(:params) { { repo: new_repo_attributes } }
+
     context 'when logged in' do
       before(:each) do
         login_user user
@@ -207,9 +209,27 @@ RSpec.describe "Repos", type: :request do
           do_the_thing
           expect(RepoMembership.last).to have_attributes(user: user, repo: new_repo)
         end
-        it 'redirects to the friendly URL for the new repo' do
-          do_the_thing
-          expect(response).to redirect_to("/gh/#{repo_attributes[:name]}")
+        context 'when no format is requested' do
+          it 'redirects to the friendly URL for the new repo' do
+            do_the_thing
+            expect(response).to redirect_to("/gh/#{repo_attributes[:name]}")
+          end
+        end
+        context 'when json format is requested' do
+          let(:params) { { repo: new_repo_attributes, format: :json } }
+          it 'responds with Created' do
+            do_the_thing
+            expect(response).to have_http_status(:created)
+          end
+          it 'responds with JSON containing the new repo' do
+            do_the_thing
+            expect(response.body).to be_json.with_content(
+              id: new_repo.id,
+              enabled: true,
+              name: new_repo_attributes[:name],
+              provider_uid_or_url: new_repo_attributes[:provider_uid_or_url],
+            )
+          end
         end
       end
       context 'when the Repo already exists and is disabled' do
@@ -241,9 +261,27 @@ RSpec.describe "Repos", type: :request do
             expect(RepoMembership.last).to have_attributes(user: user, repo: existing_repo)
           end
         end
-        it 'redirects to the friendly URL for the new repo' do
-          do_the_thing
-          expect(response).to redirect_to("/gh/#{repo_attributes[:name]}")
+        context 'when no format is requested' do
+          it 'redirects to the friendly URL for the new repo' do
+            do_the_thing
+            expect(response).to redirect_to("/gh/#{repo_attributes[:name]}")
+          end
+        end
+        context 'when json format is requested' do
+          let(:params) { { repo: new_repo_attributes, format: :json } }
+          it 'responds with Created' do
+            do_the_thing
+            expect(response).to have_http_status(:created)
+          end
+          it 'responds with JSON containing the new repo' do
+            do_the_thing
+            expect(response.body).to be_json.with_content(
+              id: new_repo.id,
+              enabled: true,
+              name: new_repo_attributes[:name],
+              provider_uid_or_url: new_repo_attributes[:provider_uid_or_url],
+            )
+          end
         end
       end
     end
