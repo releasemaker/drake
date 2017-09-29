@@ -12,4 +12,4 @@ table
   tbody
     - @repos.each do |repo|
       tr
-        td = link_to repo.name, repo
+        td = link_to repo.name, friendly_repo_path(repo)

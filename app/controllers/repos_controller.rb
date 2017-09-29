@@ -2,8 +2,9 @@
 # enumerates available repos on SCM providers and allows them to
 # create a {Repo} record for it.
 class ReposController < ApplicationController
-  load_and_authorize_resource :repo, except: [:show_by_name]
+  load_and_authorize_resource :repo, except: [:create, :show_by_name]
   include PaginationHelper
+  include ApplicationHelper
 
   skip_load_resource only: %i(index)
   # Lists the current user's {Repo}s.
@@ -43,8 +44,8 @@ class ReposController < ApplicationController
   # @todo Use the permissions given by Github instead of assuming admin.
   def create
     Repo.transaction do
-      existing_repo = Repo.find_by(type: @repo.type, provider_uid_or_url: @repo.provider_uid_or_url)
-      @repo = existing_repo if existing_repo
+      existing_repo = GithubRepo.find_by(provider_uid_or_url: create_params[:provider_uid_or_url])
+      @repo = existing_repo || GithubRepo.new(create_params)
       @repo.enabled = true
       @repo.save!
 
@@ -55,11 +56,13 @@ class ReposController < ApplicationController
       RepoProviderWebhookService.new(@repo).perform!
     end
 
-    redirect_to @repo
+    authorize! :create, @repo
+    redirect_to friendly_repo_url(@repo)
   end
 
+  # Redirects to the correct route for the repo
   def show
-    
+    redirect_to friendly_repo_url @repo
   end
 
   def show_by_name
@@ -70,6 +73,8 @@ class ReposController < ApplicationController
     ).repo
     authorize! :show, @repo
     render :show
+  rescue Github::Error::NotFound
+    raise ActionController::RoutingError.new('Not Found')
   end
 
   def update
@@ -80,7 +85,7 @@ class ReposController < ApplicationController
         RepoProviderWebhookService.new(@repo).perform! if need_to_update_webhook
 
         flash[:notice] = "Settings saved."
-        redirect_to action: :show
+        redirect_to friendly_repo_url(@repo)
       else
         flash[:alert] = "There was a problem saving your changes."
         render :show

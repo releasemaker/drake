@@ -15,8 +15,12 @@ RSpec.describe "Repos", type: :request do
 
       it 'shows the repos that the user is a member of' do
         do_the_thing
-        expect(response.body).to include(member_repo.name)
-        expect(response.body).to_not include(nonmember_repo.name)
+        expect(response.body).to have_tag('a', member_repo.name)
+        expect(response.body).to_not have_tag('a', nonmember_repo.name)
+      end
+      it 'links to the friendly URL for the repo' do
+        do_the_thing
+        expect(response.body).to have_tag(%Q(a[href="/gh/#{member_repo.name}"]), member_repo.name)
       end
     end
     context 'without logging in' do
@@ -203,6 +207,10 @@ RSpec.describe "Repos", type: :request do
           do_the_thing
           expect(RepoMembership.last).to have_attributes(user: user, repo: new_repo)
         end
+        it 'redirects to the friendly URL for the new repo' do
+          do_the_thing
+          expect(response).to redirect_to("/gh/#{repo_attributes[:name]}")
+        end
       end
       context 'when the Repo already exists and is disabled' do
         let!(:existing_repo) {
@@ -232,6 +240,10 @@ RSpec.describe "Repos", type: :request do
             do_the_thing
             expect(RepoMembership.last).to have_attributes(user: user, repo: existing_repo)
           end
+        end
+        it 'redirects to the friendly URL for the new repo' do
+          do_the_thing
+          expect(response).to redirect_to("/gh/#{repo_attributes[:name]}")
         end
       end
     end
@@ -399,6 +411,10 @@ RSpec.describe "Repos", type: :request do
             expect(RepoProviderWebhookService).to receive(:new).with(repo)
             do_the_thing
           end
+          it 'redirects to the friendly URL for the repo' do
+            do_the_thing
+            expect(response).to redirect_to("/gh/#{repo.name}")
+          end
         end
         context 'enabling' do
           let(:repo) { FactoryGirl.create(:github_repo, enabled: false) }
@@ -413,6 +429,10 @@ RSpec.describe "Repos", type: :request do
             expect(RepoProviderWebhookService).to receive(:new).with(repo)
             do_the_thing
           end
+          it 'redirects to the friendly URL for the repo' do
+            do_the_thing
+            expect(response).to redirect_to("/gh/#{repo.name}")
+          end
         end
         context 'changing nothing' do
           let(:repo) { FactoryGirl.create(:github_repo) }
@@ -422,10 +442,14 @@ RSpec.describe "Repos", type: :request do
             expect(RepoProviderWebhookService).to_not receive(:new).with(repo)
             do_the_thing
           end
+          it 'redirects to the friendly URL for the repo' do
+            do_the_thing
+            expect(response).to redirect_to("/gh/#{repo.name}")
+          end
         end
       end
       context 'with a repo that the user is not a member of' do
-        it 'does not show the repo' do
+        it 'responds with Access Denied' do
           expect { do_the_thing }.to raise_error(CanCan::AccessDenied)
         end
       end
