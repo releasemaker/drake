@@ -16,13 +16,15 @@ table class='repos'
         td = repo.name
         td
           - if repo.persisted? && repo.enabled?
-            = link_to "Existing", repo
+            = link_to "Enabled", repo
           - else
-            = form_for repo.becomes(Repo) do |f|
-              = f.hidden_field :type
-              = f.hidden_field :provider_uid_or_url
-              = f.hidden_field :name
-              = f.submit "Add"
+            button[
+              class='add-repo button small'
+              data-type=repo.type
+              data-provider-uid-or-url=repo.provider_uid_or_url
+              data-name=repo.name
+              data-disable-with='Enabling...'
+            ] Enable
 
 - if @available_repos_response
   = paginate @available_repos_response

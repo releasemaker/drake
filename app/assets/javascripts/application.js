@@ -15,4 +15,34 @@
 //= require foundation
 //= require_tree .
 
-$(function(){ $(document).foundation(); });
+jQuery(function() {
+  jQuery(document).foundation();
+
+  jQuery(document).on('click', 'button.add-repo', function(event) {
+    const button = jQuery(event.target);
+    const originalValue = button.value;
+    event.preventDefault();
+
+    button.value = button.data('disableWith') || 'working...';
+    button.disabled = true;
+    button.siblings('.failure').remove();
+
+    jQuery.ajax({
+      url: '/repos.json',
+      method: 'POST',
+      data: {
+        repo: {
+          type: button.data('type'),
+          provider_uid_or_url: button.data('providerUidOrUrl'),
+          name: button.data('name'),
+        },
+      },
+    }).done(function(data, textStatus) {
+      debugger;
+      button.replaceWith(`<a href="${data.friendly_url}">Enabled</a>`);
+    }).fail(function(jqXHR) {
+      button.insertAfter('<span class="failure alert label">Failed</span>');
+      button.disabled = false;
+    });
+  });
+});
