@@ -46,15 +46,15 @@ RSpec.describe "Repos", type: :request do
       }
 
       context 'without a search term' do
-        it 'includes a list of repositories from Github with Add buttons' do
+        it 'includes a list of repositories from Github with Enable buttons' do
           do_the_thing
           expect(response.body).to have_tag('tr[data-provider-uid="1296269"]') do
             with_tag('td', 'octocat/Hello-World')
-            with_submit('Add')
+            with_button('Enable')
           end
         end
         context 'when the user does not have admin access to the repo' do
-          it 'does not include the Add button'
+          it 'does not include the Enable button'
         end
         context 'with an existing matching repo' do
           context 'that is disabled' do
@@ -67,11 +67,11 @@ RSpec.describe "Repos", type: :request do
               )
             }
 
-            it 'shows the persisted repo with an Add button' do
+            it 'shows the persisted repo with an Enable button' do
               do_the_thing
               expect(response.body).to have_tag('tr[data-provider-uid="1296269"]') do
                 with_tag('td', 'octocat/Hello-World')
-                with_submit('Add')
+                with_button('Enable')
               end
             end
           end
@@ -85,12 +85,12 @@ RSpec.describe "Repos", type: :request do
               )
             }
 
-            it 'shows the persisted repo without an Add button' do
+            it 'shows the persisted repo without an Enable button' do
               do_the_thing
               expect(response.body).to have_tag('tr[data-provider-uid="1296269"]') do
                 with_tag('td', 'octocat/Hello-World')
-                with_tag('a', 'Existing')
-                without_submit('Add')
+                with_tag('a', 'Enabled')
+                without_button('Enable')
               end
             end
           end
@@ -102,11 +102,11 @@ RSpec.describe "Repos", type: :request do
         context 'that matches a repo' do
           let(:search_term) { "Hello" }
 
-          it 'includes a list of matching repositories with Add buttons' do
+          it 'includes a list of matching repositories with Enable buttons' do
             do_the_thing
             expect(response.body).to have_tag('tr[data-provider-uid="1296269"]') do
               with_tag('td', 'octocat/Hello-World')
-              with_submit('Add')
+              with_button('Enable')
             end
           end
           it 'does not show nonmatching repositories' do
@@ -124,11 +124,11 @@ RSpec.describe "Repos", type: :request do
                 )
               }
 
-              it 'shows the persisted repo with an Add button' do
+              it 'shows the persisted repo with an Enable button' do
                 do_the_thing
                 expect(response.body).to have_tag('tr[data-provider-uid="1296269"]') do
                   with_tag('td', 'octocat/Hello-World')
-                  with_submit('Add')
+                  with_button('Enable')
                 end
               end
               it 'does not show nonmatching repositories' do
@@ -145,12 +145,12 @@ RSpec.describe "Repos", type: :request do
                 )
               }
 
-              it 'shows the persisted repo with an Add button' do
+              it 'shows the persisted repo with an Enable button' do
                 do_the_thing
                 expect(response.body).to have_tag('tr[data-provider-uid="1296269"]') do
                   with_tag('td', 'octocat/Hello-World')
-                  with_tag('a', 'Existing')
-                  without_submit('Add')
+                  with_tag('a', 'Enabled')
+                  without_button('Enable')
                 end
               end
               it 'does not show nonmatching repositories' do
