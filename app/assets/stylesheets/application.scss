@@ -15,3 +15,14 @@
  */
 
 @import "foundation_and_overrides";
+@import "font-awesome";
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400,400italic,600,600italic,700,700italic");
+@import "directive";
+
+table.repos {
+  td.name {
+    .fa {
+      margin-right: .5em;
+    }
+  }
+}

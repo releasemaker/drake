@@ -3,13 +3,15 @@
 
 h1 Projects
 p
-  = link_to new_repo_path
-    | Add Project
-table
+  = link_to new_repo_path, class: 'button'
+    | Add GitHub Repo
+table class='repos'
   thead
     tr
-      th Name
+      th class='name' Name
   tbody
     - @repos.each do |repo|
       tr
-        td = link_to repo.name, friendly_repo_path(repo)
+        td class='name'
+          = fa_icon "github-alt"
+          = link_to repo.name, friendly_repo_path(repo)

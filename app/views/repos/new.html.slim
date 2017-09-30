@@ -1,12 +1,15 @@
 - content_for :title
-  | Add Project
+  | Add GitHub Repo
 
-h1 Add Project
-= form_tag('', method: 'get') do |form|
-  = search_field_tag 'q', params[:q]
-  = submit_tag 'Search'
+h1 Add GitHub Repo
 
-table
+= form_tag('', method: 'get', class: 'search') do |form|
+  div class="input-group"
+    = text_field_tag 'q', params[:q], class: 'input-group-field'
+    div class="input-group-button"
+      = submit_tag 'Search', class: 'button', data: { disable_with: 'Searching...' }
+
+table class='repos'
   tbody
     - @available_repos.each do |repo|
       tr data-provider-uid=repo.provider_uid_or_url
