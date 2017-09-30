@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include Concerns::Navigation
+
   protect_from_forgery with: :exception
 
   # Users must be logged in to the app unless the controller calls {#do_not_require_login}.

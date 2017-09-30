@@ -11,17 +11,18 @@ html lang="en"
     = csrf_meta_tag
 
   body
-
-    div.top-bar
-      div.top-bar-left
-        ul.dropdown.menu data-dropdown-menu=true
-          li.menu-text Release Maker
-          li = link_to "Projects", repos_path
-      div.top-bar-right
-        ul.menu
-          li = link_to "Sign Out", sign_out_path, method: :delete
-
-    div.expanded.row
-      div.medium-12.large-12.columns
-        == display_flash_messages
-        == yield
+    - if show_navigation?
+      div.top-bar
+        div.top-bar-left
+          ul.dropdown.menu data-dropdown-menu=true
+            li.menu-text Release Maker
+            li = link_to "Projects", repos_path
+        div.top-bar-right
+          ul.menu
+            li = link_to "Sign Out", sign_out_path, method: :delete
+      div.expanded.row
+        div.medium-12.large-12.columns
+          == display_flash_messages
+          == yield
+    - else
+      == yield

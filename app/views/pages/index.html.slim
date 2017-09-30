@@ -1,13 +1,99 @@
-h1 Hello
-
-= display_flash_messages
-
-- if logged_in?
-  p Signed in as #{current_user.nickname}
-p
-  - if logged_in?
-    = link_to sign_out_path, method: :delete do
-      | Sign Out
-  - else
-    = link_to github_auth_path do
-      | Sign In
+#index
+  #header
+    span.logo.icon.fa-bicycle
+    h1
+      | Release Maker
+    p
+      | Creates and updates your release notes.
+  #main
+    header.major.container.75
+      h2
+        | You should make release notes
+        br
+        | but you probably don't.
+        br
+        | Release Maker will do it for you.
+    / .box.alt.container
+      section.feature.left
+        a.image.icon.fa-signal[href="#"]
+          = image_tag "pic01.jpg"
+        .content
+          h3
+            | The First Thing
+          p
+            | Vitae natoque dictum etiam semper magnis enim feugiat amet curabitur tempor orci penatibus. Tellus erat mauris ipsum fermentum etiam vivamus eget. Nunc nibh morbi quis fusce lacus.
+      section.feature.right
+        a.image.icon.fa-code[href="#"]
+          = image_tag "pic02.jpg"
+        .content
+          h3
+            | The Second Thing
+          p
+            | Vitae natoque dictum etiam semper magnis enim feugiat amet curabitur tempor orci penatibus. Tellus erat mauris ipsum fermentum etiam vivamus eget. Nunc nibh morbi quis fusce lacus.
+      section.feature.left
+        a.image.icon.fa-mobile[href="#"]
+          = image_tag "pic03.jpg"
+        .content
+          h3
+            | The Third Thing
+          p
+            | Vitae natoque dictum etiam semper magnis enim feugiat amet curabitur tempor orci penatibus. Tellus erat mauris ipsum fermentum etiam vivamus eget. Nunc nibh morbi quis fusce lacus.
+    footer.major.container.75
+      h3
+        | Do it now!
+      p
+        | I mean, it's free.
+      ul.actions
+        li
+          = link_to new_repo_path, class: 'button' do
+            = fa_icon "github-alt"
+            |  Get Started
+  #footer
+    .container.75
+      / header.major.last
+        h2
+          | Questions or comments?
+      / p
+        | Vitae natoque dictum etiam semper magnis enim feugiat amet curabitur tempor orci penatibus. Tellus erat mauris ipsum fermentum etiam vivamus.
+      / form[method="post" action="#"]
+        .row
+          .6u.12u(mobilep)
+            input[type="text" name="name" placeholder="Name"]
+          .6u.12u(mobilep)
+            input[type="email" name="email" placeholder="Email"]
+        .row
+          .12u
+            textarea[name="message" placeholder="Message" rows="6"]
+        .row
+          .12u
+            ul.actions
+              li
+                input[type="submit" value="Send Message"]
+      ul.icons
+        li
+          a.icon.fa-twitter[href="https://twitter.com/releasemaker"]
+            span.label
+              | Twitter
+        / li
+          a.icon.fa-facebook[href="#"]
+            span.label
+              | Facebook
+        / li
+          a.icon.fa-instagram[href="#"]
+            span.label
+              | Instagram
+        / li
+          a.icon.fa-github[href="#"]
+            span.label
+              | Github
+        / li
+          a.icon.fa-dribbble[href="#"]
+            span.label
+              | Dribbble
+      ul.copyright
+        li
+          | © Random Services. All rights reserved.
+        li
+          | Design: 
+          a[href="http://html5up.net"]
+            | HTML5 UP

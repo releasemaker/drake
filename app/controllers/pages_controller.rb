@@ -2,4 +2,8 @@
 class PagesController < ApplicationController
   do_not_require_login
   skip_authorization_check
+
+  def index
+    disable_navigation
+  end
 end
