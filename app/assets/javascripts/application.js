@@ -39,7 +39,7 @@ jQuery(function() {
       },
     }).done(function(data, textStatus) {
       debugger;
-      button.replaceWith(`<a href="${data.friendly_url}">Enabled</a>`);
+      button.replaceWith('<a href="' + data.friendly_url + '">Enabled</a>');
     }).fail(function(jqXHR) {
       button.insertAfter('<span class="failure alert label">Failed</span>');
       button.disabled = false;
