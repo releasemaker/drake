@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
     respond_to do |format|
       if @user = login(credentials[:email], credentials[:password])
         format.html do
-          redirect_back_or_to(:root)
+          redirect_back_or_to(dashboard_url)
         end
       else
         @user = User.new
@@ -27,21 +27,21 @@ class SessionsController < ApplicationController
 
   def create_oauth
     find_and_store_identity! do |user_identity, new_identity, new_user|
-      redirect_to root_url
+      redirect_back_or_to(dashboard_url)
     end
     auto_login user_identity.user unless logged_in?
   rescue AuthIdentityAlreadyTakenError
-    redirect_to root_url, notice: "That #{provider_name} account "\
+    redirect_to sign_in_url, notice: "That #{provider_name} account "\
       "is already taken by another user."
   end
 
   def failure_oauth
-    redirect_to root_url, notice: failure_message
+    redirect_to sign_in_url, notice: failure_message
   end
 
   def destroy
     logout
-    redirect_to root_url
+    redirect_to sign_in_url
   end
 
   private
