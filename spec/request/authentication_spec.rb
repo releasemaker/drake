@@ -47,8 +47,16 @@ RSpec.describe "Authentication", type: :request do
         do_the_thing
         expect(controller).to be_logged_in
       end
-      it "redirects to the root" do
-        expect(do_the_thing).to redirect_to(root_path)
+      context 'when the user tried to access a specific page before signing in' do
+        it 'redirects to the page they tried to access' do
+          expect(get(repos_path)).to redirect_to(sign_in_path)
+          expect(do_the_thing).to redirect_to(repos_path)
+        end
+      end
+      context 'when the user went directly to the sign-in page' do
+        it "redirects to the dashboard" do
+          expect(do_the_thing).to redirect_to(dashboard_path)
+        end
       end
 
       context 'when the user has previously signed in' do
@@ -68,8 +76,8 @@ RSpec.describe "Authentication", type: :request do
           do_the_thing
           expect(controller.current_user).to eq(user_identity.user)
         end
-        it "redirects to the root" do
-          expect(do_the_thing).to redirect_to(root_path)
+        it "redirects to the dashboard" do
+          expect(do_the_thing).to redirect_to(dashboard_path)
         end
       end
 
@@ -95,8 +103,8 @@ RSpec.describe "Authentication", type: :request do
           do_the_thing
           expect(controller).to be_logged_in
         end
-        it "redirects to the root" do
-          expect(do_the_thing).to redirect_to(root_path)
+        it "redirects to the dashboard" do
+          expect(do_the_thing).to redirect_to(dashboard_path)
         end
 
         context 'and the given identity is already associated with another user' do
@@ -112,8 +120,8 @@ RSpec.describe "Authentication", type: :request do
             do_the_thing
             expect(controller).to be_logged_in
           end
-          it "redirects to the root" do
-            expect(do_the_thing).to redirect_to(root_path)
+          it "redirects to the dashboard" do
+            expect(do_the_thing).to redirect_to(sign_in_path)
           end
           it "tells the user why it failed" do
             do_the_thing
@@ -133,9 +141,9 @@ RSpec.describe "Authentication", type: :request do
       expect(controller).to set_flash[:notice].to(/went wrong during authentication with Github/)
     end
 
-    it "redirects to root" do
+    it "redirects to sign-in" do
       do_the_thing
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(sign_in_path)
     end
   end
 
@@ -151,24 +159,37 @@ RSpec.describe "Authentication", type: :request do
       expect(controller).to_not be_logged_in
     end
 
-    it "redirects to the home page" do
-      expect(do_the_thing).to redirect_to(root_path)
+    it "redirects to sign-in" do
+      expect(do_the_thing).to redirect_to(sign_in_path)
     end
   end
 
   describe 'GET /sign-in' do
     let(:the_request) { get "/sign-in", params: { format: :html } }
 
-    it 'responds with Success' do
-      the_request
-      expect(response).to be_ok
-    end
+    context 'when not signed in' do
+      it 'responds with Success' do
+        the_request
+        expect(response).to be_ok
+      end
 
-    it 'renders the Sign In form' do
-      the_request
-      expect(response.body).to have_tag('form[action="/sign-in"]') do
-        with_tag('input[type="email"]')
-        with_tag('input[type="password"]')
+      it 'renders the Sign In form' do
+        the_request
+        expect(response.body).to have_tag('form[action="/sign-in"]') do
+          with_tag('input[type="email"]')
+          with_tag('input[type="password"]')
+        end
+      end
+    end
+    context 'when signed in' do
+      before do
+        login_user user
+      end
+      let(:user) { FactoryGirl.create(:user, :with_credentials) }
+
+      it 'redirects to the dashboard page' do
+        the_request
+        expect(response).to redirect_to(dashboard_path)
       end
     end
   end
@@ -187,13 +208,21 @@ RSpec.describe "Authentication", type: :request do
     let(:password) { 'p4ssw0rd' }
 
     context 'with valid credentials' do
-      it 'redirects to the root page' do
-        expect(the_request).to redirect_to(root_path)
-      end
       it 'signs the user in' do
         the_request
         expect(controller.current_user).to eq(user)
         expect(controller).to be_logged_in
+      end
+      context 'when the user tried to access a specific page before signing in' do
+        it 'redirects to the page they tried to access' do
+          expect(get(repos_path)).to redirect_to(sign_in_path)
+          expect(the_request).to redirect_to(repos_path)
+        end
+      end
+      context 'when the user went directly to the sign-in page' do
+        it "redirects to the dashboard" do
+          expect(the_request).to redirect_to(dashboard_path)
+        end
       end
     end
 

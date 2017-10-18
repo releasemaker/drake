@@ -5,6 +5,9 @@ RSpec.describe "Repos", type: :request do
 
   describe 'GET /repos' do
     let(:do_the_thing) { get '/repos' }
+
+    it_behaves_like :authenticated_endpoint
+
     context 'when logged in' do
       before(:each) do
         login_user user
@@ -23,16 +26,13 @@ RSpec.describe "Repos", type: :request do
         expect(response.body).to have_tag(%Q(a[href="/gh/#{member_repo.name}"]), member_repo.name)
       end
     end
-    context 'without logging in' do
-      it 'redirects to authentication' do
-        expect(do_the_thing).to redirect_to(root_path)
-      end
-    end
   end
 
   describe 'GET /repos/new' do
     let(:do_the_thing) { get '/repos/new', params: params }
     let(:params) { {} }
+
+    it_behaves_like :authenticated_endpoint
 
     context 'when logged in' do
       before(:each) do
@@ -170,16 +170,15 @@ RSpec.describe "Repos", type: :request do
         end
       end
     end
-    context 'without logging in' do
-      it 'redirects to authentication' do
-        expect(do_the_thing).to redirect_to(root_path)
-      end
-    end
   end
 
   describe 'POST /repos' do
     let(:do_the_thing) { post '/repos', params: params }
     let(:params) { { repo: new_repo_attributes } }
+
+    it_behaves_like :authenticated_endpoint do
+      let(:new_repo_attributes) { { name: 'stuff' } }
+    end
 
     context 'when logged in' do
       before(:each) do
@@ -285,17 +284,13 @@ RSpec.describe "Repos", type: :request do
         end
       end
     end
-    context 'without logging in' do
-      let(:new_repo_attributes) { { name: 'stuff' } }
-      it 'redirects to authentication' do
-        expect(do_the_thing).to redirect_to(root_path)
-      end
-    end
   end
 
   describe 'GET /repos/:id' do
     let(:do_the_thing) { get "/repos/#{repo.to_param}" }
     let!(:repo) { FactoryGirl.create(:github_repo) }
+
+    it_behaves_like :authenticated_endpoint
 
     context 'when logged in' do
       before(:each) do
@@ -314,16 +309,13 @@ RSpec.describe "Repos", type: :request do
         end
       end
     end
-    context 'without logging in' do
-      it 'redirects to authentication' do
-        expect(do_the_thing).to redirect_to(root_path)
-      end
-    end
   end
 
   describe 'GET /gh/:owner/:repo' do
     let(:do_the_thing) { get "/gh/#{repo.owner_name}/#{repo.repo_name}" }
     let!(:repo) { FactoryGirl.create(:github_repo) }
+
+    it_behaves_like :authenticated_endpoint
 
     context 'when logged in' do
       before(:each) do
@@ -381,16 +373,13 @@ RSpec.describe "Repos", type: :request do
         end
       end
     end
-    context 'without logging in' do
-      it 'redirects to authentication' do
-        expect(do_the_thing).to redirect_to(root_path)
-      end
-    end
   end
 
   describe 'GET /repos/:id/edit' do
     let(:do_the_thing) { get "/repos/#{repo.to_param}/edit" }
     let!(:repo) { FactoryGirl.create(:github_repo) }
+
+    it_behaves_like :authenticated_endpoint
 
     context 'when logged in' do
       before(:each) do
@@ -410,17 +399,14 @@ RSpec.describe "Repos", type: :request do
         end
       end
     end
-    context 'without logging in' do
-      it 'redirects to authentication' do
-        expect(do_the_thing).to redirect_to(root_path)
-      end
-    end
   end
 
   describe 'PUT /repos/:id/update' do
     let(:do_the_thing) { put "/repos/#{repo.to_param}", params: { repo: repo_attributes } }
     let(:repo) { FactoryGirl.create(:github_repo) }
     let(:repo_attributes) { {} }
+
+    it_behaves_like :authenticated_endpoint
 
     context 'when logged in' do
       before(:each) do
@@ -490,11 +476,6 @@ RSpec.describe "Repos", type: :request do
         it 'responds with Access Denied' do
           expect { do_the_thing }.to raise_error(CanCan::AccessDenied)
         end
-      end
-    end
-    context 'without logging in' do
-      it 'redirects to authentication' do
-        expect(do_the_thing).to redirect_to(root_path)
       end
     end
   end

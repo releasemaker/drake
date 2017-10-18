@@ -4,6 +4,11 @@
   .large-5.small-12.columns
     h1 Sign In
 
+    div
+      = link_to github_auth_path, class: 'button' do
+        = fa_icon "github-alt"
+        |  Sign in with GitHub
+
     = form_for(@user, url: sign_in_path, method: :post) do |f|
       = f.email_field :email
       = f.password_field :password

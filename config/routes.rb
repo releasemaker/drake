@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   resource :github_webhooks, only: :create, defaults: { formats: :json }
 
+  get :dashboard, to: redirect('/repos')
   resources :repos
   resources :repos, controller: 'repos', type: 'GithubRepo', as: :github_repos
   get '/gh/:owner/:repo' => 'repos#show_by_name', as: :github_repo_by_name
