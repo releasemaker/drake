@@ -5,6 +5,7 @@ class SessionsController < ApplicationController
   skip_authorization_check
 
   def new
+    redirect_back_or_to(dashboard_url) if logged_in?
     @user = User.new
   end
 

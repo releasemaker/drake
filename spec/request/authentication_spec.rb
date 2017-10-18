@@ -159,16 +159,29 @@ RSpec.describe "Authentication", type: :request do
   describe 'GET /sign-in' do
     let(:the_request) { get "/sign-in", params: { format: :html } }
 
-    it 'responds with Success' do
-      the_request
-      expect(response).to be_ok
-    end
+    context 'when not signed in' do
+      it 'responds with Success' do
+        the_request
+        expect(response).to be_ok
+      end
 
-    it 'renders the Sign In form' do
-      the_request
-      expect(response.body).to have_tag('form[action="/sign-in"]') do
-        with_tag('input[type="email"]')
-        with_tag('input[type="password"]')
+      it 'renders the Sign In form' do
+        the_request
+        expect(response.body).to have_tag('form[action="/sign-in"]') do
+          with_tag('input[type="email"]')
+          with_tag('input[type="password"]')
+        end
+      end
+    end
+    context 'when signed in' do
+      before do
+        login_user user
+      end
+      let(:user) { FactoryGirl.create(:user, :with_credentials) }
+
+      it 'redirects to the dashboard page' do
+        the_request
+        expect(response).to redirect_to(dashboard_path)
       end
     end
   end
