@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/release_maker
     docker:
-      - image: ruby:2.4.2
+      - image: ruby:2.4.3
         environment:
           DATABASE_URL: postgresql://ubuntu@localhost/release_maker_test?sslmode=disable
           RAILS_ENV: test
