@@ -1,12 +1,3 @@
-GIT
-  remote: https://github.com/RandomServices/github_webhook.git
-  revision: 192222a7aabee0ea3332bb8b6885f1d2374c7611
-  specs:
-    github_webhook (1.1.0)
-      activesupport (>= 4)
-      rack (>= 1.3)
-      railties (>= 4)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -120,6 +111,10 @@ GEM
       faraday (~> 0.8)
       hashie (~> 3.5, >= 3.5.2)
       oauth2 (~> 1.0)
+    github_webhook (1.1.0)
+      activesupport (>= 4)
+      rack (>= 1.3)
+      railties (>= 4)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     guard (2.14.2)
@@ -416,7 +411,7 @@ DEPENDENCIES
   foundation-rails (~> 6.0)
   foundation_rails_helper
   github_api
-  github_webhook!
+  github_webhook
   guard
   guard-bundler
   guard-pow

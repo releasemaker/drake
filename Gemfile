@@ -38,7 +38,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 # Authenticate webhooks
-gem 'github_webhook', github: 'RandomServices/github_webhook'
+gem 'github_webhook'
 
 # A useful console
 gem 'pry-rails'
