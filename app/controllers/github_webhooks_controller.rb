@@ -8,6 +8,10 @@ class GithubWebhooksController < ApplicationApiController
     PullRequestHandler.new(hook_payload: payload).handle!
   end
 
+  def github_push(payload)
+    # Do nothing.
+  end
+
   def signature_error
     render plain: "Signature mismatch", status: :forbidden
   end
