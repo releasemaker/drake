@@ -80,6 +80,6 @@ test:
 #
 production:
   <<: *default
-  database: release_maker_production
-  username: release_maker
-  password: <%= ENV['RELEASE_MAKER_DATABASE_PASSWORD'] %>
+
+staging:
+  <<: *default
