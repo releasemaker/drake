@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  test:
     working_directory: ~/release_maker
     docker:
       - image: ruby:2.4.3
@@ -40,3 +40,86 @@ jobs:
           destination: build
       - store_test_results:
           path: /tmp/test-reports
+  deploy-to-staging:
+    working_directory: ~/release_maker
+    docker:
+      - image: ruby:2.4.3
+        environment:
+          RAILS_ENV: test
+          RACK_ENV: test
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - release_maker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+          - release_maker-master-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: install libsodium
+          command: |
+            echo "deb http://ppa.launchpad.net/chris-lea/libsodium/ubuntu trusty main" >> /etc/apt/sources.list;
+            echo "deb-src http://ppa.launchpad.net/chris-lea/libsodium/ubuntu trusty main" >> /etc/apt/sources.list;
+            apt-get update;
+            apt-get install --force-yes -y libsodium-dev
+      - run:
+          name: bundle install
+          command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
+      - run:
+          name: add host SSH keys
+          command: 'echo "hazel.rndsvc.net,18.217.125.199 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNKmVLo32LqgAgWvUJD681vB34qITMKWnjoX2uxXLwRliC+6xh0g5TLz8PJxU0X0R2nTaOrcusNJMLCRpiYrot8=" >> ~/.ssh/known_hosts'
+      - run:
+          name: deploy
+          command: bundle exec cap staging deploy
+  deploy-to-production:
+    working_directory: ~/release_maker
+    docker:
+      - image: ruby:2.4.3
+        environment:
+          RAILS_ENV: test
+          RACK_ENV: test
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - release_maker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+          - release_maker-master-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: install libsodium
+          command: |
+            echo "deb http://ppa.launchpad.net/chris-lea/libsodium/ubuntu trusty main" >> /etc/apt/sources.list;
+            echo "deb-src http://ppa.launchpad.net/chris-lea/libsodium/ubuntu trusty main" >> /etc/apt/sources.list;
+            apt-get update;
+            apt-get install --force-yes -y libsodium-dev
+      - run:
+          name: bundle install
+          command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
+      - run:
+          name: add host SSH keys
+          command: 'echo "hazel.rndsvc.net,18.217.125.199 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNKmVLo32LqgAgWvUJD681vB34qITMKWnjoX2uxXLwRliC+6xh0g5TLz8PJxU0X0R2nTaOrcusNJMLCRpiYrot8=" >> ~/.ssh/known_hosts'
+      - run:
+          name: deploy
+          command: bundle exec cap production deploy
+workflows:
+  version: 2
+  test-and-deploy:
+    jobs:
+      - test:
+          filters:
+            tags:
+              only: '/^v[0-9]+\.[0-9]+\.[0-9]+$/'
+      - deploy-to-staging:
+          filters:
+            branches:
+              only:
+                - master
+            tags:
+              ignore: /.*/
+          requires:
+            - test
+      - deploy-to-production:
+          filters:
+            tags:
+              only: '/^v[0-9]+\.[0-9]+\.[0-9]+$/'
+            branches:
+              ignore: /.*/
+          requires:
+            - test

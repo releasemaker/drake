@@ -35,7 +35,15 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+group :development do
+  gem 'capistrano-rails'
+  gem 'capistrano-rbenv'
+  
+  # For modern SSH key support
+  gem 'rbnacl', '>= 3.2', '< 5.0'
+  gem 'rbnacl-libsodium'
+  gem 'bcrypt_pbkdf', '~> 1.0'
+end
 
 # Authenticate webhooks
 gem 'github_webhook'
@@ -104,7 +112,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'factory_girl_rails'
-  gem 'dotenv-rails'
   gem 'rspec_junit_formatter'
   gem 'capybara'
 end
