@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Authentication", type: :request do
+RSpec.describe SessionsController, type: :request do
   describe "GET /auth/github/callback" do
     let(:do_the_thing) { get "/auth/github/callback" }
 

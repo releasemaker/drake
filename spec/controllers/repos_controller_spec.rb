@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Repos", type: :request do
+RSpec.describe ReposController, type: :request do
   let(:user) { FactoryGirl.create(:user, :with_credentials) }
 
   describe 'GET /repos' do
