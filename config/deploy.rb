@@ -1,5 +1,4 @@
-# config valid for current version and patch releases of Capistrano
-lock "~> 3.10"
+lock "~> 3.11"
 
 set :application, "releasemaker"
 
@@ -42,7 +41,7 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/syst
 # set :keep_releases, 5
 
 # Uncomment the following to require manually verifying the host key before first deploy.
-set :ssh_options, verify_host_key: :secure
+set :ssh_options, verify_host_key: :always
 
 set :rbenv_type, :system
 set :rbenv_ruby, File.read('.ruby-version').strip
