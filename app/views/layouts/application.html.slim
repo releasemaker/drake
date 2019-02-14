@@ -6,9 +6,10 @@ html lang="en"
 
     title == content_for?(:title) ? "#{yield(:title)} | Release Maker" : "Release Maker"
 
+    = render "layouts/sentry"
     = stylesheet_link_tag "application"
-    = javascript_include_tag "application", "data-turbolinks-track" => true
-    = csrf_meta_tag
+    = javascript_pack_tag "application"
+    = csrf_meta_tags
 
   body
     - if show_navigation?

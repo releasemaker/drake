@@ -38,5 +38,6 @@ module ReleaseMaker
 
     config.x.github = Hashie::Mash.new config_for(:github)
     config.x.webhooks = Hashie::Mash.new config_for(:webhooks)
+    config.x.sentry = Hashie::Mash.new config_for(:sentry)
   end
 end

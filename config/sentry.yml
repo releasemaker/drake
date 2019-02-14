@@ -1,0 +1,21 @@
+<%
+  javascript_dsn = if ENV['SENTRY_DSN'].present?
+                     uri = URI.parse(ENV['SENTRY_DSN'])
+                     uri.password = nil
+                     uri.to_s
+                   end
+%>
+default: &default
+  javascript_dsn: <%= javascript_dsn %>
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+staging:
+  <<: *default
+
+production:
+  <<: *default

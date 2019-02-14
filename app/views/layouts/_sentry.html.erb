@@ -1,0 +1,18 @@
+<% if Rails.configuration.x.sentry.present? && Rails.configuration.x.sentry.javascript_dsn.present? %>
+  <script type='text/javascript'>
+    window.SentryConfig = {
+      dsn: '<%= Rails.configuration.sentry['javascript_dsn'] %>',
+      environment: '<%= ENV['RAILS_ENV'] %>',
+      release: '<%= APPLICATION_REVISION || "development" %>',
+      xhrUrlIgnorePattern: /smartlook|mixpanel|google-analytics/,
+      user: <%- if current_user.present? -%>
+        {
+          email: '<%= current_user.email %>',
+          id: '<%= current_user.id %>',
+        }
+      <%- else -%>
+        null
+      <%- end -%>,
+    };
+  </script>
+<% end %>
