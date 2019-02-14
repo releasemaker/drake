@@ -16,16 +16,6 @@ table class='repos'
         td = repo.name
         td
           = react_component("Repo", isEnabled: repo.persisted? && repo.enabled?, repoType: repo.type, providerUid: repo.provider_uid_or_url, name: repo.name, url: repo.persisted? ? repo_path(repo) : nil)
-          / - if
-          /   = link_to "Enabled", repo
-          / - else
-          /   button[
-          /     class='add-repo button small'
-          /     data-type=repo.type
-          /     data-provider-uid-or-url=repo.provider_uid_or_url
-          /     data-name=repo.name
-          /     data-disable-with='Enabling...'
-          /   ] Enable
 
 - if @available_repos_response
   = paginate @available_repos_response
