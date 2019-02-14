@@ -3,7 +3,7 @@ jobs:
   test:
     working_directory: ~/release_maker
     docker:
-      - image: ruby:2.4.3
+      - image: randomservices/ruby:2.6.1
         environment:
           DATABASE_URL: postgresql://ubuntu@localhost/release_maker_test?sslmode=disable
           RAILS_ENV: test
@@ -43,7 +43,7 @@ jobs:
   deploy-to-staging:
     working_directory: ~/release_maker
     docker:
-      - image: ruby:2.4.3
+      - image: randomservices/ruby:2.6.1
         environment:
           RAILS_ENV: test
           RACK_ENV: test
@@ -53,13 +53,6 @@ jobs:
           keys:
           - release_maker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
           - release_maker-master-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: install libsodium
-          command: |
-            echo "deb http://ppa.launchpad.net/chris-lea/libsodium/ubuntu trusty main" >> /etc/apt/sources.list;
-            echo "deb-src http://ppa.launchpad.net/chris-lea/libsodium/ubuntu trusty main" >> /etc/apt/sources.list;
-            apt-get update;
-            apt-get install --force-yes -y libsodium-dev
       - run:
           name: bundle install
           command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
@@ -72,7 +65,7 @@ jobs:
   deploy-to-production:
     working_directory: ~/release_maker
     docker:
-      - image: ruby:2.4.3
+      - image: randomservices/ruby:2.6.1
         environment:
           RAILS_ENV: test
           RACK_ENV: test
@@ -82,13 +75,6 @@ jobs:
           keys:
           - release_maker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
           - release_maker-master-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: install libsodium
-          command: |
-            echo "deb http://ppa.launchpad.net/chris-lea/libsodium/ubuntu trusty main" >> /etc/apt/sources.list;
-            echo "deb-src http://ppa.launchpad.net/chris-lea/libsodium/ubuntu trusty main" >> /etc/apt/sources.list;
-            apt-get update;
-            apt-get install --force-yes -y libsodium-dev
       - run:
           name: bundle install
           command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
