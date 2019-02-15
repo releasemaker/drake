@@ -26,6 +26,10 @@ RSpec.configure do |config|
     # ...rather than:
     #     # => "be bigger than 2"
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
+
+    # Let the diff be large on failure. If this is too much, we can reduce it, but on CI
+    # we want this to be as large as possible so that we can track down CI test failure.
+    expectations.max_formatted_output_length = 1_000_000
   end
 
   # rspec-mocks config goes here. You can use an alternate test double
