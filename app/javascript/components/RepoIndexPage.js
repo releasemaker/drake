@@ -2,8 +2,10 @@ import React from "react"
 import PropTypes from "prop-types"
 import * as Sentry from '@sentry/browser'
 import { Link } from 'react-router-dom'
+import { Button, Colors, Sizes } from 'react-foundation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithubAlt } from '@fortawesome/free-brands-svg-icons'
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
 class RepoIndexRow extends React.PureComponent {
   render() {
@@ -116,6 +118,20 @@ class RepoIndexPage extends React.Component {
     return (
       <React.Fragment>
         <h1>Projects</h1>
+        <div>
+          <Link to='/repos/new'>
+            <Button
+              color={Colors.SUCCESS}
+            >
+              <FontAwesomeIcon
+                icon={faPlusCircle}
+                size='sm'
+              />
+              {' '}
+              Add Repository
+            </Button>
+          </Link>
+        </div>
         <div>
           <input
             type='text'

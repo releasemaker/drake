@@ -26,8 +26,8 @@ class App extends React.Component {
           </div>
           <div className='expanded.row'>
             <div className='medium-12 large-12 columns'>
-              <Route path="/repos" component={RepoIndexPage} />
-              <Route path="/repos/new" component={AddRepoPage} />
+              <Route exact path="/repos" component={RepoIndexPage} />
+              <Route exact path="/repos/new" component={AddRepoPage} />
               <Route path="/:type(gh)/:name*" component={RepoPage} />
             </div>
           </div>

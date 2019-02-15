@@ -1,13 +1,29 @@
 import React from "react"
 import PropTypes from "prop-types"
 import * as Sentry from '@sentry/browser'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGithubAlt } from '@fortawesome/free-brands-svg-icons'
+import { Link } from 'react-router-dom'
 import AddRepoButton from 'components/AddRepoButton'
 
 class AddRepoRow extends React.PureComponent {
   render() {
     return (
       <tr data-provider-uid={this.props.providerUid}>
-        <td>{this.props.name}</td>
+        <td>
+          <FontAwesomeIcon
+            icon={faGithubAlt}
+            size='sm'
+            aria-label="GitHub"
+          />
+          {' '}
+          {this.props.isEnabled
+            ? (
+              <Link to={this.props.path}>
+                {this.props.name}
+              </Link>
+            ) : this.props.name}
+        </td>
         <td>
           <AddRepoButton
             isEnabled={this.props.isEnabled}
@@ -107,7 +123,7 @@ class AddRepoPage extends React.Component {
       const searchTerm = this.state.searchTerm.toLowerCase()
       return this.state.availableRepos.filter((repo) => repo.name.toLowerCase().includes(searchTerm))
     } else {
-      return this.state.availableRepos
+      return this.state.availableRepos.filter((repo) => !repo.isEnabled)
     }
   }
 

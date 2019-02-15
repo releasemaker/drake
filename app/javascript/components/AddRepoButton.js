@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import * as Sentry from '@sentry/browser'
-import { Button, Colors, Sizes } from 'react-foundation'
+import { Button, Switch, Colors, Sizes } from 'react-foundation'
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import fetch from 'lib/fetch'
 
 class AddRepoButton extends React.Component {
@@ -16,7 +18,17 @@ class AddRepoButton extends React.Component {
     }
   }
 
-  handleEnable = () => {
+  handleClickedSwitch = () => {
+    if (!this.state.isMakingEnableRequest) {
+      if (!this.state.isEnabled) {
+        this.enableRepo()
+      } else {
+        
+      }
+    }
+  }
+
+  enableRepo() {
     this.setState({
       isMakingEnableRequest: true,
     })
@@ -34,8 +46,7 @@ class AddRepoButton extends React.Component {
       if (response.ok) {
         response.json().then((json) => {
           this.setState({
-            isEnabled: json.enabled,
-            url: json.url,
+            isEnabled: json.repo.isEnabled,
             isMakingEnableRequest: false,
             wasServerError: false,
           })
@@ -63,34 +74,31 @@ class AddRepoButton extends React.Component {
   }
 
   render() {
-    if (this.state.isEnabled) {
       return (
-        <Link to={this.props.path}>
-          Enabled
-        </Link>
-      )
-    } else if (this.state.isMakingEnableRequest) {
-      return (
-        <div>Enabling...</div>
-      )
-    } else {
-      // TODO: turn this into a Switch control
-      return (
-        <div>
+        <React.Fragment>
           {this.state.wasServerError && (
-            <p>Failed, please try again</p>
+            <span>Failed, please try again</span>
           )}
-          <Button
-            className='add-repo'
-            size={Sizes.SMALL}
-            color={Colors.SUCCESS}
-            onClick={this.handleEnable}
-          >
-            Enable
-          </Button>
-        </div>
+          {this.state.isEnabled
+            ? (
+              <FontAwesomeIcon
+                icon={faCheck}
+                size='sm'
+                aria-label="Enabled"
+              />
+            ) : (
+              <Switch
+                size={Sizes.SMALL}
+                onClick={this.handleClickedSwitch}
+              />
+            )
+          }
+          {this.state.isMakingEnableRequest && (
+              <span>Enabling...</span>
+          )}
+        </React.Fragment>
       )
-    }
+    // }
   }
 }
 
