@@ -3,6 +3,52 @@ require 'rails_helper'
 RSpec.describe Api::ReposController, type: :request do
   let(:user) { FactoryGirl.create(:user, :with_credentials) }
 
+  describe 'GET /api/repos' do
+    let(:do_the_thing) { get '/api/repos', params: params }
+    let(:params) { {} }
+    let(:json_body) { JSON.parse(response.body) }
+
+    it_behaves_like :authenticated_endpoint
+
+    context 'when logged in' do
+      before(:each) do
+        login_user user
+      end
+      let!(:member_repo) { FactoryGirl.create(:github_repo) }
+      let!(:nonmember_repo) { FactoryGirl.create(:github_repo) }
+      let!(:membership) { FactoryGirl.create(:repo_membership, repo: member_repo, user: user) }
+
+      it 'responds with OK' do
+        do_the_thing
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'responds with JSON containing repos' do
+        do_the_thing
+        expect(json_body).to include('repos')
+      end
+
+      it 'lists each repository' do
+        do_the_thing
+        expect(json_body['repos']).to include(
+          include(
+            'isEnabled' => true,
+            'repoType' => 'gh',
+            'providerUid' => member_repo.provider_uid_or_url,
+            'name' => member_repo.name,
+            'path' => member_repo.friendly_path,
+          ),
+        )
+      end
+
+      it 'does not include repos that the user is not a member of' do
+        do_the_thing
+        expect(json_body['repos']).not_to include(include('name' => nonmember_repo.name))
+      end
+
+    end
+  end
+
   describe 'GET /api/repos/gh/:owner/:repo' do
     let(:do_the_thing) { get "/api/repos/gh/#{repo.owner_name}/#{repo.repo_name}" }
     let!(:repo) { FactoryGirl.create(:github_repo) }

@@ -1,28 +1,29 @@
 import React from "react"
 import PropTypes from "prop-types"
 import * as Sentry from '@sentry/browser'
-import AddRepoButton from 'components/AddRepoButton'
+import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGithubAlt } from '@fortawesome/free-brands-svg-icons'
 
-class AddRepoRow extends React.PureComponent {
+class RepoIndexRow extends React.PureComponent {
   render() {
     return (
       <tr data-provider-uid={this.props.providerUid}>
-        <td>{this.props.name}</td>
-        <td>
-          <AddRepoButton
-            isEnabled={this.props.isEnabled}
-            name={this.props.name}
-            repoType={this.props.repoType}
-            providerUid={this.props.providerUid}
-            path={this.props.path}
+        <td className='name'>
+          <FontAwesomeIcon
+            icon={faGithubAlt}
+            size='sm'
+            aria-label="GitHub"
           />
+          {' '}
+          <Link to={this.props.path}>{this.props.name}</Link>
         </td>
       </tr>
     )
   }
 }
 
-AddRepoRow.propTypes = {
+RepoIndexRow.propTypes = {
   isEnabled: PropTypes.bool.isRequired,
   repoType: PropTypes.string.isRequired,
   providerUid: PropTypes.string.isRequired,
@@ -30,12 +31,12 @@ AddRepoRow.propTypes = {
   path: PropTypes.string,
 }
 
-class AddRepoPage extends React.Component {
+class RepoIndexPage extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      availableRepos: [],
+      repos: [],
       searchTerm: '',
       isFetchingRepos: false,
       wasServerError: false,
@@ -57,14 +58,14 @@ class AddRepoPage extends React.Component {
 
   fetchNextPageOfRepos() {
     const nextPageNum = this.state.fetchedPageCount + 1
-    return fetch(`/api/availableRepos?page=${nextPageNum}`, {
+    return fetch(`/api/repos?page=${nextPageNum}`, {
       method: 'GET',
     }).then((response) => {
       if (response.ok) {
         response.json().then((json) => {
           const morePagesToFetch = json.pagination.currentPageNum < json.pagination.totalPages
           this.setState({
-            availableRepos: [...this.state.availableRepos, ...json.availableRepos],
+            repos: [...this.state.repos, ...json.repos],
             totalPageCount: json.pagination.totalPages,
             fetchedPageCount: json.pagination.currentPageNum,
             isFetchingRepos: morePagesToFetch,
@@ -105,16 +106,16 @@ class AddRepoPage extends React.Component {
   reposToShow() {
     if (this.state.searchTerm !== '') {
       const searchTerm = this.state.searchTerm.toLowerCase()
-      return this.state.availableRepos.filter((repo) => repo.name.toLowerCase().includes(searchTerm))
+      return this.state.repos.filter((repo) => repo.name.toLowerCase().includes(searchTerm))
     } else {
-      return this.state.availableRepos
+      return this.state.repos
     }
   }
 
   render () {
     return (
       <React.Fragment>
-        <h1>Add Repo</h1>
+        <h1>Projects</h1>
         <div>
           <input
             type='text'
@@ -123,11 +124,11 @@ class AddRepoPage extends React.Component {
             placeholder='Filter'
           />
         </div>
-        {this.state.availableRepos && (
+        {this.state.repos && (
           <table className='repos'>
             <tbody>
               {this.reposToShow().map((repo) => (
-                <AddRepoRow
+                <RepoIndexRow
                   key={repo.path}
                   isEnabled={repo.isEnabled}
                   name={repo.name}
@@ -147,4 +148,4 @@ class AddRepoPage extends React.Component {
   }
 }
 
-export default AddRepoPage
+export default RepoIndexPage

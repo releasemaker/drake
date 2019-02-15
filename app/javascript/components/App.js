@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import AddRepoPage from 'components/AddRepoPage'
 import RepoPage from 'components/RepoPage'
+import RepoIndexPage from 'components/RepoIndexPage'
 
 class App extends React.Component {
   render() {
@@ -10,7 +11,7 @@ class App extends React.Component {
         <React.Fragment>
           <div className='top-bar'>
             <div className='top-bar-left'>
-              <ul className='dropdown menu' dataDropdownMenu={true}>
+              <ul className='dropdown menu' data-dropdown-menu={true}>
                 <li className='menu-text'>Release Maker</li>
                 <li><Link to='/repos'>Projects</Link></li>
               </ul>
@@ -25,6 +26,7 @@ class App extends React.Component {
           </div>
           <div className='expanded.row'>
             <div className='medium-12 large-12 columns'>
+              <Route path="/repos" component={RepoIndexPage} />
               <Route path="/repos/new" component={AddRepoPage} />
               <Route path="/:type(gh)/:name*" component={RepoPage} />
             </div>
