@@ -31,6 +31,7 @@ class AddRepoRow extends React.PureComponent {
             repoType={this.props.repoType}
             providerUid={this.props.providerUid}
             path={this.props.path}
+            onEnabled={this.props.onRepoEnabled}
           />
         </td>
       </tr>
@@ -44,6 +45,7 @@ AddRepoRow.propTypes = {
   providerUid: PropTypes.string.isRequired,
   name: PropTypes.string,
   path: PropTypes.string,
+  onRepoEnabled: PropTypes.func,
 }
 
 class AddRepoPage extends React.Component {
@@ -113,6 +115,11 @@ class AddRepoPage extends React.Component {
     })
   }
 
+  handleRepoEnabled = (repo_path, updated_repo) => {
+    const availableRepos = this.state.availableRepos.map((repo) => repo.path === repo_path ? updated_repo : repo)
+    this.setState({ availableRepos })
+  }
+
   handleSearchTermChanged = (event) => {
     const searchTerm = event.target.value
     this.setState({ searchTerm })
@@ -150,6 +157,7 @@ class AddRepoPage extends React.Component {
                   repoType={repo.repoType}
                   providerUid={repo.providerUid}
                   path={repo.path}
+                  onRepoEnabled={this.handleRepoEnabled}
                 />
               ))}
             </tbody>

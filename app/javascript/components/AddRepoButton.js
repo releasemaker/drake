@@ -12,7 +12,6 @@ class AddRepoButton extends React.Component {
     super(props)
 
     this.state = {
-      isEnabled: props.isEnabled,
       isMakingEnableRequest: false,
       wasServerError: false,
     }
@@ -20,7 +19,7 @@ class AddRepoButton extends React.Component {
 
   handleClickedSwitch = () => {
     if (!this.state.isMakingEnableRequest) {
-      if (!this.state.isEnabled) {
+      if (!this.props.isEnabled) {
         this.enableRepo()
       } else {
         
@@ -45,8 +44,8 @@ class AddRepoButton extends React.Component {
     }).then((response) => {
       if (response.ok) {
         response.json().then((json) => {
+          this.props.onEnabled(this.props.path, json.repo)
           this.setState({
-            isEnabled: json.repo.isEnabled,
             isMakingEnableRequest: false,
             wasServerError: false,
           })
@@ -79,7 +78,7 @@ class AddRepoButton extends React.Component {
           {this.state.wasServerError && (
             <span>Failed, please try again</span>
           )}
-          {this.state.isEnabled
+          {this.props.isEnabled
             ? (
               <FontAwesomeIcon
                 icon={faCheck}
@@ -108,6 +107,7 @@ AddRepoButton.propTypes = {
   providerUid: PropTypes.string.isRequired,
   name: PropTypes.string,
   path: PropTypes.string,
+  onEnabled: PropTypes.func,
 }
 
 export default AddRepoButton
