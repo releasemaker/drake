@@ -2,6 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import * as Sentry from '@sentry/browser'
 import RepoSettings from 'components/RepoSettings'
+import LoadIndicator from 'components/shared/LoadIndicator'
 
 class RepoPage extends React.Component {
   constructor(props) {
@@ -77,9 +78,8 @@ class RepoPage extends React.Component {
   render () {
     return (
       <React.Fragment>
-        {this.state.isFetchingRepo && (
-          <p>Loading…</p>
-        )}
+        <h1>{this.props.name}</h1>
+        {this.state.isFetchingRepo && <LoadIndicator>Loading</LoadIndicator>}
         {this.state.repo && (
           <RepoSettings
             isEnabled={this.state.repo.isEnabled}

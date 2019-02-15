@@ -5,12 +5,13 @@ import { Link } from 'react-router-dom'
 import { Button, Colors, Sizes } from 'react-foundation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithubAlt } from '@fortawesome/free-brands-svg-icons'
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faPlusCircle, faCompactDisc } from '@fortawesome/free-solid-svg-icons'
+import LoadIndicator from 'components/shared/LoadIndicator'
 
 class RepoIndexRow extends React.PureComponent {
   render() {
     return (
-      <tr data-provider-uid={this.props.providerUid}>
+      <tr>
         <td className='name'>
           <FontAwesomeIcon
             icon={faGithubAlt}
@@ -171,9 +172,7 @@ class RepoIndexPage extends React.Component {
             </tbody>
           </table>
         )}
-        {this.state.isFetchingRepos && (
-          <p>Fetching more…</p>
-        )}
+        {this.state.isFetchingRepos && <LoadIndicator>Loading more</LoadIndicator>}
       </React.Fragment>
     );
   }

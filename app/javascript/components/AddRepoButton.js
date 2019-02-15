@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import fetch from 'lib/fetch'
+import SyncIndicator from 'components/shared/SyncIndicator'
 
 class AddRepoButton extends React.Component {
   constructor(props) {
@@ -92,9 +93,7 @@ class AddRepoButton extends React.Component {
               />
             )
           }
-          {this.state.isMakingEnableRequest && (
-              <span>Enabling...</span>
-          )}
+          {this.state.isMakingEnableRequest && <SyncIndicator/>}
         </React.Fragment>
       )
     // }

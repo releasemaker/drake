@@ -4,13 +4,14 @@ import * as Sentry from '@sentry/browser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithubAlt } from '@fortawesome/free-brands-svg-icons'
 import { Link } from 'react-router-dom'
+import LoadIndicator from 'components/shared/LoadIndicator'
 import AddRepoButton from 'components/AddRepoButton'
 
 class AddRepoRow extends React.PureComponent {
   render() {
     return (
-      <tr data-provider-uid={this.props.providerUid}>
-        <td>
+      <tr>
+        <td className='name'>
           <FontAwesomeIcon
             icon={faGithubAlt}
             size='sm'
@@ -24,7 +25,7 @@ class AddRepoRow extends React.PureComponent {
               </Link>
             ) : this.props.name}
         </td>
-        <td>
+        <td className='add-button'>
           <AddRepoButton
             isEnabled={this.props.isEnabled}
             name={this.props.name}
@@ -178,9 +179,7 @@ class AddRepoPage extends React.Component {
             </tbody>
           </table>
         )}
-        {this.state.isFetchingRepos && (
-          <p>Fetching more…</p>
-        )}
+        {this.state.isFetchingRepos && <LoadIndicator>Loading more</LoadIndicator>}
       </React.Fragment>
     );
   }
