@@ -52,9 +52,13 @@ class AddRepoPage extends React.Component {
   constructor(props) {
     super(props)
 
+    const query = new URLSearchParams(props.location.search)
+
+    // Get whatever state we want to restore from the location state.
+    // This will allow seamless navigation back to this page, since we set the state when we finished fetching.
     this.state = {
-      availableRepos: [],
-      searchTerm: '',
+      availableRepos: this.props.location.state && this.props.location.state.availableRepos,
+      searchTerm: query.get('q') || '',
       isFetchingRepos: false,
       wasServerError: false,
       totalPageCount: null,
@@ -63,7 +67,9 @@ class AddRepoPage extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchRepos()
+    if (!this.state.availableRepos) {
+      this.fetchRepos()
+    }
   }
 
   fetchRepos() {
@@ -82,7 +88,7 @@ class AddRepoPage extends React.Component {
         response.json().then((json) => {
           const morePagesToFetch = json.pagination.currentPageNum < json.pagination.totalPages
           this.setState({
-            availableRepos: [...this.state.availableRepos, ...json.availableRepos],
+            availableRepos: [...this.state.availableRepos || [], ...json.availableRepos],
             totalPageCount: json.pagination.totalPages,
             fetchedPageCount: json.pagination.currentPageNum,
             isFetchingRepos: morePagesToFetch,
@@ -90,6 +96,9 @@ class AddRepoPage extends React.Component {
           }, () => {
             if (morePagesToFetch) {
               this.fetchNextPageOfRepos()
+            } else {
+              // Store the fetched content in our location state so it will be restored when navigating back.
+              this.props.history.replace({ ...this.props.location, state: this.state })
             }
           })
         }).catch((error) => {
@@ -123,6 +132,10 @@ class AddRepoPage extends React.Component {
   handleSearchTermChanged = (event) => {
     const searchTerm = event.target.value
     this.setState({ searchTerm })
+
+    const query = new URLSearchParams(this.props.location.search)
+    query.set('q', searchTerm)
+    this.props.history.push({ ...history.location, search: query.toString() })
   }
 
   reposToShow() {
@@ -169,6 +182,14 @@ class AddRepoPage extends React.Component {
       </React.Fragment>
     );
   }
+}
+
+AddRepoPage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired,
+  }).isRequired,
+  location: PropTypes.object.isRequired,
 }
 
 export default AddRepoPage
