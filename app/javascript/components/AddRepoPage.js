@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import * as Sentry from '@sentry/browser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithubAlt } from '@fortawesome/free-brands-svg-icons'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import LoadIndicator from 'components/shared/LoadIndicator'
 import AddRepoButton from 'components/AddRepoButton'
@@ -26,14 +27,20 @@ class AddRepoRow extends React.PureComponent {
             ) : this.props.name}
         </td>
         <td className='add-button'>
-          <AddRepoButton
-            isEnabled={this.props.isEnabled}
-            name={this.props.name}
-            repoType={this.props.repoType}
-            providerUid={this.props.providerUid}
-            path={this.props.path}
-            onEnabled={this.props.onRepoEnabled}
-          />
+          {this.props.isEnabled
+            ? (
+              <FontAwesomeIcon
+                icon={faCheck}
+                size='sm'
+                aria-label="Enabled"
+              />
+            ) : (
+              <AddRepoButton
+                path={this.props.path}
+                onEnabled={this.props.onRepoEnabled}
+              />
+            )
+          }
         </td>
       </tr>
     )
@@ -73,6 +80,17 @@ class AddRepoPage extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.availableRepos !== this.state.availableRepos && !nextState.isFetchingRepos) {
+      // Store the available repos in our location state so it will be restored when navigating back.
+      this.props.history.replace({ ...this.props.location, state: {
+        availableRepos: this.state.availableRepos,
+      } })
+    }
+
+    return true
+  }
+
   fetchRepos() {
     this.setState({
       isFetchingRepos: true,
@@ -97,11 +115,6 @@ class AddRepoPage extends React.Component {
           }, () => {
             if (morePagesToFetch) {
               this.fetchNextPageOfRepos()
-            } else {
-              // Store the fetched content in our location state so it will be restored when navigating back.
-              this.props.history.replace({ ...this.props.location, state: {
-                availableRepos: this.state.availableRepos,
-              } })
             }
           })
         }).catch((error) => {
@@ -133,12 +146,20 @@ class AddRepoPage extends React.Component {
   }
 
   handleSearchTermChanged = (event) => {
+    let search
+
     const searchTerm = event.target.value
     this.setState({ searchTerm })
 
     const query = new URLSearchParams(this.props.location.search)
-    query.set('q', searchTerm)
-    this.props.history.push({ ...this.props.location, search: query.toString() })
+    if (searchTerm !== '') {
+      query.set('q', searchTerm)
+      search = query.toString()
+    } else {
+      search = null
+    }
+
+    this.props.history.push({ ...this.props.location, search })
   }
 
   reposToShow() {

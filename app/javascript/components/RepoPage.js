@@ -35,6 +35,10 @@ class RepoPage extends React.Component {
     return true
   }
 
+  handleRepoUpdated = (path, repo) => {
+    this.setState({ repo })
+  }
+
   fetchRepo() {
     this.setState({
       isFetchingRepo: true,
@@ -88,6 +92,8 @@ class RepoPage extends React.Component {
             ownerName={this.state.repo.ownerName}
             repoName={this.state.repo.repoName}
             path={this.state.repo.path}
+            providerUid={this.state.repo.providerUid}
+            onUpdated={this.handleRepoUpdated}
           />
         )}
       </React.Fragment>

@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 import * as Sentry from '@sentry/browser'
 import { Button, Switch, Colors, Sizes } from 'react-foundation'
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import fetch from 'lib/fetch'
 import SyncIndicator from 'components/shared/SyncIndicator'
 
@@ -20,11 +18,7 @@ class AddRepoButton extends React.Component {
 
   handleClickedSwitch = () => {
     if (!this.state.isMakingEnableRequest) {
-      if (!this.props.isEnabled) {
-        this.enableRepo()
-      } else {
-        
-      }
+      this.enableRepo()
     }
   }
 
@@ -33,13 +27,11 @@ class AddRepoButton extends React.Component {
       isMakingEnableRequest: true,
     })
 
-    return fetch("/api/repos", {
+    return fetch(`/api/repos${this.props.path}`, {
       method: 'POST',
       body: JSON.stringify({
         repo: {
-          type: this.props.repoType,
-          provider_uid_or_url: this.props.providerUid,
-          name: this.props.name,
+          isEnabled: true,
         },
       }),
     }).then((response) => {
@@ -79,20 +71,10 @@ class AddRepoButton extends React.Component {
           {this.state.wasServerError && (
             <span>Failed, please try again</span>
           )}
-          {this.props.isEnabled
-            ? (
-              <FontAwesomeIcon
-                icon={faCheck}
-                size='sm'
-                aria-label="Enabled"
-              />
-            ) : (
-              <Switch
-                size={Sizes.SMALL}
-                onClick={this.handleClickedSwitch}
-              />
-            )
-          }
+          <Switch
+            size={Sizes.SMALL}
+            onClick={this.handleClickedSwitch}
+          />
           {this.state.isMakingEnableRequest && <SyncIndicator/>}
         </React.Fragment>
       )
@@ -101,10 +83,6 @@ class AddRepoButton extends React.Component {
 }
 
 AddRepoButton.propTypes = {
-  isEnabled: PropTypes.bool.isRequired,
-  repoType: PropTypes.string.isRequired,
-  providerUid: PropTypes.string.isRequired,
-  name: PropTypes.string,
   path: PropTypes.string,
   onEnabled: PropTypes.func,
 }
