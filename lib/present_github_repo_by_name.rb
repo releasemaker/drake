@@ -16,6 +16,7 @@ class PresentGithubRepoByName
   def repo
     GithubRepo.transaction do
       unless user_has_access?
+        # TODO: cache this data for the user and repository for a period of time.
         local_repo.repo_memberships.create!(
           user: user,
           admin: github_matching_repo.permissions.admin,
@@ -47,7 +48,7 @@ class PresentGithubRepoByName
   end
 
   def github_matching_repo
-    @github_repo ||= user.github_client.repos.get(owner_name, repo_name)
+    @github_matching_repo ||= user.github_client.repos.get(owner_name, repo_name)
   end
 
   def user_has_access?
