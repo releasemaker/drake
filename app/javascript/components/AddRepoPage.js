@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import Repo from 'components/Repo'
+import AddRepoButton from 'components/AddRepoButton'
 
 class AddRepoRow extends React.PureComponent {
   render() {
@@ -8,7 +8,7 @@ class AddRepoRow extends React.PureComponent {
       <tr data-provider-uid={this.props.providerUid}>
         <td>{this.props.name}</td>
         <td>
-          <Repo
+          <AddRepoButton
             isEnabled={this.props.isEnabled}
             name={this.props.name}
             repoType={this.props.repoType}
@@ -29,7 +29,7 @@ AddRepoRow.propTypes = {
   path: PropTypes.string,
 }
 
-class AddRepo extends React.Component {
+class AddRepoPage extends React.Component {
   constructor(props) {
     super(props)
 
@@ -146,4 +146,4 @@ class AddRepo extends React.Component {
   }
 }
 
-export default AddRepo
+export default AddRepoPage

@@ -6,4 +6,8 @@ class PagesController < ApplicationController
   def index
     disable_navigation
   end
+
+  def app
+    disable_navigation
+  end
 end

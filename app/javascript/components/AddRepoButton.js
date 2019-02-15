@@ -2,10 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import * as Sentry from '@sentry/browser'
 import { Button, Colors, Sizes } from 'react-foundation'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Link } from 'react-router-dom'
 import fetch from 'lib/fetch'
 
-class Repo extends React.Component {
+class AddRepoButton extends React.Component {
   constructor(props) {
     super(props)
 
@@ -13,7 +13,6 @@ class Repo extends React.Component {
       isEnabled: props.isEnabled,
       isMakingEnableRequest: false,
       wasServerError: false,
-      url: props.url,
     }
   }
 
@@ -22,7 +21,7 @@ class Repo extends React.Component {
       isMakingEnableRequest: true,
     })
 
-    return fetch("/repos.json", {
+    return fetch("/api/repos", {
       method: 'POST',
       body: JSON.stringify({
         repo: {
@@ -66,9 +65,9 @@ class Repo extends React.Component {
   render() {
     if (this.state.isEnabled) {
       return (
-        <a href={this.state.url}>
+        <Link to={this.props.path}>
           Enabled
-        </a>
+        </Link>
       )
     } else if (this.state.isMakingEnableRequest) {
       return (
@@ -95,12 +94,12 @@ class Repo extends React.Component {
   }
 }
 
-Repo.propTypes = {
+AddRepoButton.propTypes = {
   isEnabled: PropTypes.bool.isRequired,
   repoType: PropTypes.string.isRequired,
   providerUid: PropTypes.string.isRequired,
   name: PropTypes.string,
-  url: PropTypes.string,
+  path: PropTypes.string,
 }
 
-export default Repo
+export default AddRepoButton

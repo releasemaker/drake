@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
   namespace :api, default: { format: 'json' } do
     get 'availableRepos' => 'available_repos#index'
+    get 'repos/gh/:owner/:repo' => 'repos#show'
   end
 
   get '(*url)' => 'pages#app', as: :app
