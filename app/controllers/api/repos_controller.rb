@@ -8,11 +8,7 @@ class Api::ReposController < ApplicationController
   end
 
   def show
-    @repo = PresentGithubRepoByName.new(
-      owner_name: params[:owner],
-      repo_name: params[:repo],
-      user: current_user,
-    ).repo
+    @repo = repo_presenter.repo
     authorize! :show, @repo
   rescue Github::Error::NotFound
     raise ActionController::RoutingError.new('Not Found')
@@ -20,36 +16,54 @@ class Api::ReposController < ApplicationController
 
   # Creates a {Repo} record based on the form submission from the {#new} view.
   # There is an assumption that this will succeed, since there is no user-editable form.
-  # @todo Use the permissions given by Github instead of assuming admin.
   def create
     Repo.transaction do
-      existing_repo = create_repo_class.find_by(provider_uid_or_url: create_params[:provider_uid_or_url])
-      @repo = existing_repo || create_repo_class.new(create_params)
-      @repo.enabled = true
-      @repo.save!
-
-      unless @repo.repo_memberships.find_by(user: current_user)
-        @repo.repo_memberships.create!(user: current_user, admin: true)
-      end
+      @repo = repo_presenter.repo
+      authorize! :create, @repo
+      @repo.update! enabled: true
 
       RepoProviderWebhookService.new(@repo).perform!
     end
 
-    authorize! :create, @repo
-
     render :show, status: :created
+  end
+
+  def update
+    Repo.transaction do
+      @repo = repo_presenter.repo
+      authorize! :update, @repo
+      @repo.update! repo_params
+
+      RepoProviderWebhookService.new(@repo).perform!
+    end
+
+    render :show
   end
 
   private
 
-  def create_params
-    params.require(:repo).permit(:name, :provider_uid_or_url)
+  ##
+  # Used by actions that need the existing repo for show, update, etc.
+  def repo_presenter
+    @repo_presenter = PresentGithubRepoByName.new(
+      owner_name: params[:owner_name],
+      repo_name: params[:repo_name],
+      user: current_user,
+    )
   end
 
-  def create_repo_class
-    case params[:repo][:type]
+  def repo_params
+    {}.tap do |repo_params|
+      repo_params[:enabled] = params[:repo][:isEnabled] if params[:repo].key? :isEnabled
+    end
+  end
+
+  def repo_model
+    case params[:repo_type] || params[:repo][:repoType]
     when 'gh'
       GithubRepo
+    else
+      raise "Unknown repo type"
     end
   end
 end

@@ -16,10 +16,11 @@ Rails.application.routes.draw do
   # get '/gh/:owner/:repo' => 'repos#show_by_name', as: :github_repo_by_name
 
   namespace :api, default: { format: 'json' } do
-    get 'availableRepos' => 'available_repos#index'
-    get 'repos' => 'repos#index'
-    post 'repos' => 'repos#create'
-    get 'repos/gh/:owner/:repo' => 'repos#show'
+    get 'availableRepos', to: 'available_repos#index'
+    get 'repos', to: 'repos#index'
+    post 'repos/:repo_type/:owner_name/:repo_name', to: 'repos#create', constraints: { type: /gh/ }
+    get 'repos/:repo_type/:owner_name/:repo_name', to: 'repos#show', constraints: { type: /gh/ }
+    patch 'repos/:repo_type/:owner_name/:repo_name', to: 'repos#update', constraints: { type: /gh/ }
   end
 
   get '(*url)' => 'pages#app', as: :app
