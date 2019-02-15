@@ -37,9 +37,13 @@ class RepoIndexPage extends React.Component {
   constructor(props) {
     super(props)
 
+    const query = new URLSearchParams(props.location.search)
+
+    // Get whatever state we want to restore from the location state.
+    // This will allow seamless navigation back to this page, since we set the state when we finished fetching.
     this.state = {
-      repos: [],
-      searchTerm: '',
+      repos: this.props.location.state && this.props.location.state.repos,
+      searchTerm: query.get('q') || '',
       isFetchingRepos: false,
       wasServerError: false,
       totalPageCount: null,
@@ -48,7 +52,9 @@ class RepoIndexPage extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchRepos()
+    if (!this.state.repos) {
+      this.fetchRepos()
+    }
   }
 
   fetchRepos() {
@@ -67,7 +73,7 @@ class RepoIndexPage extends React.Component {
         response.json().then((json) => {
           const morePagesToFetch = json.pagination.currentPageNum < json.pagination.totalPages
           this.setState({
-            repos: [...this.state.repos, ...json.repos],
+            repos: [...this.state.repos || [], ...json.repos],
             totalPageCount: json.pagination.totalPages,
             fetchedPageCount: json.pagination.currentPageNum,
             isFetchingRepos: morePagesToFetch,
@@ -75,6 +81,11 @@ class RepoIndexPage extends React.Component {
           }, () => {
             if (morePagesToFetch) {
               this.fetchNextPageOfRepos()
+            } else {
+              // Store the fetched content in our location state so it will be restored when navigating back.
+              this.props.history.replace({ ...this.props.location, state: {
+                repos: this.state.repos,
+              } })
             }
           })
         }).catch((error) => {
@@ -103,6 +114,10 @@ class RepoIndexPage extends React.Component {
   handleSearchTermChanged = (event) => {
     const searchTerm = event.target.value
     this.setState({ searchTerm })
+
+    const query = new URLSearchParams(this.props.location.search)
+    query.set('q', searchTerm)
+    this.props.history.push({ ...this.props.location, search: query.toString() })
   }
 
   reposToShow() {
@@ -162,6 +177,18 @@ class RepoIndexPage extends React.Component {
       </React.Fragment>
     );
   }
+}
+
+RepoIndexPage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired,
+  }).isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      repos: PropTypes.array,
+    }),
+  }).isRequired,
 }
 
 export default RepoIndexPage

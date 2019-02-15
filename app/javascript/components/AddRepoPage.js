@@ -98,7 +98,9 @@ class AddRepoPage extends React.Component {
               this.fetchNextPageOfRepos()
             } else {
               // Store the fetched content in our location state so it will be restored when navigating back.
-              this.props.history.replace({ ...this.props.location, state: this.state })
+              this.props.history.replace({ ...this.props.location, state: {
+                availableRepos: this.state.availableRepos,
+              } })
             }
           })
         }).catch((error) => {
@@ -135,7 +137,7 @@ class AddRepoPage extends React.Component {
 
     const query = new URLSearchParams(this.props.location.search)
     query.set('q', searchTerm)
-    this.props.history.push({ ...history.location, search: query.toString() })
+    this.props.history.push({ ...this.props.location, search: query.toString() })
   }
 
   reposToShow() {
@@ -189,7 +191,11 @@ AddRepoPage.propTypes = {
     push: PropTypes.func.isRequired,
     replace: PropTypes.func.isRequired,
   }).isRequired,
-  location: PropTypes.object.isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      availableRepos: PropTypes.array,
+    }),
+  }).isRequired,
 }
 
 export default AddRepoPage
