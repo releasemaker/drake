@@ -167,7 +167,7 @@ class RepoIndexPage extends React.Component {
         )}
         {this.state.isFetchingRepos && <LoadIndicator>Loading more</LoadIndicator>}
       </React.Fragment>
-    );
+    )
   }
 }
 

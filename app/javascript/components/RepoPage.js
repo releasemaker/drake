@@ -97,7 +97,7 @@ class RepoPage extends React.Component {
           />
         )}
       </React.Fragment>
-    );
+    )
   }
 }
 

@@ -189,7 +189,7 @@ class AddRepoPage extends React.Component {
         )}
         {this.state.isFetchingRepos && <LoadIndicator>Loading more</LoadIndicator>}
       </React.Fragment>
-    );
+    )
   }
 }
 

@@ -72,7 +72,7 @@ class RepoSettings extends React.Component {
           />
         )}
       </React.Fragment>
-    );
+    )
   }
 }
 
