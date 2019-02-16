@@ -1,5 +1,12 @@
 #index
   #header
+    .top-public-nav
+      - if logged_in?
+        = link_to dashboard_path, class: 'button' do
+          | Dashboard
+      - else
+        = link_to dashboard_path, class: 'button' do
+          | Sign In
     span.logo.icon.fa-bicycle
     h1
       | Release Maker
@@ -45,7 +52,7 @@
         | I mean, it's free.
       ul.actions
         li
-          = link_to new_repo_path, class: 'button' do
+          = link_to dashboard_path, class: 'button' do
             = fa_icon "github-alt"
             |  Get Started
   #footer
