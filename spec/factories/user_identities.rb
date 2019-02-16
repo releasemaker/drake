@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :user_identity do
     user
-    provider 'github'
+    provider { 'github' }
 
     transient do
       sequence(:uid)
@@ -11,7 +11,7 @@ FactoryBot.define do
     end
 
     trait :github do
-      provider 'github'
+      provider { 'github' }
     end
 
     after(:build) do |user_identity, evaluator|

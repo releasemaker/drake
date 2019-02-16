@@ -44,7 +44,7 @@ RSpec.describe Repo, type: :model do
   context 'a user' do
     subject(:ability) { Ability.new(user) }
     let(:user) { FactoryBot.create(:user) }
-    let(:repo) { FactoryBot.create(described_class) }
+    let(:repo) { FactoryBot.create(:repo) }
 
     it { is_expected.to be_able_to(:create, described_class) }
 
