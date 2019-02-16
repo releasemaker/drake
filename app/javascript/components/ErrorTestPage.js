@@ -6,6 +6,13 @@ import { Link } from 'react-router-dom'
 import LoadIndicator from 'components/shared/LoadIndicator'
 import { fetchFromBackend, UnexpectedBackendResponseError } from 'lib/backend-data'
 
+export class TestUncaughtRejectionError extends Error {
+  constructor(message) {
+    super(message)
+    this.name = "TestUncaughtRejectionError"
+  }
+}
+
 class ErrorTestPage extends React.Component {
   constructor(props) {
     super(props)
@@ -62,6 +69,10 @@ class ErrorTestPage extends React.Component {
     this.setState({ gimmeRenderError: true })
   }
 
+  gimmeUncaughtRejection = () => {
+    return Promise.reject(new TestUncaughtRejectionError())
+  }
+
   gimmeNotFound = () => {
     this.props.onContentNotFound(this.props.location)
   }
@@ -70,21 +81,30 @@ class ErrorTestPage extends React.Component {
     return (
       <React.Fragment>
         <h1>Gimme Errors</h1>
+
         <h2>Backend Server Error</h2>
         <p>Make a fetch to the backend that results in a 500 status.</p>
         {this.state.isFetchingServerError && <LoadIndicator>Fetching Server Error</LoadIndicator>}
         {!this.state.isFetchingServerError && <p><Button onClick={this.gimmeServerError}>Gimme</Button></p>}
+
         <h2>Backend Server JSON Response Error</h2>
         <p>Make a fetch to the backend that gives back unparseable JSON.</p>
         {this.state.isFetchingJsonError && <LoadIndicator>Fetching Bad JSON Response</LoadIndicator>}
         {!this.state.isFetchingJsonError && <p><Button onClick={this.gimmeJsonError}>Gimme</Button></p>}
+
         <h2>Rendering Error</h2>
         <p>Cause rendering to raise an exception.</p>
         {this.state.gimmeRenderError && I_BROKE_RENDERING}
         <p><Button onClick={this.gimmeRenderError}>Gimme</Button></p>
+
+        <h2>Uncaught Rejected Promise</h2>
+        <p>Cause a promise to reject and donʼt catch it.</p>
+        <p><Button onClick={this.gimmeUncaughtRejection}>Gimme</Button></p>
+
         <h2>Content Not Found</h2>
         <p>When a component requires data to be loaded from the backend, but the backend reports 404.</p>
         <p><Button onClick={this.gimmeNotFound}>Gimme</Button></p>
+
         <h2>Plain Not Found Page</h2>
         <p>Go to a page that doesn't exist, so you can see what that looks like.</p>
         <p><a href="/a-page-that-does-not-exist">Gimme</a></p>
