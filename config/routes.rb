@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   get :dashboard, to: redirect('/repos')
 
   namespace :api, default: { format: 'json' } do
+    get 'gimme/error', to: 'error#server_error'
+    get 'gimme/bad-json', to: 'error#bad_json'
     get 'availableRepos', to: 'available_repos#index'
     get 'repos', to: 'repos#index'
     post 'repos/:repo_type/:owner_name/:repo_name', to: 'repos#create', constraints: { type: /gh/ }

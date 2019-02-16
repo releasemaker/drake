@@ -5,4 +5,12 @@ class Api::ErrorController < ApplicationApiController
   def not_found
     head :not_found
   end
+
+  def server_error
+    head :internal_server_error
+  end
+
+  def bad_json
+    render json: '{"im": "broke",'
+  end
 end

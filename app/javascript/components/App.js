@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import AddRepoPage from 'components/AddRepoPage'
 import RepoPage from 'components/RepoPage'
 import RepoIndexPage from 'components/RepoIndexPage'
+import ErrorTestPage from 'components/ErrorTestPage'
 import ErrorPage from 'components/ErrorPage'
 import NotFoundPage from 'components/NotFoundPage'
 
@@ -75,6 +76,11 @@ class App extends React.Component {
                 <Route
                   path="/:type(gh)/:name*"
                   render={(props) => <RepoPage {...props} onContentNotFound={this.handleContentNotFound} />}
+                />
+                <Route
+                  exact
+                  path="/gimme-error"
+                  render={(props) => <ErrorTestPage {...props} onContentNotFound={this.handleContentNotFound} />}
                 />
                 <Route component={this.notFoundRouteRender} />
               </Switch>
