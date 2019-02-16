@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::AvailableReposController, type: :request do
-  let(:user) { FactoryGirl.create(:user, :with_credentials) }
+  let(:user) { FactoryBot.create(:user, :with_credentials) }
 
   describe 'GET /api/availableRepos' do
     let(:do_the_thing) { get '/api/availableRepos', params: params }
@@ -14,7 +14,7 @@ RSpec.describe Api::AvailableReposController, type: :request do
         login_user user
       end
 
-      let!(:user_identity) { FactoryGirl.create(:user_identity, :github, user: user) }
+      let!(:user_identity) { FactoryBot.create(:user_identity, :github, user: user) }
       let(:api_data) { json_fixture('github/repositories') }
       let!(:api_request) {
         stub_request(:get, %r{https://api\.github\.com/user/repos\?access_token=.+})
@@ -60,7 +60,7 @@ RSpec.describe Api::AvailableReposController, type: :request do
         context 'with an existing matching repo' do
           context 'that is disabled' do
             let!(:existing_matching_repo) {
-              FactoryGirl.create(
+              FactoryBot.create(
                 :github_repo,
                 enabled: false,
                 provider_uid_or_url: "1296269",
@@ -78,7 +78,7 @@ RSpec.describe Api::AvailableReposController, type: :request do
 
           context 'that is enabled' do
             let!(:existing_matching_repo) {
-              FactoryGirl.create(
+              FactoryBot.create(
                 :github_repo,
                 enabled: true,
                 provider_uid_or_url: "1296269",
@@ -121,7 +121,7 @@ RSpec.describe Api::AvailableReposController, type: :request do
           context 'with a matching repo exists locally' do
             context 'and is disabled' do
               let!(:existing_matching_repo) {
-                FactoryGirl.create(
+                FactoryBot.create(
                   :github_repo,
                   enabled: false,
                   provider_uid_or_url: "1296269",
@@ -144,7 +144,7 @@ RSpec.describe Api::AvailableReposController, type: :request do
 
             context 'and is enabled' do
               let!(:existing_matching_repo) {
-                FactoryGirl.create(
+                FactoryBot.create(
                   :github_repo,
                   enabled: true,
                   provider_uid_or_url: "1296269",

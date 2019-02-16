@@ -12,7 +12,7 @@ RSpec.describe RepoProviderWebhookService do
     let(:do_the_thing) { subject.perform! }
 
     let(:repo) {
-      FactoryGirl.create(
+      FactoryBot.create(
         :github_repo,
         provider_uid_or_url: Rails.configuration.x.github.test_repo_uid,
         name: "#{Rails.configuration.x.github.test_repo_owner_name}/"\
@@ -25,9 +25,9 @@ RSpec.describe RepoProviderWebhookService do
     context 'making API calls', vcr: { cassette_name: 'webhook_service' } do
       let(:repo_provider_webhook_data) { nil }
       let(:repo_enabled) { true }
-      let!(:user) { FactoryGirl.create(:user) }
+      let!(:user) { FactoryBot.create(:user) }
       let!(:user_identity) {
-        FactoryGirl.create(
+        FactoryBot.create(
           :user_identity,
           :github,
           user: user,
@@ -35,7 +35,7 @@ RSpec.describe RepoProviderWebhookService do
         )
       }
       let!(:repo_membership) {
-        FactoryGirl.create(:repo_membership, :admin, repo: repo, user: user)
+        FactoryBot.create(:repo_membership, :admin, repo: repo, user: user)
       }
 
       it 'stores the created webhook data and uses it to remove the webhook' do

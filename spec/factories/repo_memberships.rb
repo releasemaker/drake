@@ -1,17 +1,17 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :repo_membership do
     association :repo, factory: :github_repo
     user
-    write false
-    admin false
+    write { false }
+    admin { false }
 
     trait :write do
-      write true
+      write { true }
     end
 
     trait :admin do
-      write true
-      admin true
+      write { true }
+      admin { true }
     end
   end
 end

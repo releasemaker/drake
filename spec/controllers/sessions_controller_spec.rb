@@ -29,7 +29,7 @@ RSpec.describe SessionsController, type: :request do
         )
         Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:github]
       end
-      let(:user_identity_info) { FactoryGirl.build(:user_identity) }
+      let(:user_identity_info) { FactoryBot.build(:user_identity) }
       let(:uid) { user_identity_info.uid }
       let(:email) { user_identity_info.email }
       let(:nickname) { user_identity_info.nickname }
@@ -60,7 +60,7 @@ RSpec.describe SessionsController, type: :request do
       end
 
       context 'when the user has previously signed in' do
-        let!(:user_identity) { FactoryGirl.create(:user_identity) }
+        let!(:user_identity) { FactoryBot.create(:user_identity) }
         let(:uid) { user_identity.uid }
 
         it "does not create a user" do
@@ -82,14 +82,14 @@ RSpec.describe SessionsController, type: :request do
       end
 
       context 'when the user is already signed in with another provider' do
-        let(:user) { FactoryGirl.create(:user, :with_credentials) }
+        let(:user) { FactoryBot.create(:user, :with_credentials) }
         let!(:gitlab_identity) {
-          FactoryGirl.build(:user_identity, user: user, provider: 'gitlab')
+          FactoryBot.build(:user_identity, user: user, provider: 'gitlab')
         }
         before do
           login_user user
         end
-        let(:user_identity_info) { FactoryGirl.build(:user_identity, user: user) }
+        let(:user_identity_info) { FactoryBot.build(:user_identity, user: user) }
 
         it "does not create a user" do
           expect { do_the_thing }.to_not change { User.count }
@@ -108,7 +108,7 @@ RSpec.describe SessionsController, type: :request do
         end
 
         context 'and the given identity is already associated with another user' do
-          let(:user_identity_info) { FactoryGirl.create(:user_identity) }
+          let(:user_identity_info) { FactoryBot.create(:user_identity) }
 
           it "does not create a user" do
             expect { do_the_thing }.to_not change { User.count }
@@ -152,7 +152,7 @@ RSpec.describe SessionsController, type: :request do
     before do
       login_user user
     end
-    let(:user) { FactoryGirl.create(:user, :with_credentials) }
+    let(:user) { FactoryBot.create(:user, :with_credentials) }
 
     it "signs the user out" do
       do_the_thing
@@ -185,7 +185,7 @@ RSpec.describe SessionsController, type: :request do
       before do
         login_user user
       end
-      let(:user) { FactoryGirl.create(:user, :with_credentials) }
+      let(:user) { FactoryBot.create(:user, :with_credentials) }
 
       it 'redirects to the dashboard page' do
         the_request
@@ -204,7 +204,7 @@ RSpec.describe SessionsController, type: :request do
         }
       }
     }
-    let(:user) { FactoryGirl.create(:user, :with_credentials, password: password) }
+    let(:user) { FactoryBot.create(:user, :with_credentials, password: password) }
     let(:password) { 'p4ssw0rd' }
 
     context 'with valid credentials' do
@@ -258,7 +258,7 @@ RSpec.describe SessionsController, type: :request do
       let(:params) {
         {
           user: {
-            email: FactoryGirl.generate(:email),
+            email: FactoryBot.generate(:email),
             password: 'wrongp5ssword',
           }
         }

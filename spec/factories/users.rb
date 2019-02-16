@@ -1,14 +1,14 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do
-    super_admin false
+    super_admin { false }
 
     trait :super_admin do
-      super_admin true
+      super_admin { true }
     end
 
     trait :with_credentials do
       email { generate(:email) }
-      password "password"
+      password { "password" }
     end
   end
 end

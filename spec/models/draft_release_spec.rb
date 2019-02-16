@@ -4,15 +4,15 @@ RSpec.describe DraftRelease, vcr: { cassette_name: 'draft_release' } do
   subject(:instance) { described_class.new(repo: repo) }
 
   let(:repo) {
-    FactoryGirl.create(
+    FactoryBot.create(
       :github_repo,
       provider_uid_or_url: Rails.configuration.x.github.test_repo_uid,
       name: "#{Rails.configuration.x.github.test_repo_owner_name}/#{repo_name}",
     )
   }
-  let!(:user) { FactoryGirl.create(:user) }
+  let!(:user) { FactoryBot.create(:user) }
   let!(:user_identity) {
-    FactoryGirl.create(
+    FactoryBot.create(
       :user_identity,
       :github,
       user: user,
@@ -20,7 +20,7 @@ RSpec.describe DraftRelease, vcr: { cassette_name: 'draft_release' } do
     )
   }
   let!(:repo_membership) {
-    FactoryGirl.create(:repo_membership, :admin, repo: repo, user: user)
+    FactoryBot.create(:repo_membership, :admin, repo: repo, user: user)
   }
   let(:repo_name) { 'release-maker-tester-with-prior-release' }
 
