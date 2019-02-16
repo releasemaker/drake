@@ -7,7 +7,7 @@ RSpec.describe Api::AvailableReposController, type: :request do
     let(:do_the_thing) { get '/api/availableRepos', params: params }
     let(:params) { {} }
 
-    it_behaves_like :authenticated_endpoint
+    it_behaves_like :authenticated_api_endpoint
 
     context 'when logged in' do
       before(:each) do

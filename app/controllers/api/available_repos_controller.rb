@@ -1,4 +1,4 @@
-class Api::AvailableReposController < ApplicationController
+class Api::AvailableReposController < ApplicationApiController
   authorize_resource :repo
   include PaginationHelper
 

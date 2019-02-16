@@ -8,7 +8,7 @@ RSpec.describe Api::ReposController, type: :request do
     let(:do_the_thing) { get '/api/repos', params: params }
     let(:params) { {} }
 
-    it_behaves_like :authenticated_endpoint
+    it_behaves_like :authenticated_api_endpoint
 
     context 'when logged in' do
       before(:each) do
@@ -69,7 +69,7 @@ RSpec.describe Api::ReposController, type: :request do
       }
     }
 
-    it_behaves_like :authenticated_endpoint
+    it_behaves_like :authenticated_api_endpoint
 
     context 'when logged in' do
       before(:each) do
@@ -163,7 +163,7 @@ RSpec.describe Api::ReposController, type: :request do
     let(:do_the_thing) { get "/api/repos/gh/#{repo.owner_name}/#{repo.repo_name}" }
     let!(:repo) { FactoryGirl.create(:github_repo) }
 
-    it_behaves_like :authenticated_endpoint
+    it_behaves_like :authenticated_api_endpoint
 
     context 'when logged in' do
       before(:each) do
@@ -245,7 +245,7 @@ RSpec.describe Api::ReposController, type: :request do
     let(:repo) { FactoryGirl.create(:github_repo) }
     let(:repo_attributes) { {} }
 
-    it_behaves_like :authenticated_endpoint
+    it_behaves_like :authenticated_api_endpoint
 
     context 'when logged in' do
       before(:each) do

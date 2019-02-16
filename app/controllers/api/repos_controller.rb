@@ -1,4 +1,4 @@
-class Api::ReposController < ApplicationController
+class Api::ReposController < ApplicationApiController
   include PaginationHelper
 
   def index
