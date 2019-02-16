@@ -33,6 +33,9 @@ jobs:
           name: results folder
           command: mkdir /tmp/test-reports
       - run:
+          name: Webpack Build
+          command: bin/webpack
+      - run:
           name: rspec
           command: bundle exec rspec --color --require rails_helper --format RspecJunitFormatter --out /tmp/test-reports/rspec.xml spec --format doc
       - store_artifacts:
