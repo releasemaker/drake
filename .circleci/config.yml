@@ -3,7 +3,7 @@ jobs:
   test:
     working_directory: ~/release_maker
     docker:
-      - image: randomservices/ruby:2.6.1
+      - image: randomservices/ruby:2.6.1-node-browsers
         environment:
           DATABASE_URL: postgresql://ubuntu@localhost/release_maker_test?sslmode=disable
           RAILS_ENV: test
@@ -53,7 +53,7 @@ jobs:
   deploy-to-staging:
     working_directory: ~/release_maker
     docker:
-      - image: randomservices/ruby:2.6.1
+      - image: randomservices/ruby:2.6.1-node-browsers
         environment:
           RAILS_ENV: test
           RACK_ENV: test
@@ -75,7 +75,7 @@ jobs:
   deploy-to-production:
     working_directory: ~/release_maker
     docker:
-      - image: randomservices/ruby:2.6.1
+      - image: randomservices/ruby:2.6.1-node-browsers
         environment:
           RAILS_ENV: test
           RACK_ENV: test
