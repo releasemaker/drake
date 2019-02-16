@@ -134,9 +134,9 @@ class RepoIndexPage extends React.Component {
   reposToShow() {
     if (this.state.searchTerm !== '') {
       const searchTerm = this.state.searchTerm.toLowerCase()
-      return this.state.repos.filter((repo) => repo.name.toLowerCase().includes(searchTerm))
+      return this.state.repos.filter((repo) => repo.name.toLowerCase().includes(searchTerm) && repo.isEnabled)
     } else {
-      return this.state.repos
+      return this.state.repos.filter((repo) => repo.isEnabled)
     }
   }
 
