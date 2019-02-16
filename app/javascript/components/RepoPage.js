@@ -8,28 +8,43 @@ class RepoPage extends React.Component {
   constructor(props) {
     super(props)
 
+    // Restore the cache only if the user navigated back to this page.
+    const repo = this.props.history.action == 'POP' &&
+      this.props.location.state && this.props.location.state.repo
+
     this.state = {
-      repo: null,
+      repo,
       isFetchingRepo: false,
       wasServerError: false,
     }
   }
 
   componentDidMount() {
-    this.fetchRepo()
+    if (!this.state.repo) {
+      this.fetchRepo()
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     // If the route changes while this component is already opened, it won't get remounted.
     // So look for the route data to change and load the new repo.
-    if (nextProps.match !== this.props.match) {
+    if (nextProps.match.url !== this.props.match.url) {
       this.fetchRepo()
     }
 
-    // If the fetched repo has a different path, it's likely been renamed, so we want to redirect to the new name
-    // seamlessly.
-    if (this.state.repo && this.state.repo.path !== nextState.repo.path) {
-      window.history.replace(nextState.repo.path)
+    if (nextState.repo != this.state.repo && !nextState.isFetchingRepo) {
+      // Store the repo in our location state so it will be restored when navigating back.
+      if (this.state.repo && this.state.repo.path !== nextState.repo.path) {
+        // If the fetched repo has a different path, it's likely been renamed, so we want to redirect to the new name
+        // seamlessly.
+        window.history.replace({ pathname: newState.repo.path, state: {
+          repo: this.state.repo,
+        } })
+      } else {
+        this.props.history.replace({ ...this.props.location, state: {
+          repo: this.state.repo,
+        } })
+      }
     }
 
     return true

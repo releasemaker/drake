@@ -62,10 +62,14 @@ class AddRepoPage extends React.Component {
 
     const query = new URLSearchParams(props.location.search)
 
+    // Restore the cache only if the user navigated back to this page.
+    const availableRepos = this.props.history.action == 'POP' &&
+      this.props.location.state && this.props.location.state.availableRepos
+
     // Get whatever state we want to restore from the location state.
     // This will allow seamless navigation back to this page, since we set the state when we finished fetching.
     this.state = {
-      availableRepos: this.props.location.state && this.props.location.state.availableRepos,
+      availableRepos,
       searchTerm: query.get('q') || '',
       isFetchingRepos: false,
       wasServerError: false,

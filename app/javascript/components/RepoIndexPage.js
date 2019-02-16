@@ -40,10 +40,14 @@ class RepoIndexPage extends React.Component {
 
     const query = new URLSearchParams(props.location.search)
 
+    // Restore the cache only if the user navigated back to this page.
+    const repos = this.props.history.action == 'POP' &&
+      this.props.location.state && this.props.location.state.repos
+
     // Get whatever state we want to restore from the location state.
     // This will allow seamless navigation back to this page, since we set the state when we finished fetching.
     this.state = {
-      repos: this.props.location.state && this.props.location.state.repos,
+      repos,
       searchTerm: query.get('q') || '',
       isFetchingRepos: false,
       wasServerError: false,
@@ -56,6 +60,17 @@ class RepoIndexPage extends React.Component {
     if (!this.state.repos) {
       this.fetchRepos()
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.repos !== this.state.repos && !nextState.isFetchingRepos) {
+      // Store the available repos in our location state so it will be restored when navigating back.
+      this.props.history.replace({ ...this.props.location, state: {
+        repos: this.state.repos,
+      } })
+    }
+
+    return true
   }
 
   fetchRepos() {
@@ -82,11 +97,6 @@ class RepoIndexPage extends React.Component {
           }, () => {
             if (morePagesToFetch) {
               this.fetchNextPageOfRepos()
-            } else {
-              // Store the fetched content in our location state so it will be restored when navigating back.
-              this.props.history.replace({ ...this.props.location, state: {
-                repos: this.state.repos,
-              } })
             }
           })
         }).catch((error) => {
