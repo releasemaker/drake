@@ -33,6 +33,9 @@ class NotFoundPage extends React.Component {
           <p>
             <a onClick={this.goBack}>Go back</a> to the previous page
           </p>
+          <p>
+            Go to the top of the <a href='/'>Release Maker</a> site
+          </p>
         </div>
       </div>
     )
