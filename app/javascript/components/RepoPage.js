@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import * as Sentry from '@sentry/browser'
 import RepoSettings from 'components/RepoSettings'
 import LoadIndicator from 'components/shared/LoadIndicator'
+import { fetchFromBackend, UnexpectedBackendResponseError } from 'lib/backend-data'
 
 class RepoPage extends React.Component {
   constructor(props) {
@@ -15,13 +16,11 @@ class RepoPage extends React.Component {
     this.state = {
       repo,
       isFetchingRepo: false,
-      wasServerError: false,
-      repoNotFound: false,
     }
   }
 
   componentDidMount() {
-    if (!this.state.repo) {
+    if (!this.state.repo && !this.state.isFetchingRepo) {
       this.fetchRepo()
     }
   }
@@ -62,7 +61,7 @@ class RepoPage extends React.Component {
     })
 
     const repoPath = `/${this.props.match.params.type}/${this.props.match.params.name}`
-    return fetch(`/api/repos${repoPath}`, {
+    return fetchFromBackend(`/api/repos${repoPath}`, {
       method: 'GET',
     }).then((response) => {
       if (response.ok) {
@@ -70,13 +69,12 @@ class RepoPage extends React.Component {
           this.setState({
             repo: json.repo,
             isFetchingRepo: false,
-            wasServerError: false,
           })
         })
       } else if (response.status == 404) {
         this.props.onContentNotFound(this.props.location)
       } else {
-        throw new Error("Request failed")
+        throw new UnexpectedBackendResponseError(response.status)
       }
     })
   }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import * as Sentry from '@sentry/browser'
 import { Button, Switch, Colors, Sizes } from 'react-foundation'
 import { Link } from 'react-router-dom'
-import fetch from 'lib/fetch'
+import { fetchFromBackend, UnexpectedBackendResponseError } from 'lib/backend-data'
 import SyncIndicator from 'components/shared/SyncIndicator'
 
 class AddRepoButton extends React.Component {
@@ -12,7 +12,6 @@ class AddRepoButton extends React.Component {
 
     this.state = {
       isMakingEnableRequest: false,
-      wasServerError: false,
     }
   }
 
@@ -27,7 +26,7 @@ class AddRepoButton extends React.Component {
       isMakingEnableRequest: true,
     })
 
-    return fetch(`/api/repos${this.props.path}`, {
+    return fetchFromBackend(`/api/repos${this.props.path}`, {
       method: 'POST',
       body: JSON.stringify({
         repo: {
@@ -40,37 +39,17 @@ class AddRepoButton extends React.Component {
           this.props.onEnabled(this.props.path, json.repo)
           this.setState({
             isMakingEnableRequest: false,
-            wasServerError: false,
           })
-        }).catch((error) => {
-          this.setState({
-            isMakingEnableRequest: false,
-            wasServerError: true,
-          })
-          Sentry.captureException(error)
-          console.log('Failure enabling repo while parsing response')
-          console.log(error)
         })
       } else {
-        throw response
+        throw new UnexpectedBackendResponseError(response.status)
       }
-    }).catch((error) => {
-      this.setState({
-        isMakingEnableRequest: false,
-        wasServerError: true,
-      })
-      Sentry.captureException(error)
-      console.log('Failure enabling repo')
-      console.log(error)
     })
   }
 
   render() {
       return (
         <React.Fragment>
-          {this.state.wasServerError && (
-            <span>Failed, please try again</span>
-          )}
           <Switch
             size={Sizes.SMALL}
             onClick={this.handleClickedSwitch}
