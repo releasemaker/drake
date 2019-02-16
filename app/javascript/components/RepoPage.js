@@ -16,6 +16,7 @@ class RepoPage extends React.Component {
       repo,
       isFetchingRepo: false,
       wasServerError: false,
+      repoNotFound: false,
     }
   }
 
@@ -71,26 +72,12 @@ class RepoPage extends React.Component {
             isFetchingRepo: false,
             wasServerError: false,
           })
-        }).catch((error) => {
-          this.setState({
-            isFetchingRepo: false,
-            wasServerError: true,
-          })
-          Sentry.captureException(error)
-          console.log('Failure fetching repo while parsing response')
-          console.log(error)
         })
+      } else if (response.status == 404) {
+        this.props.onContentNotFound(this.props.location)
       } else {
-        throw response
+        throw new Error("Request failed")
       }
-    }).catch((error) => {
-      this.setState({
-        isFetchingRepo: false,
-        wasServerError: true,
-      })
-      Sentry.captureException(error)
-      console.log('Failure fetching repo')
-      console.log(error)
     })
   }
 
@@ -117,12 +104,16 @@ class RepoPage extends React.Component {
 }
 
 RepoPage.propTypes = {
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       type: PropTypes.oneOf(['gh']).isRequired,
       name: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  onContentNotFound: PropTypes.func.isRequired,
 }
 
 export default RepoPage
