@@ -4,7 +4,7 @@ namespace :deploy do
     return unless fetch(:release_name)
 
     on roles(:app) do
-      within_release_path do
+      within release_path do
         execute :echo, "'#{fetch(:release_name)}' > RELEASE"
       end
     end
