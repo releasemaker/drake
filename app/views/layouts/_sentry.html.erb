@@ -1,7 +1,7 @@
 <% if Rails.configuration.x.sentry.present? && Rails.configuration.x.sentry.javascript_dsn.present? %>
   <script type='text/javascript'>
     window.SentryConfig = {
-      dsn: '<%= Rails.configuration.sentry['javascript_dsn'] %>',
+      dsn: '<%= Rails.configuration.x.sentry['javascript_dsn'] %>',
       environment: '<%= ENV['RAILS_ENV'] %>',
       release: '<%= APPLICATION_REVISION || "development" %>',
       xhrUrlIgnorePattern: /smartlook|mixpanel|google-analytics/,
