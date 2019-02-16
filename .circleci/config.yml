@@ -20,12 +20,17 @@ jobs:
           - release_maker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
           - release_maker-master-{{ checksum "Gemfile.lock" }}
       - run:
-          name: bundle install
+          name: Bundle Install
           command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
+      - run:
+          name: Yarn Install
+          command: yarn install
       - save_cache:
           key: release_maker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
           paths:
             - "~/release_maker/vendor/bundle"
+            - ~/.cache/yarn
+            - ~/release_maker/node_modules
       - run:
           name: set up database
           command: bundle exec rake db:create db:schema:load --trace
@@ -57,7 +62,7 @@ jobs:
           - release_maker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
           - release_maker-master-{{ checksum "Gemfile.lock" }}
       - run:
-          name: bundle install
+          name: Bundle Install
           command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
       - run:
           name: add host SSH keys
@@ -79,7 +84,7 @@ jobs:
           - release_maker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
           - release_maker-master-{{ checksum "Gemfile.lock" }}
       - run:
-          name: bundle install
+          name: Bundle Install
           command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
       - run:
           name: add host SSH keys
