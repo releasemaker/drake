@@ -37,11 +37,6 @@ jobs:
       - run:
           name: Webpack Build
           command: bin/webpack
-      - save_cache:
-          key: v1-{{ .Branch }}-webpack-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ~/release_maker/tmp/cache/webpacker
-            - ~/release_maker/public/packs
       - run:
           name: rspec
           command: bundle exec rspec --color --require rails_helper --format RspecJunitFormatter --out /tmp/test-reports/rspec.xml spec --format doc
@@ -105,11 +100,6 @@ commands:
             - v1-{{ .Branch }}-packages-gemfile{{ checksum "Gemfile.lock" }}-yarn{{ checksum "yarn.lock" }}
             - v1-master-packages-gemfile{{ checksum "Gemfile.lock" }}-yarn{{ checksum "yarn.lock" }}
             - v1-master-packages
-      - restore_cache:
-          name: Restore Webpack Build Cache
-          keys:
-            - v1-{{ .Branch }}-webpack
-            - v1-master-webpack
 workflows:
   version: 2
   test-and-deploy:
