@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   test:
     working_directory: ~/release_maker
@@ -15,10 +15,7 @@ jobs:
           POSTGRES_PASSWORD: ""
     steps:
       - checkout
-      - restore_cache:
-          keys:
-          - release_maker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-          - release_maker-master-{{ checksum "Gemfile.lock" }}
+      - restore_all_caches
       - run:
           name: Bundle Install
           command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
@@ -26,9 +23,9 @@ jobs:
           name: Yarn Install
           command: yarn install
       - save_cache:
-          key: release_maker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+          key: v1-{{ .Branch }}-packages-gemfile{{ checksum "Gemfile.lock" }}-yarn{{ checksum "yarn.lock" }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - "~/release_maker/vendor/bundle"
+            - ~/release_maker/vendor/bundle
             - ~/.cache/yarn
             - ~/release_maker/node_modules
       - run:
@@ -40,6 +37,11 @@ jobs:
       - run:
           name: Webpack Build
           command: bin/webpack
+      - save_cache:
+          key: v1-{{ .Branch }}-webpack-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/release_maker/tmp/cache/webpacker
+            - ~/release_maker/public/packs
       - run:
           name: rspec
           command: bundle exec rspec --color --require rails_helper --format RspecJunitFormatter --out /tmp/test-reports/rspec.xml spec --format doc
@@ -57,13 +59,13 @@ jobs:
           RACK_ENV: test
     steps:
       - checkout
-      - restore_cache:
-          keys:
-          - release_maker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-          - release_maker-master-{{ checksum "Gemfile.lock" }}
+      - restore_all_caches
       - run:
           name: Bundle Install
           command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
+      - run:
+          name: Yarn Install
+          command: yarn install
       - run:
           name: add host SSH keys
           command: 'echo "hazel.rndsvc.net,18.217.125.199 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNKmVLo32LqgAgWvUJD681vB34qITMKWnjoX2uxXLwRliC+6xh0g5TLz8PJxU0X0R2nTaOrcusNJMLCRpiYrot8=" >> ~/.ssh/known_hosts'
@@ -79,19 +81,35 @@ jobs:
           RACK_ENV: test
     steps:
       - checkout
-      - restore_cache:
-          keys:
-          - release_maker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-          - release_maker-master-{{ checksum "Gemfile.lock" }}
+      - restore_all_caches
       - run:
           name: Bundle Install
           command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
+      - run:
+          name: Yarn Install
+          command: yarn install
       - run:
           name: add host SSH keys
           command: 'echo "hazel.rndsvc.net,18.217.125.199 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNKmVLo32LqgAgWvUJD681vB34qITMKWnjoX2uxXLwRliC+6xh0g5TLz8PJxU0X0R2nTaOrcusNJMLCRpiYrot8=" >> ~/.ssh/known_hosts'
       - run:
           name: deploy
           command: bundle exec cap production deploy
+commands:
+  restore_all_caches:
+    parameters:
+    steps:
+      - restore_cache:
+          name: Restore Package Cache
+          keys:
+            - v1-{{ .Branch }}-packages-gemfile{{ checksum "Gemfile.lock" }}-yarn{{ checksum "yarn.lock" }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-{{ .Branch }}-packages-gemfile{{ checksum "Gemfile.lock" }}-yarn{{ checksum "yarn.lock" }}
+            - v1-master-packages-gemfile{{ checksum "Gemfile.lock" }}-yarn{{ checksum "yarn.lock" }}
+            - v1-master-packages
+      - restore_cache:
+          name: Restore Webpack Build Cache
+          keys:
+            - v1-{{ .Branch }}-webpack
+            - v1-master-webpack
 workflows:
   version: 2
   test-and-deploy:
