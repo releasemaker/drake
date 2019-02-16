@@ -18,7 +18,8 @@ Rails.application.routes.draw do
     post 'repos/:repo_type/:owner_name/:repo_name', to: 'repos#create', constraints: { type: /gh/ }
     get 'repos/:repo_type/:owner_name/:repo_name', to: 'repos#show', constraints: { type: /gh/ }
     patch 'repos/:repo_type/:owner_name/:repo_name', to: 'repos#update', constraints: { type: /gh/ }
+    get '*url' => 'error#not_found', as: :not_found
   end
 
-  get '(*url)' => 'pages#app', as: :app
+  get '*url' => 'pages#app', as: :app
 end
