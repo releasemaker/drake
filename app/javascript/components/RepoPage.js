@@ -70,12 +70,16 @@ class RepoPage extends React.Component {
             repo: json.repo,
             isFetchingRepo: false,
           })
+        }).catch((error) => {
+          this.setState(() => { throw error })
         })
       } else if (response.status == 404) {
         this.props.onContentNotFound(this.props.location)
       } else {
-        throw new UnexpectedBackendResponseError(response.status)
+        this.setState(() => { throw new UnexpectedBackendResponseError(response.status) })
       }
+    }).catch((error) => {
+      this.setState(() => { throw error })
     })
   }
 

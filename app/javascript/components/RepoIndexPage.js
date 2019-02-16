@@ -98,10 +98,14 @@ class RepoIndexPage extends React.Component {
               this.fetchNextPageOfRepos()
             }
           })
+        }).catch((error) => {
+          this.setState(() => { throw error })
         })
       } else {
-        throw new UnexpectedBackendResponseError(response.status)
+        this.setState(() => { throw new UnexpectedBackendResponseError(response.status) })
       }
+    }).catch((error) => {
+      this.setState(() => { throw error })
     })
   }
 

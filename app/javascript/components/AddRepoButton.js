@@ -40,10 +40,14 @@ class AddRepoButton extends React.Component {
           this.setState({
             isMakingEnableRequest: false,
           })
+        }).catch((error) => {
+          this.setState(() => { throw error })
         })
       } else {
-        throw new UnexpectedBackendResponseError(response.status)
+        this.setState(() => { throw new UnexpectedBackendResponseError(response.status) })
       }
+    }).catch((error) => {
+      this.setState(() => { throw error })
     })
   }
 
