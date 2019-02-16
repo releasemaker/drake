@@ -4,7 +4,7 @@ set :application, "releasemaker"
 
 if ENV['CI']
   set :repo_url, ENV['CIRCLE_REPOSITORY_URL']
-  set :branch, ENV['CIRCLE_SHA1']
+  set :branch, ENV['CIRCLE_TAG'] || ENV['CIRCLE_SHA1']
 else
   set :repo_url, 'git@github.com:RobinDaugherty/release_maker-ruby.git'
 end
