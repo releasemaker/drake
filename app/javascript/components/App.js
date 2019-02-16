@@ -37,6 +37,11 @@ class App extends React.Component {
     this.setState({ notFound: location })
   }
 
+  notFoundRouteRender = (props) => {
+    this.handleContentNotFound(window.location)
+    return null
+  }
+
   render() {
     if (this.state.error) {
       return <ErrorPage error={this.state.error} errorEventId={this.state.errorEventId} />
@@ -71,7 +76,7 @@ class App extends React.Component {
                   path="/:type(gh)/:name*"
                   render={(props) => <RepoPage {...props} onContentNotFound={this.handleContentNotFound} />}
                 />
-                <Route component={NotFoundPage} />
+                <Route component={this.notFoundRouteRender} />
               </Switch>
             </div>
           </div>
