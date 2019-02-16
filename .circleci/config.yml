@@ -64,9 +64,6 @@ jobs:
           name: Yarn Install
           command: yarn install
       - run:
-          name: Webpack Build
-          command: bin/webpack
-      - run:
           name: add host SSH keys
           command: 'echo "hazel.rndsvc.net,18.217.125.199 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNKmVLo32LqgAgWvUJD681vB34qITMKWnjoX2uxXLwRliC+6xh0g5TLz8PJxU0X0R2nTaOrcusNJMLCRpiYrot8=" >> ~/.ssh/known_hosts'
       - run:
@@ -79,8 +76,8 @@ jobs:
             curl -sL https://sentry.io/get-cli/ | INSTALL_DIR=sentry-temp bash;
             echo "Create new release:";
             sentry-temp/sentry-cli releases new $CIRCLE_SHA1;
-            echo "Add webpack sourcemaps:";
-            sentry-temp/sentry-cli releases files $CIRCLE_SHA1 upload-sourcemaps public/packs;
+            # echo "Add webpack sourcemaps:";
+            # sentry-temp/sentry-cli releases files $CIRCLE_SHA1 upload-sourcemaps public/packs;
             echo "Set commits:";
             sentry-temp/sentry-cli releases set-commits $CIRCLE_SHA1 --commit RobinDaugherty/release_maker-ruby@$CIRCLE_SHA1;
             echo "Finalize commit:";
@@ -106,9 +103,6 @@ jobs:
           name: Yarn Install
           command: yarn install
       - run:
-          name: Webpack Build
-          command: bin/webpack
-      - run:
           name: add host SSH keys
           command: 'echo "hazel.rndsvc.net,18.217.125.199 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNKmVLo32LqgAgWvUJD681vB34qITMKWnjoX2uxXLwRliC+6xh0g5TLz8PJxU0X0R2nTaOrcusNJMLCRpiYrot8=" >> ~/.ssh/known_hosts'
       - run:
@@ -121,8 +115,8 @@ jobs:
             curl -sL https://sentry.io/get-cli/ | INSTALL_DIR=sentry-temp bash;
             echo "Create new release:";
             sentry-temp/sentry-cli releases new $CIRCLE_TAG;
-            echo "Add webpack sourcemaps:";
-            sentry-temp/sentry-cli releases files $CIRCLE_TAG upload-sourcemaps public/packs;
+            # echo "Add webpack sourcemaps:";
+            # sentry-temp/sentry-cli releases files $CIRCLE_TAG upload-sourcemaps public/packs;
             echo "Set commits:";
             sentry-temp/sentry-cli releases set-commits $CIRCLE_TAG --commit RobinDaugherty/release_maker-ruby@$CIRCLE_SHA1;
             echo "Finalize commit:";
