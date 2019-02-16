@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import * as Sentry from '@sentry/browser'
 import RepoSettings from 'components/RepoSettings'
 import LoadIndicator from 'components/shared/LoadIndicator'
+import { fetchFromBackend, UnexpectedBackendResponseError } from 'lib/backend-data'
 
 class RepoPage extends React.Component {
   constructor(props) {
@@ -15,12 +16,11 @@ class RepoPage extends React.Component {
     this.state = {
       repo,
       isFetchingRepo: false,
-      wasServerError: false,
     }
   }
 
   componentDidMount() {
-    if (!this.state.repo) {
+    if (!this.state.repo && !this.state.isFetchingRepo) {
       this.fetchRepo()
     }
   }
@@ -61,7 +61,7 @@ class RepoPage extends React.Component {
     })
 
     const repoPath = `/${this.props.match.params.type}/${this.props.match.params.name}`
-    return fetch(`/api/repos${repoPath}`, {
+    return fetchFromBackend(`/api/repos${repoPath}`, {
       method: 'GET',
     }).then((response) => {
       if (response.ok) {
@@ -69,28 +69,17 @@ class RepoPage extends React.Component {
           this.setState({
             repo: json.repo,
             isFetchingRepo: false,
-            wasServerError: false,
           })
         }).catch((error) => {
-          this.setState({
-            isFetchingRepo: false,
-            wasServerError: true,
-          })
-          Sentry.captureException(error)
-          console.log('Failure fetching repo while parsing response')
-          console.log(error)
+          this.setState(() => { throw error })
         })
+      } else if (response.status == 404) {
+        this.props.onContentNotFound(this.props.location)
       } else {
-        throw response
+        this.setState(() => { throw new UnexpectedBackendResponseError(response.status) })
       }
     }).catch((error) => {
-      this.setState({
-        isFetchingRepo: false,
-        wasServerError: true,
-      })
-      Sentry.captureException(error)
-      console.log('Failure fetching repo')
-      console.log(error)
+      this.setState(() => { throw error })
     })
   }
 
@@ -112,17 +101,21 @@ class RepoPage extends React.Component {
           />
         )}
       </React.Fragment>
-    );
+    )
   }
 }
 
 RepoPage.propTypes = {
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       type: PropTypes.oneOf(['gh']).isRequired,
       name: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  onContentNotFound: PropTypes.func.isRequired,
 }
 
 export default RepoPage

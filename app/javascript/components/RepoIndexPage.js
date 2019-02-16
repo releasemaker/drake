@@ -6,6 +6,7 @@ import { Button, Colors, Sizes } from 'react-foundation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithubAlt } from '@fortawesome/free-brands-svg-icons'
 import { faPlusCircle, faCompactDisc } from '@fortawesome/free-solid-svg-icons'
+import { fetchFromBackend, UnexpectedBackendResponseError } from 'lib/backend-data'
 import LoadIndicator from 'components/shared/LoadIndicator'
 
 class RepoIndexRow extends React.PureComponent {
@@ -50,7 +51,6 @@ class RepoIndexPage extends React.Component {
       repos,
       searchTerm: query.get('q') || '',
       isFetchingRepos: false,
-      wasServerError: false,
       totalPageCount: null,
       fetchedPageCount: 0,
     }
@@ -82,7 +82,7 @@ class RepoIndexPage extends React.Component {
 
   fetchNextPageOfRepos() {
     const nextPageNum = this.state.fetchedPageCount + 1
-    return fetch(`/api/repos?page=${nextPageNum}`, {
+    return fetchFromBackend(`/api/repos?page=${nextPageNum}`, {
       method: 'GET',
     }).then((response) => {
       if (response.ok) {
@@ -93,32 +93,19 @@ class RepoIndexPage extends React.Component {
             totalPageCount: json.pagination.totalPages,
             fetchedPageCount: json.pagination.currentPageNum,
             isFetchingRepos: morePagesToFetch,
-            wasServerError: false,
           }, () => {
             if (morePagesToFetch) {
               this.fetchNextPageOfRepos()
             }
           })
         }).catch((error) => {
-          this.setState({
-            isFetchingRepos: false,
-            wasServerError: true,
-          })
-          Sentry.captureException(error)
-          console.log('Failure enabling repo while parsing response')
-          console.log(error)
+          this.setState(() => { throw error })
         })
       } else {
-        throw response
+        this.setState(() => { throw new UnexpectedBackendResponseError(response.status) })
       }
     }).catch((error) => {
-      this.setState({
-        isFetchingRepos: false,
-        wasServerError: true,
-      })
-      Sentry.captureException(error)
-      console.log('Failure enabling repo')
-      console.log(error)
+      this.setState(() => { throw error })
     })
   }
 
@@ -184,7 +171,7 @@ class RepoIndexPage extends React.Component {
         )}
         {this.state.isFetchingRepos && <LoadIndicator>Loading more</LoadIndicator>}
       </React.Fragment>
-    );
+    )
   }
 }
 

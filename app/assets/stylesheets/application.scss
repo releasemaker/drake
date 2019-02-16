@@ -46,3 +46,27 @@ table.repos {
     }
   }
 }
+
+#not-found-page, #error-page {
+  .messaging {
+    padding: 2rem 5rem;
+    color: white;
+    a {
+      color: #66CCFF;
+    }
+  }
+}
+
+#not-found-page {
+  height: 100vh;
+  min-height: 4in;
+  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), image-url("andrew-neel-133200.jpg");
+  background-size: cover;
+}
+
+#error-page {
+  height: 100vh;
+  min-height: 4in;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)), image-url("alistair-macrobert-688941.jpg");
+  background-size: cover;
+}

@@ -4,7 +4,7 @@ import * as Sentry from '@sentry/browser'
 import { Button, Switch, Colors, Sizes } from 'react-foundation'
 import AddRepoButton from 'components/AddRepoButton'
 import SyncIndicator from 'components/shared/SyncIndicator'
-import fetch from 'lib/fetch'
+import { fetchFromBackend, UnexpectedBackendResponseError } from 'lib/backend-data'
 
 class RepoSettings extends React.Component {
   constructor(props) {
@@ -12,7 +12,6 @@ class RepoSettings extends React.Component {
 
     this.state = {
       isMakingDisableRequest: false,
-      wasServerError: false,
     }
   }
 
@@ -21,7 +20,7 @@ class RepoSettings extends React.Component {
       isMakingDisableRequest: true,
     })
 
-    return fetch(`/api/repos${this.props.path}`, {
+    return fetchFromBackend(`/api/repos${this.props.path}`, {
       method: 'PATCH',
       body: JSON.stringify({
         repo: {
@@ -34,28 +33,15 @@ class RepoSettings extends React.Component {
           this.props.onUpdated && this.props.onUpdated(this.props.path, json.repo)
           this.setState({
             isMakingDisableRequest: false,
-            wasServerError: false,
           })
         }).catch((error) => {
-          this.setState({
-            isMakingDisableRequest: false,
-            wasServerError: true,
-          })
-          Sentry.captureException(error)
-          console.log('Failure disabling repo while parsing response')
-          console.log(error)
+          this.setState(() => { throw error })
         })
       } else {
-        throw response
+        this.setState(() => { throw new UnexpectedBackendResponseError(response.status) })
       }
     }).catch((error) => {
-      this.setState({
-        isMakingDisableRequest: false,
-        wasServerError: true,
-      })
-      Sentry.captureException(error)
-      console.log('Failure disabling repo')
-      console.log(error)
+      this.setState(() => { throw error })
     })
   }
 
@@ -90,7 +76,7 @@ class RepoSettings extends React.Component {
           />
         )}
       </React.Fragment>
-    );
+    )
   }
 }
 
