@@ -1,8 +1,0 @@
-- content_for :title
-  | #{@repo.name} Settings
-
-h1 #{@repo.name} Settings
-
-= form_for @repo.becomes(Repo) do |f|
-  = f.check_box :enabled
-  = f.submit "Save"
