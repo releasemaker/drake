@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Github Webhooks", type: :request do
+RSpec.describe GithubWebhooksController, type: :request do
   context '#create' do
     let(:action) { :post }
     let(:path) { "/github_webhooks" }

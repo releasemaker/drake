@@ -27,10 +27,9 @@ group :red_green_refactor, halt_on_fail: true do
     rspec_format += " --format html --out ./tmp/spec_results.html"
   end
 
-  rspec_options[:cmd] = "bundle exec rspec #{rspec_format}"
+  rspec_options[:cmd] = "bin/rspec #{rspec_format}"
 
   guard 'rspec', rspec_options do
-    watch(%r{spec/(rails|spec)_helper.rb})              { "spec" }
     watch(%r{^spec/.+_spec\.rb$})
     watch(%r{^app/(.+)\.rb$})                           { |m| "spec/#{m[1]}_spec.rb" }
     watch(%r{^app/admin/(.*)\.rb$})                     { |m| "spec/request/#{m[1]}_spec.rb" }

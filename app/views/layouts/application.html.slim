@@ -6,9 +6,10 @@ html lang="en"
 
     title == content_for?(:title) ? "#{yield(:title)} | Release Maker" : "Release Maker"
 
+    = render "layouts/sentry"
     = stylesheet_link_tag "application"
-    = javascript_include_tag "application", "data-turbolinks-track" => true
-    = csrf_meta_tag
+    = javascript_pack_tag "application"
+    = csrf_meta_tags
 
   body
     - if show_navigation?
@@ -16,7 +17,7 @@ html lang="en"
         div.top-bar-left
           ul.dropdown.menu data-dropdown-menu=true
             li.menu-text Release Maker
-            li = link_to "Projects", repos_path
+            li = link_to "Projects", dashboard_path
         div.top-bar-right
           ul.menu
             li = link_to "Sign Out", sign_out_path, method: :delete

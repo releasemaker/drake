@@ -1,6 +1,8 @@
 # Handles webhooks sent by Github.
 class GithubWebhooksController < ApplicationApiController
   include GithubWebhook::Processor
+  do_not_require_login
+  skip_authorization_check
 
   rescue_from ::GithubWebhook::Processor::SignatureError, with: :signature_error
 

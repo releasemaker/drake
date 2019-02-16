@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Authentication", type: :request do
+RSpec.describe SessionsController, type: :request do
   describe "GET /auth/github/callback" do
     let(:do_the_thing) { get "/auth/github/callback" }
 
@@ -49,8 +49,8 @@ RSpec.describe "Authentication", type: :request do
       end
       context 'when the user tried to access a specific page before signing in' do
         it 'redirects to the page they tried to access' do
-          expect(get(repos_path)).to redirect_to(sign_in_path)
-          expect(do_the_thing).to redirect_to(repos_path)
+          expect(get("/gh/test/repo")).to redirect_to(sign_in_path)
+          expect(do_the_thing).to redirect_to("/gh/test/repo")
         end
       end
       context 'when the user went directly to the sign-in page' do
@@ -213,12 +213,14 @@ RSpec.describe "Authentication", type: :request do
         expect(controller.current_user).to eq(user)
         expect(controller).to be_logged_in
       end
+
       context 'when the user tried to access a specific page before signing in' do
         it 'redirects to the page they tried to access' do
-          expect(get(repos_path)).to redirect_to(sign_in_path)
-          expect(the_request).to redirect_to(repos_path)
+          expect(get("/gh/owner/repo")).to redirect_to(sign_in_path)
+          expect(the_request).to redirect_to("/gh/owner/repo")
         end
       end
+
       context 'when the user went directly to the sign-in page' do
         it "redirects to the dashboard" do
           expect(the_request).to redirect_to(dashboard_path)

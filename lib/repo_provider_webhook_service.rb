@@ -41,11 +41,15 @@ class RepoProviderWebhookService
   end
 
   def remove_from_provider
-    repo.github_client.repos.hooks.delete(
-      repo.owner_name,
-      repo.repo_name,
-      repo.provider_webhook_data.id,
-    )
+    begin
+      repo.github_client.repos.hooks.delete(
+        repo.owner_name,
+        repo.repo_name,
+        repo.provider_webhook_data.id,
+      )
+    rescue Github::Error::NotFound
+      nil
+    end
     repo.update_attributes! provider_webhook_data: nil
   end
 end

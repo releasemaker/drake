@@ -19,4 +19,14 @@ class GithubRepo < Repo
   def github_client
     admin_user.github_client
   end
+
+  ##
+  # Used as the first part of the friendly URL for a repo, and identifies the type in the API.
+  def short_type
+    'gh'
+  end
+
+  def friendly_path
+    "/#{short_type}/#{name}"
+  end
 end

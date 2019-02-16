@@ -82,6 +82,7 @@ RSpec.describe RepoProviderWebhookService do
           end
         end
       end
+
       context 'with a github repo that is disabled' do
         let(:repo_enabled) { false }
 
@@ -93,16 +94,40 @@ RSpec.describe RepoProviderWebhookService do
             do_the_thing
           end
         end
+
         context 'when provider_webhook_data is set' do
           let(:repo_provider_webhook_data) { { id: 42 } }
+
           it 'removes the github webhook' do
             expect(hooks_api).to receive(:delete).with(repo.owner_name, repo.repo_name, 42)
             do_the_thing
           end
+
           it 'updates provider_webhook_data' do
             do_the_thing
             repo.reload
             expect(repo.provider_webhook_data).to be_empty
+          end
+
+          context 'when github raises NotFound when trying to remove the webhook' do
+            let(:fake_response) {
+              {
+                response_headers: [],
+                body: '',
+                status: 404,
+                method: 'GET',
+                url: '/test',
+              }
+            }
+            before do
+              allow(hooks_api).to receive(:delete).and_raise(Github::Error::NotFound, fake_response)
+            end
+
+            it 'updates provider_webhook_data' do
+              do_the_thing
+              repo.reload
+              expect(repo.provider_webhook_data).to be_empty
+            end
           end
         end
       end

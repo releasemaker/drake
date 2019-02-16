@@ -5,6 +5,7 @@ require "rails"
 require "active_model/railtie"
 require "active_job/railtie"
 require "active_record/railtie"
+require "active_storage/engine"
 require "action_controller/railtie"
 require "action_mailer/railtie"
 require "action_view/railtie"
@@ -19,11 +20,12 @@ Bundler.require(*Rails.groups)
 module ReleaseMaker
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.1
+    config.load_defaults 5.2
 
     # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+    # Application configuration can go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
 
     extra_paths = %W(
       #{config.root}/lib
@@ -36,5 +38,6 @@ module ReleaseMaker
 
     config.x.github = Hashie::Mash.new config_for(:github)
     config.x.webhooks = Hashie::Mash.new config_for(:webhooks)
+    config.x.sentry = Hashie::Mash.new config_for(:sentry)
   end
 end
