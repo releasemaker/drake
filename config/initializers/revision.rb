@@ -3,7 +3,7 @@
 class RevisionFinder
   class << self
     def revision
-      detect_release_from_capistrano
+      release_from_capistrano || revision_from_capistrano || test_revision || "development"
     end
 
     private
@@ -12,8 +12,14 @@ class RevisionFinder
       "test" if Rails.env.test?
     end
 
-    def detect_release_from_capistrano
+    def revision_from_capistrano
       File.read(Rails.root.join('REVISION')).strip
+    rescue
+      nil
+    end
+
+    def release_from_capistrano
+      File.read(Rails.root.join('RELEASE')).strip
     rescue
       nil
     end
