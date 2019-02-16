@@ -5,6 +5,7 @@
 # Include only the specific lines that you're changing from the defaults.
 #
 ---
+require: rubocop-rspec
 AllCops:
   Exclude:
   - "Gemfile.lock"
@@ -17,19 +18,7 @@ AllCops:
 Rails:
   Enabled: true
 
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
 Bundler/OrderedGems:
-  Enabled: false
-Style/IfUnlessModifier:
-  MaxLineLength: 100
-Style/WhileUntilModifier:
-  MaxLineLength: 100
-Style/Documentation:
-  Exclude:
-  - 'db/**/*.rb'
-Style/SymbolArray:
   Enabled: false
 Metrics/LineLength:
   Max: 100
@@ -40,34 +29,75 @@ Metrics/MethodLength:
   - 'db/**/*.rb'
 Metrics/BlockLength:
   Exclude:
+  - 'Guardfile'
   - 'spec/**/*.rb'
   - 'app/controllers/api/**/*.rb'
-Style/BracesAroundHashParameters:
-  Enabled: false
-Style/ClassCheck:
-  Enabled: false
+  - 'app/admin/**/*.rb'
+  - 'app/views/**/*.arb'
+Layout/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
 Layout/DotPosition:
   EnforcedStyle: trailing
+Layout/IndentArray:
+  EnforcedStyle: consistent
 Layout/IndentHash:
   EnforcedStyle: consistent
 Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
-Layout/AlignParameters:
-  EnforcedStyle: with_fixed_indentation
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+  - 'spec/**/*.rb'
+Style/BracesAroundHashParameters:
+  Enabled: false
 Style/BlockDelimiters:
   EnforcedStyle: semantic
   Exclude:
   - 'spec/factories/**/*.rb'
+Style/ClassCheck:
+  Enabled: false
+Style/Documentation:
+  Exclude:
+  - 'db/**/*.rb'
+Style/LambdaCall:
+  Exclude:
+  - '**/*.jbuilder'
 Style/NumericLiterals:
   Exclude:
   - 'spec/**/*.rb'
+Style/RegexpLiteral:
+  Exclude:
+  - 'Guardfile'
 Style/StringLiterals:
   Enabled: false
 Style/StringLiteralsInInterpolation:
   Enabled: false
-Style/TrailingCommaInLiteral:
+Style/SymbolArray:
+  Enabled: false
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: comma
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
+RSpec/ContextWording:
+  Enabled: false
+RSpec/ContextWording:
+  Enabled: false
+RSpec/EmptyLineAfterHook:
+  Enabled: false
+RSpec/EmptyLineAfterSubject:
+  Enabled: false
+RSpec/ExampleLength:
+  Enabled: false
+RSpec/MultipleExpectations:
+  Max: 5
+RSpec/NestedGroups:
+  Max: 6
+RSpec/LetSetup:
+  Enabled: false
+RSpec/ScatteredLet:
+  Enabled: false
+RSpec/ScatteredSetup:
+  Enabled: false
