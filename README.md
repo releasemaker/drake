@@ -1,7 +1,6 @@
 [![CircleCI](https://circleci.com/gh/RobinDaugherty/release_maker-ruby.svg?style=shield&circle-token=fec31c3a0c46b668a8338b1c935e3d4c4654259e)](https://circleci.com/gh/RobinDaugherty/release_maker-ruby)
 [![Codacy](https://api.codacy.com/project/badge/Grade/8e9414818c5149cca573eec409a640dc)](https://www.codacy.com/app/robindaugherty/release_maker-ruby?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RobinDaugherty/release_maker-ruby&amp;utm_campaign=Badge_Grade)
 [![Coverage](https://api.codacy.com/project/badge/Coverage/8e9414818c5149cca573eec409a640dc)](https://www.codacy.com/app/robindaugherty/release_maker-ruby?utm_source=github.com&utm_medium=referral&utm_content=RobinDaugherty/release_maker-ruby&utm_campaign=Badge_Coverage)
-[![Cloud66](https://app.cloud66.com/stacks/badge/fc15b8d8451e3b583d329cc88678e10c.svg)](https://app.cloud66.com/stacks/47717)
 
 # Release Maker
 
