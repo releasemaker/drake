@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::ReposController, type: :request do
-  let(:user) { FactoryGirl.create(:user, :with_credentials) }
+  let(:user) { FactoryBot.create(:user, :with_credentials) }
   let(:json_body) { JSON.parse(response.body) }
 
   describe 'GET /api/repos' do
@@ -14,9 +14,9 @@ RSpec.describe Api::ReposController, type: :request do
       before(:each) do
         login_user user
       end
-      let!(:member_repo) { FactoryGirl.create(:github_repo) }
-      let!(:nonmember_repo) { FactoryGirl.create(:github_repo) }
-      let!(:membership) { FactoryGirl.create(:repo_membership, repo: member_repo, user: user) }
+      let!(:member_repo) { FactoryBot.create(:github_repo) }
+      let!(:nonmember_repo) { FactoryBot.create(:github_repo) }
+      let!(:membership) { FactoryBot.create(:repo_membership, repo: member_repo, user: user) }
 
       it 'responds with OK' do
         do_the_thing
@@ -75,7 +75,7 @@ RSpec.describe Api::ReposController, type: :request do
       before(:each) do
         login_user user
       end
-      let(:repo_attributes) { FactoryGirl.attributes_for(:github_repo) }
+      let(:repo_attributes) { FactoryBot.attributes_for(:github_repo) }
 
       before(:each) do
         allow(RepoProviderWebhookService).to receive(:new).and_return(repo_provider_webhook_service)
@@ -91,14 +91,14 @@ RSpec.describe Api::ReposController, type: :request do
         instance_double(PresentGithubRepoByName, repo: repo)
       }
       let!(:repo) {
-        FactoryGirl.create(
+        FactoryBot.create(
           :github_repo,
           name: "#{owner_name}/#{repo_name}",
           provider_uid_or_url: '1296269',
           enabled: false,
         )
       }
-      let!(:membership) { FactoryGirl.create(:repo_membership, :admin, repo: repo, user: user) }
+      let!(:membership) { FactoryBot.create(:repo_membership, :admin, repo: repo, user: user) }
 
       it 'uses PresentGithubRepoByName to find or create the GithubRepo record' do
         do_the_thing
@@ -141,7 +141,7 @@ RSpec.describe Api::ReposController, type: :request do
       end
 
       context 'when the current user is not an admin on the repo' do
-        let!(:membership) { FactoryGirl.create(:repo_membership, repo: repo, user: user) }
+        let!(:membership) { FactoryBot.create(:repo_membership, repo: repo, user: user) }
 
         it 'does not enable the repo' do
           expect { do_the_thing rescue CanCan::AccessDenied }.not_to change { repo.reload.enabled }
@@ -161,7 +161,7 @@ RSpec.describe Api::ReposController, type: :request do
 
   describe 'GET /api/repos/gh/:owner/:repo' do
     let(:do_the_thing) { get "/api/repos/gh/#{repo.owner_name}/#{repo.repo_name}" }
-    let!(:repo) { FactoryGirl.create(:github_repo) }
+    let!(:repo) { FactoryBot.create(:github_repo) }
 
     it_behaves_like :authenticated_api_endpoint
 
@@ -177,7 +177,7 @@ RSpec.describe Api::ReposController, type: :request do
         instance_double(PresentGithubRepoByName, repo: repo)
       }
 
-      let!(:membership) { FactoryGirl.create(:repo_membership, repo: repo, user: user) }
+      let!(:membership) { FactoryBot.create(:repo_membership, repo: repo, user: user) }
 
       it 'uses PresentGithubRepoByName to find or create the GithubRepo record' do
         do_the_thing
@@ -242,7 +242,7 @@ RSpec.describe Api::ReposController, type: :request do
         'CONTENT_TYPE' => 'application/json',
       }
     }
-    let(:repo) { FactoryGirl.create(:github_repo) }
+    let(:repo) { FactoryBot.create(:github_repo) }
     let(:repo_attributes) { {} }
 
     it_behaves_like :authenticated_api_endpoint
@@ -266,7 +266,7 @@ RSpec.describe Api::ReposController, type: :request do
         instance_double(PresentGithubRepoByName, repo: repo)
       }
 
-      let!(:membership) { FactoryGirl.create(:repo_membership, :admin, repo: repo, user: user) }
+      let!(:membership) { FactoryBot.create(:repo_membership, :admin, repo: repo, user: user) }
 
       it 'uses PresentGithubRepoByName to find or create the GithubRepo record' do
         do_the_thing
@@ -311,7 +311,7 @@ RSpec.describe Api::ReposController, type: :request do
         end
 
         context 'enabling' do
-          let(:repo) { FactoryGirl.create(:github_repo, enabled: false) }
+          let(:repo) { FactoryBot.create(:github_repo, enabled: false) }
           let(:repo_attributes) { { isEnabled: true } }
 
           it 'updates the repo' do
@@ -344,7 +344,7 @@ RSpec.describe Api::ReposController, type: :request do
         end
 
         context 'changing nothing' do
-          let(:repo) { FactoryGirl.create(:github_repo) }
+          let(:repo) { FactoryBot.create(:github_repo) }
           let(:repo_attributes) { { enabled: true } }
 
           it 'updates the webhook' do
@@ -382,7 +382,7 @@ RSpec.describe Api::ReposController, type: :request do
       end
 
       context 'with a repo for which the user is not an admin' do
-        let!(:membership) { FactoryGirl.create(:repo_membership, repo: repo, user: user) }
+        let!(:membership) { FactoryBot.create(:repo_membership, repo: repo, user: user) }
 
         it 'responds with Access Denied' do
           expect { do_the_thing }.to raise_error(CanCan::AccessDenied)

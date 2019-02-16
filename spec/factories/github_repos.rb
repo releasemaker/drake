@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :github_repo do
     sequence(:name) { |n| "GithubOrg/GithubRepo#{n}" }
     enabled true

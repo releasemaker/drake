@@ -9,8 +9,8 @@ RSpec.describe PresentGithubRepoByName do
     subject(:repo) { instance.repo }
     let(:owner_name) { "octocat" }
     let(:repo_name) { "Hello-World" }
-    let(:user) { FactoryGirl.create(:user, :with_credentials) }
-    let!(:user_github_identity) { FactoryGirl.create(:user_identity, :github, user: user) }
+    let(:user) { FactoryBot.create(:user, :with_credentials) }
+    let!(:user_github_identity) { FactoryBot.create(:user_identity, :github, user: user) }
 
     let(:api_data) { json_fixture('github/repository_admin') }
     let!(:api_request) {
@@ -20,7 +20,7 @@ RSpec.describe PresentGithubRepoByName do
 
     context 'when a GithubRepo record already exists' do
       let!(:existing_repo) {
-        FactoryGirl.create(:github_repo, name: 'octocat/Hello-World', enabled: false)
+        FactoryBot.create(:github_repo, name: 'octocat/Hello-World', enabled: false)
       }
 
       it 'returns the GithubRepo object' do
@@ -33,7 +33,7 @@ RSpec.describe PresentGithubRepoByName do
 
       context 'when the user already has a RepoMembership for this repo' do
         let!(:existing_repo_membership) {
-          FactoryGirl.create(:repo_membership, user: user, repo: existing_repo)
+          FactoryBot.create(:repo_membership, user: user, repo: existing_repo)
         }
 
         it 'does not fetch the repository information from Github' do

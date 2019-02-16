@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :repo_membership do
     association :repo, factory: :github_repo
     user

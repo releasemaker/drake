@@ -9,7 +9,7 @@ RSpec.describe PullRequestHandler do
     end
     let(:draft_release) { instance_double(DraftRelease) }
     let(:repo) {
-      FactoryGirl.create(
+      FactoryBot.create(
         :github_repo,
         provider_uid_or_url: Rails.configuration.x.github.test_repo_uid,
         name: "#{Rails.configuration.x.github.test_repo_owner_name}/#{repo_name}",

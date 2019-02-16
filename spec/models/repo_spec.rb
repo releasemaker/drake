@@ -28,12 +28,12 @@ RSpec.describe Repo, type: :model do
 
   describe '#admin_user' do
     context 'with a read-only member' do
-      let!(:read_membership) { FactoryGirl.create(:repo_membership, repo: subject) }
+      let!(:read_membership) { FactoryBot.create(:repo_membership, repo: subject) }
       it 'returns nil' do
         expect(subject.admin_user).to be_nil
       end
       context 'and an admin member' do
-        let!(:admin_membership) { FactoryGirl.create(:repo_membership, :admin, repo: subject) }
+        let!(:admin_membership) { FactoryBot.create(:repo_membership, :admin, repo: subject) }
         it 'returns the admin user' do
           expect(subject.admin_user).to eq(admin_membership.user)
         end
@@ -43,8 +43,8 @@ RSpec.describe Repo, type: :model do
 
   context 'a user' do
     subject(:ability) { Ability.new(user) }
-    let(:user) { FactoryGirl.create(:user) }
-    let(:repo) { FactoryGirl.create(described_class) }
+    let(:user) { FactoryBot.create(:user) }
+    let(:repo) { FactoryBot.create(described_class) }
 
     it { is_expected.to be_able_to(:create, described_class) }
 
@@ -54,7 +54,7 @@ RSpec.describe Repo, type: :model do
 
     context 'that is a member of the repo' do
       let!(:repo_membership) {
-        FactoryGirl.create(:repo_membership, repo: repo, user: user)
+        FactoryBot.create(:repo_membership, repo: repo, user: user)
       }
 
       it { is_expected.to be_able_to(:read, repo) }
@@ -63,7 +63,7 @@ RSpec.describe Repo, type: :model do
 
       context 'and is an admin' do
         let!(:repo_membership) {
-          FactoryGirl.create(:repo_membership, :admin, repo: repo, user: user)
+          FactoryBot.create(:repo_membership, :admin, repo: repo, user: user)
         }
 
         it { is_expected.to be_able_to(:update, repo) }
@@ -72,7 +72,7 @@ RSpec.describe Repo, type: :model do
     end
 
     context 'that is a super admin' do
-      let(:user) { FactoryGirl.create(:user, :super_admin) }
+      let(:user) { FactoryBot.create(:user, :super_admin) }
 
       it { is_expected.to be_able_to(:read, repo) }
       it { is_expected.to be_able_to(:update, repo) }
