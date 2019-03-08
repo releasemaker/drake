@@ -48,11 +48,22 @@ table.repos {
 }
 
 #not-found-page, #error-page {
-  .messaging {
+  padding: 1rem;
+  @include breakpoint(medium) {
     padding: 2rem 5rem;
+  }
+
+  .messaging {
+    h1:first-child {
+      line-height: 1em;
+    }
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
     color: white;
     a {
-      color: #66CCFF;
+      color: #B4E6FF;
     }
   }
 }
@@ -60,13 +71,13 @@ table.repos {
 #not-found-page {
   height: 100vh;
   min-height: 4in;
-  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), image-url("andrew-neel-133200.jpg");
+  background: image-url("andrew-neel-133200-web.jpg");
   background-size: cover;
 }
 
 #error-page {
   height: 100vh;
   min-height: 4in;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)), image-url("alistair-macrobert-688941.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1)), image-url("alistair-macrobert-688941-web.jpg");
   background-size: cover;
 }
