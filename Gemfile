@@ -52,9 +52,6 @@ gem 'github_webhook'
 # A useful console
 gem 'pry-rails'
 
-# Performance monitoring and exception reporting
-gem 'newrelic_rpm'
-
 # Exception reporting to Sentry
 gem "sentry-raven"
 
