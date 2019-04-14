@@ -42,8 +42,6 @@ The following are required in production:
 - `GITHUB_OAUTH_SECRET`
 - `GITHUB_WEBHOOK_SECRET`: Webhook secret configured on Github
 - `WEBHOOK_HOST`
-- `NEW_RELIC_LICENSE_KEY`: Used by New Relic. Should not be set in development unless developing changes to New Relic integration. Should never be set in test environment.
-- `NEW_RELIC_APP_NAME`: Used by New Relic.
 - `SENTRY_DSN`: Used by Sentry. Should not be set in development unless developing changes to Sentry integration.
 
 ### Github OAuth
