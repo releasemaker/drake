@@ -3,7 +3,7 @@
     window.SentryConfig = {
       dsn: '<%= Rails.configuration.x.sentry['javascript_dsn'] %>',
       environment: '<%= ENV['RAILS_ENV'] %>',
-      release: '<%= APPLICATION_REVISION %>',
+      release: '<%= ApplicationRelease.current %>',
       xhrUrlIgnorePattern: /smartlook|mixpanel|google-analytics/,
       user: <%- if current_user.present? -%>
         {
