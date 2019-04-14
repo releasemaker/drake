@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 ##
-# Gets the current version of the application.
-class RevisionFinder
+# Gets the current release name of the application.
+class ApplicationRelease
   class << self
-    def revision
-      release_from_capistrano || revision_from_capistrano || test_revision || "development"
+    def current
+      @current ||= release_from_capistrano || revision_from_capistrano || test_revision || "development"
     end
 
     private
@@ -25,5 +27,3 @@ class RevisionFinder
     end
   end
 end
-
-APPLICATION_REVISION = RevisionFinder.revision
