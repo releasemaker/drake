@@ -50,7 +50,7 @@ Callback URL for Github is `/auth/github/callback`
 
 ## Development
 
-It is recommended that you use [Pow](http://pow.cx) or [puma-dev](https://github.com/puma/puma-dev)
+It is recommended that you use [puma-dev](https://github.com/puma/puma-dev)
 so that the application runs
 on a real-looking hostname, and doesn't clash with other applications.
 This is best managed using Powder, which can be installed using `gem install powder`.
@@ -59,10 +59,8 @@ To set this application up:
 
     powder link
 
-Then visit [http://release-maker.dev](http://release-maker.dev).
+Then visit [http://releasemaker.localdev](http://releasemaker.localdev).
 The app will be started automatically.
-
-In addition, you can use [Anvil](http://anvilformac.com) as a UI to manage Pow.
 
 ### Better Errors
 
@@ -72,12 +70,8 @@ It is presented when an error occurs during an HTML request.
 
 If an error occurs during a JSON request, the response will include some basic information about the error that occurred.
 
-Visiting [/__better_errors](http://release-maker.dev) will present the console
+Visiting [/__better_errors](http://releasemaker.localdev/__better_errors) will present the console
 for the most recent error that occurred.
-
-Occasionally, Better Errors tries to present far too much data and locks up the Rails process.
-When this occurs, it's necessary to restart Pow
-(which can be done using `powder respawn`).
 
 ### Tests
 
