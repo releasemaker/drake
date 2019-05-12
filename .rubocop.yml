@@ -21,7 +21,7 @@ Rails:
 Bundler/OrderedGems:
   Enabled: false
 Metrics/LineLength:
-  Max: 100
+  Max: 120
   Exclude:
   - 'db/**/*.rb'
 Metrics/MethodLength:
@@ -90,13 +90,17 @@ RSpec/EmptyLineAfterHook:
 RSpec/EmptyLineAfterSubject:
   Enabled: false
 RSpec/ExampleLength:
+  Max: 10
+RSpec/ImplicitSubject:
+  Enabled: false
+RSpec/LetSetup:
+  Enabled: false
+RSpec/MessageSpies:
   Enabled: false
 RSpec/MultipleExpectations:
   Max: 5
 RSpec/NestedGroups:
   Max: 6
-RSpec/LetSetup:
-  Enabled: false
 RSpec/ScatteredLet:
   Enabled: false
 RSpec/ScatteredSetup:

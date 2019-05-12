@@ -1,0 +1,28 @@
+#!/bin/bash
+set -euo pipefail
+
+if [[ $CIRCLE_REPOSITORY_URL =~ git@github.com:(.+)\.git ]]; then
+  CIRCLE_REPOSITORY_URL="https://github.com/${BASH_REMATCH[1]}"
+fi
+DEPLOYMENT_DESTINATION_NAME=$1
+GITHUB_RELEASE_URL="$CIRCLE_REPOSITORY_URL/releases/tag/$CIRCLE_TAG"
+
+payload=$(
+cat <<EOM
+{
+    "attachments": [
+        {
+            "fallback": "Deployed $CIRCLE_PROJECT_REPONAME version $CIRCLE_TAG to $DEPLOYMENT_DESTINATION_NAME $GITHUB_RELEASE_URL",
+            "color": "#42C88A",
+            "title": "Deployed $CIRCLE_PROJECT_REPONAME to $DEPLOYMENT_DESTINATION_NAME",
+            "fields": [
+                {"title": "Destination", "short": true, "value": "$DEPLOYMENT_DESTINATION_NAME"},
+                {"title": "Release", "short": true, "value": "<$GITHUB_RELEASE_URL|$CIRCLE_TAG>"},
+                {"title": "CircleCI Build", "short": true, "value": "<$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM>"},
+            ]
+        }
+    ]
+}
+EOM
+)
+curl -X POST --data-urlencode payload="$payload" "$SLACK_WEBHOOK_URL"
