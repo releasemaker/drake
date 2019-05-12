@@ -7,7 +7,8 @@
 // layout file, like app/views/layouts/application.html.erb
 
 require('raf').polyfill()
-import '@babel/polyfill'
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import 'whatwg-fetch'
 import 'intl'
 import 'lib/polyfills/dataset'
