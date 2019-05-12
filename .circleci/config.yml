@@ -45,6 +45,7 @@ jobs:
           destination: build
       - store_test_results:
           path: /tmp/test-reports
+      - announce_build_failure
   deploy-to-staging:
     working_directory: ~/release_maker
     docker:
@@ -53,7 +54,7 @@ jobs:
           RAILS_ENV: production
           SENTRY_ORG: releasemaker
           SENTRY_PROJECT: releasemaker-staging
-          SENTRY_LOG_LEVEL: debug
+          # Requires SENTRY_AUTH_TOKEN to be set
     steps:
       - checkout
       - restore_all_caches
@@ -84,6 +85,8 @@ jobs:
             sentry-temp/sentry-cli releases finalize $CIRCLE_SHA1;
             echo "Deploy:";
             sentry-temp/sentry-cli releases deploys $CIRCLE_SHA1 new -e staging
+      - announce_master_deployment_failure:
+          deployment_destination: Staging
   deploy-to-production:
     working_directory: ~/release_maker
     docker:
@@ -92,7 +95,7 @@ jobs:
           RAILS_ENV: production
           SENTRY_ORG: releasemaker
           SENTRY_PROJECT: releasemaker
-          SENTRY_LOG_LEVEL: debug
+          # Requires SENTRY_AUTH_TOKEN to be set
     steps:
       - checkout
       - restore_all_caches
@@ -100,11 +103,11 @@ jobs:
           name: Bundle Install
           command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
       - run:
+          name: Set up SSH
+          command: bash ~/finch/.circleci/ssh_setup.sh
+      - run:
           name: Yarn Install
           command: yarn install
-      - run:
-          name: add host SSH keys
-          command: 'echo "hazel.rndsvc.net,18.217.125.199 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNKmVLo32LqgAgWvUJD681vB34qITMKWnjoX2uxXLwRliC+6xh0g5TLz8PJxU0X0R2nTaOrcusNJMLCRpiYrot8=" >> ~/.ssh/known_hosts'
       - run:
           name: deploy
           command: bundle exec cap production deploy
@@ -123,7 +126,49 @@ jobs:
             sentry-temp/sentry-cli releases finalize $CIRCLE_TAG;
             echo "Deploy:";
             sentry-temp/sentry-cli releases deploys $CIRCLE_TAG new -e production
+      - announce_release_deployment_failure:
+          deployment_destination: Production
+      - announce_release_deployment_completion:
+          deployment_destination: Production
 commands:
+  announce_build_failure:
+    parameters:
+    steps:
+      - run:
+          name: Post to Slack
+          command: |
+            [[ $CIRCLE_BRANCH = master ]] || exit 0
+            .circleci/announce-broken-build
+          when: on_fail
+  announce_master_deployment_failure:
+    parameters:
+      deployment_destination:
+        type: string
+    steps:
+      - run:
+          name: Post to Slack
+          command: |
+            .circleci/announce-failed-master-deploy << parameters.deployment_destination >>
+          when: on_fail
+  announce_release_deployment_failure:
+    parameters:
+      deployment_destination:
+        type: string
+    steps:
+      - run:
+          name: Post to Slack
+          command: |
+            .circleci/announce-failed-release-deploy << parameters.deployment_destination >>
+          when: on_fail
+  announce_release_deployment_completion:
+    parameters:
+      deployment_destination:
+        type: string
+    steps:
+      - run:
+          name: Post to Slack
+          command: |
+            .circleci/announce-completed-release-deploy << parameters.deployment_destination >>
   restore_all_caches:
     parameters:
     steps:
@@ -133,7 +178,6 @@ commands:
             - v1-{{ .Branch }}-packages-gemfile{{ checksum "Gemfile.lock" }}-yarn{{ checksum "yarn.lock" }}-{{ .Environment.CIRCLE_SHA1 }}
             - v1-{{ .Branch }}-packages-gemfile{{ checksum "Gemfile.lock" }}-yarn{{ checksum "yarn.lock" }}
             - v1-master-packages-gemfile{{ checksum "Gemfile.lock" }}-yarn{{ checksum "yarn.lock" }}
-            - v1-master-packages
 workflows:
   version: 2
   test-and-deploy:
