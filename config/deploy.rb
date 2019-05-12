@@ -56,11 +56,3 @@ set :rbenv_roles, :all # default value
 # set :bundle_path, -> { "vendor/bundle" } # Use the correct default that bundler itself uses.
 
 set :run_migrations, true
-
-namespace :deploy do
-  after :published, :restart_rails do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      execute "/usr/bin/touch '#{shared_path}/restart.txt'"
-    end
-  end
-end
