@@ -36,11 +36,11 @@ gem 'redis', '~> 4.0'
 group :development do
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
-  
+
   # For modern SSH key support
-  gem 'rbnacl', '>= 3.2', '< 5.0'
-  gem 'rbnacl-libsodium'
-  gem 'bcrypt_pbkdf', '~> 1.0'
+  gem 'rbnacl', '>= 3.2', '< 5.0', require: false
+  gem 'ed25519', require: false
+  gem 'bcrypt_pbkdf', '~> 1.0', require: false
 end
 
 # Reduces boot times through caching; required in config/boot.rb
