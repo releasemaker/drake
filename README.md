@@ -1,5 +1,5 @@
 [![CircleCI](https://circleci.com/gh/RobinDaugherty/release_maker-ruby.svg?style=shield&circle-token=fec31c3a0c46b668a8338b1c935e3d4c4654259e)](https://circleci.com/gh/RobinDaugherty/release_maker-ruby)
-[![Codacy](https://api.codacy.com/project/badge/Grade/d28ce4c6f44741d2a9bddd01a3ff08b0)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RobinDaugherty/release_maker-ruby&amp;utm_campaign=Badge_Grade)[![Coverage](https://api.codacy.com/project/badge/Coverage/d28ce4c6f44741d2a9bddd01a3ff08b0)](https://www.codacy.com/app/robindaugherty/release_maker-ruby?utm_source=github.com&utm_medium=referral&utm_content=RobinDaugherty/release_maker-ruby&utm_campaign=Badge_Coverage)
+[![Codacy](https://api.codacy.com/project/badge/Grade/d28ce4c6f44741d2a9bddd01a3ff08b0)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RobinDaugherty/release_maker-ruby&amp;utm_campaign=Badge_Grade)[![Coverage](https://api.codacy.com/project/badge/Coverage/d28ce4c6f44741d2a9bddd01a3ff08b0)](https://www.codacy.com/app/robindaugherty/release_maker-ruby?utm_source=github.com&utm_medium=referral&utm_content=RobinDaugherty/release_maker-ruby&utm_campaign=Badge_Coverage) [![Join the chat at https://gitter.im/Release-Maker/community](https://badges.gitter.im/Release-Maker/community.svg)](https://gitter.im/Release-Maker/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # Release Maker
 
@@ -50,7 +50,7 @@ Callback URL for Github is `/auth/github/callback`
 
 ## Development
 
-It is recommended that you use [Pow](http://pow.cx) or [puma-dev](https://github.com/puma/puma-dev)
+It is recommended that you use [puma-dev](https://github.com/puma/puma-dev)
 so that the application runs
 on a real-looking hostname, and doesn't clash with other applications.
 This is best managed using Powder, which can be installed using `gem install powder`.
@@ -59,10 +59,8 @@ To set this application up:
 
     powder link
 
-Then visit [http://release-maker.dev](http://release-maker.dev).
+Then visit [http://releasemaker.localdev](http://releasemaker.localdev).
 The app will be started automatically.
-
-In addition, you can use [Anvil](http://anvilformac.com) as a UI to manage Pow.
 
 ### Better Errors
 
@@ -72,12 +70,8 @@ It is presented when an error occurs during an HTML request.
 
 If an error occurs during a JSON request, the response will include some basic information about the error that occurred.
 
-Visiting [/__better_errors](http://release-maker.dev) will present the console
+Visiting [/__better_errors](http://releasemaker.localdev/__better_errors) will present the console
 for the most recent error that occurred.
-
-Occasionally, Better Errors tries to present far too much data and locks up the Rails process.
-When this occurs, it's necessary to restart Pow
-(which can be done using `powder respawn`).
 
 ### Tests
 
