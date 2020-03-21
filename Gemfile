@@ -55,7 +55,7 @@ gem "versionomy"
 
 # Style
 gem 'foundation-rails', "~> 6.0"
-gem 'foundation_rails_helper'
+gem 'foundation_rails_helper', '~> 3.0.0rc1'
 
 # Add jQuery is used by Foundation's JS
 gem 'jquery-rails'
