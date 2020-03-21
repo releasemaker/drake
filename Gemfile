@@ -99,7 +99,7 @@ group :development, :test do
   gem 'dotenv-rails'
 
   gem 'pry-byebug'
-  gem 'pry-doc'
+  # gem 'pry-doc' # Removed until support for Ruby 2.7.0 is added.
   # gem 'pry-remote'
   gem 'pry-rescue'
   # gem 'pry-stack_explorer'
