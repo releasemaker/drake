@@ -3,16 +3,16 @@ jobs:
   test:
     working_directory: ~/release_maker
     docker:
-      - image: randomservices/ruby:2.6.1-node-browsers
+      - image: randomservices/ruby:2.7.0-node-browsers
         environment:
-          DATABASE_URL: postgresql://ubuntu@localhost/release_maker_test?sslmode=disable
+          DATABASE_URL: postgresql://ubuntu:release_maker_test@localhost/release_maker_test?sslmode=disable
           RAILS_ENV: test
           RACK_ENV: test
       - image: postgres:11
         environment:
           POSTGRES_USER: ubuntu
           POSTGRES_DB: release_maker_test
-          POSTGRES_PASSWORD: ""
+          POSTGRES_PASSWORD: release_maker_test
     steps:
       - checkout
       - restore_all_caches
@@ -49,7 +49,7 @@ jobs:
   deploy-to-staging:
     working_directory: ~/release_maker
     docker:
-      - image: randomservices/ruby:2.6.1-node-browsers
+      - image: randomservices/ruby:2.7.0-node-browsers
         environment:
           RAILS_ENV: production
           SENTRY_ORG: releasemaker
@@ -90,7 +90,7 @@ jobs:
   deploy-to-production:
     working_directory: ~/release_maker
     docker:
-      - image: randomservices/ruby:2.6.1-node-browsers
+      - image: randomservices/ruby:2.7.0-node-browsers
         environment:
           RAILS_ENV: production
           SENTRY_ORG: releasemaker

@@ -62,7 +62,6 @@
     "jest-junit": "^6.4.0",
     "jest-prop-type-error": "^1.1.0",
     "prettier": "^1.14.3",
-    "weak": "^1.0.1",
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.3.1"
   }

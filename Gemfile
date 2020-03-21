@@ -1,15 +1,7 @@
 source 'https://rubygems.org'
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-
-ruby '2.6.1'
-
-git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
-  "https://github.com/#{repo_name}.git"
-end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.1'
+gem 'rails', '~> 6.0.0'
 
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
@@ -63,7 +55,7 @@ gem "versionomy"
 
 # Style
 gem 'foundation-rails', "~> 6.0"
-gem 'foundation_rails_helper'
+gem 'foundation_rails_helper', '~> 3.0.0rc1'
 
 # Add jQuery is used by Foundation's JS
 gem 'jquery-rails'
@@ -101,7 +93,7 @@ group :development, :test do
   gem 'dotenv-rails'
 
   gem 'pry-byebug'
-  gem 'pry-doc'
+  # gem 'pry-doc' # Removed until support for Ruby 2.7.0 is added.
   # gem 'pry-remote'
   gem 'pry-rescue'
   # gem 'pry-stack_explorer'
