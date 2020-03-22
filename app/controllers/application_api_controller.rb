@@ -1,5 +1,5 @@
 class ApplicationApiController < ActionController::Base
-  include Concerns::Authentication
+  include AuthenticatesRequests
 
   protect_from_forgery with: :null_session
 
