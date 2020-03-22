@@ -1,6 +1,6 @@
 # A person who can log in to the application.
 class User < ActiveRecord::Base
-  include Concerns::User::GithubAccount
+  include HasGithubAccount
 
   authenticates_with_sorcery!
   has_many :user_identities

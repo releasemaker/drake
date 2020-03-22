@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
-  include Concerns::Navigation
-  include Concerns::Authentication
+  include DisplaysNavigation
+  include AuthenticatesRequests
 
   protect_from_forgery with: :exception
 
