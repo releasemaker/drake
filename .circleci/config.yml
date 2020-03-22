@@ -80,7 +80,7 @@ jobs:
             # echo "Add webpack sourcemaps:";
             # sentry-temp/sentry-cli releases files $CIRCLE_SHA1 upload-sourcemaps public/packs;
             echo "Set commits:";
-            sentry-temp/sentry-cli releases set-commits $CIRCLE_SHA1 --commit RobinDaugherty/release_maker-ruby@$CIRCLE_SHA1;
+            sentry-temp/sentry-cli releases set-commits $CIRCLE_SHA1 --commit releasemaker/drake@$CIRCLE_SHA1;
             echo "Finalize commit:";
             sentry-temp/sentry-cli releases finalize $CIRCLE_SHA1;
             echo "Deploy:";
@@ -121,7 +121,7 @@ jobs:
             # echo "Add webpack sourcemaps:";
             # sentry-temp/sentry-cli releases files $CIRCLE_TAG upload-sourcemaps public/packs;
             echo "Set commits:";
-            sentry-temp/sentry-cli releases set-commits $CIRCLE_TAG --commit RobinDaugherty/release_maker-ruby@$CIRCLE_SHA1;
+            sentry-temp/sentry-cli releases set-commits $CIRCLE_TAG --commit releasemaker/drake@$CIRCLE_SHA1;
             echo "Finalize commit:";
             sentry-temp/sentry-cli releases finalize $CIRCLE_TAG;
             echo "Deploy:";
