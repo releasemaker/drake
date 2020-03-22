@@ -21,7 +21,7 @@ jobs:
           command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
       - run:
           name: Yarn Install
-          command: yarn install
+          command: yarn install --frozen-lockfile
       - save_cache:
           key: v1-{{ .Branch }}-packages-gemfile{{ checksum "Gemfile.lock" }}-yarn{{ checksum "yarn.lock" }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
@@ -63,7 +63,7 @@ jobs:
           command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
       - run:
           name: Yarn Install
-          command: yarn install
+          command: yarn install --frozen-lockfile
       - run:
           name: Set up SSH
           command: bash ~/release_maker/.circleci/ssh_setup.sh
@@ -104,7 +104,7 @@ jobs:
           command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
       - run:
           name: Yarn Install
-          command: yarn install
+          command: yarn install --frozen-lockfile
       - run:
           name: Set up SSH
           command: bash ~/release_maker/.circleci/ssh_setup.sh
