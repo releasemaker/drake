@@ -1,6 +1,5 @@
 [![CircleCI](https://circleci.com/gh/releasemaker/drake.svg?style=shield&circle-token=fec31c3a0c46b668a8338b1c935e3d4c4654259e)](https://circleci.com/gh/releasemaker/drake)
-[![Codacy](https://api.codacy.com/project/badge/Grade/d28ce4c6f44741d2a9bddd01a3ff08b0)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=robindaugherty/drake&amp;utm_campaign=Badge_Grade)
-[![Coverage](https://api.codacy.com/project/badge/Coverage/d28ce4c6f44741d2a9bddd01a3ff08b0)](https://www.codacy.com/app/releasemaker/drake?utm_source=github.com&utm_medium=referral&utm_content=releasemaker/drake&utm_campaign=Badge_Coverage)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c88324f51bc74398933e00c5677b2b06)](https://www.codacy.com/gh/releasemaker/drake?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=releasemaker/drake&amp;utm_campaign=Badge_Grade)
 [![Join the chat at https://gitter.im/Release-Maker/community](https://badges.gitter.im/Release-Maker/community.svg)](https://gitter.im/Release-Maker/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # Release Maker
