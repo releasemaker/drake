@@ -74,8 +74,8 @@ gem 'cancancan'
 # Pagination
 gem 'kaminari'
 
-# Cache in Redis
-gem 'redis-rails'
+# Redis driver used by rails cache
+gem 'hiredis'
 
 # Icons
 gem "font-awesome-rails"
