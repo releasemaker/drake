@@ -13,11 +13,4 @@ Host *.jump.rndsvc.net
   UserKnownHostsFile /dev/null
   VerifyHostKeyDNS yes
 
-Host hazel.rndsvc.net
-  VerifyHostKeyDNS yes
-  StrictHostKeyChecking no
-
 EOF
-
-# This will likely fail, but it will add the host key to known_hosts.
-ssh circleci@hazel.rndsvc.net '/bin/true' || true
