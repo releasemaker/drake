@@ -109,6 +109,14 @@ RSpec.describe Api::ReposController, type: :request do
         )
       end
 
+      context 'when the repo_name has a . in it' do
+        let(:repo_name) { "Hello.World" }
+
+        it 'enables the repo' do
+          expect { do_the_thing }.to change { repo.reload.enabled }.to be_truthy
+        end
+      end
+
       context 'when the current user is an admin on the repo' do
         it 'enables the repo' do
           expect { do_the_thing }.to change { repo.reload.enabled }.to be_truthy

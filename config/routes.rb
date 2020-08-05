@@ -17,9 +17,9 @@ Rails.application.routes.draw do
     get 'gimme/bad-json', to: 'error#bad_json'
     get 'availableRepos', to: 'available_repos#index'
     get 'repos', to: 'repos#index'
-    post 'repos/:repo_type/:owner_name/:repo_name', to: 'repos#create', constraints: { type: /gh/ }
-    get 'repos/:repo_type/:owner_name/:repo_name', to: 'repos#show', constraints: { type: /gh/ }
-    patch 'repos/:repo_type/:owner_name/:repo_name', to: 'repos#update', constraints: { type: /gh/ }
+    post 'repos/:repo_type/:owner_name/:repo_name', to: 'repos#create', constraints: { type: /gh/, repo_name: /[0-z\.\-]+/ }
+    get 'repos/:repo_type/:owner_name/:repo_name', to: 'repos#show', constraints: { type: /gh/, repo_name: /[0-z\.\-]+/ }
+    patch 'repos/:repo_type/:owner_name/:repo_name', to: 'repos#update', constraints: { type: /gh/, repo_name: /[0-z\.\-]+/ }
     get '*url' => 'error#not_found', as: :not_found
   end
 
