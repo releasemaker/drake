@@ -1,7 +1,6 @@
 class DraftRelease
   def initialize(repo:)
     self.repo = repo
-    self.draft_release = existing_draft_release || empty_draft_release
   end
 
   def append_to_body(new_content)
@@ -15,10 +14,14 @@ class DraftRelease
   delegate :tag_name, :name, :body, :body=, :target_commitish, to: :draft_release
 
   def save
-    if draft_release.id
-      github.repos.releases.edit(repo.owner_name, repo.repo_name, draft_release.id, draft_release)
-    else
-      github.repos.releases.create(repo.owner_name, repo.repo_name, draft_release)
+    # We only want a single process looking up the release list. We don't want to accidentally create two release
+    # with the same version number.
+    RedisMutex.with_lock("DraftRelease::#{repo.owner_name}::#{repo.name}", expire: 30, block: 15) do
+      if draft_release.id
+        github.repos.releases.edit(repo.owner_name, repo.repo_name, draft_release.id, draft_release)
+      else
+        github.repos.releases.create(repo.owner_name, repo.repo_name, draft_release)
+      end
     end
   end
 
@@ -33,6 +36,10 @@ class DraftRelease
 
   def github
     repo.github_client
+  end
+
+  def draft_release
+    @draft_release ||= (existing_draft_release || empty_draft_release)
   end
 
   def existing_draft_release
