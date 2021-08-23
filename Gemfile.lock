@@ -124,6 +124,7 @@ GEM
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.4.4)
+    docile (1.4.0)
     dotenv (2.7.6)
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
@@ -357,6 +358,8 @@ GEM
     rspec-expectations (3.10.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
+    rspec-github (2.3.1)
+      rspec-core (~> 3.0)
     rspec-html-matchers (0.9.4)
       nokogiri (~> 1)
       rspec (>= 3.0.0.a, < 4)
@@ -412,6 +415,14 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (5.0.0)
       activesupport (>= 5.2.0)
+    simplecov (0.21.2)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-cobertura (1.4.2)
+      simplecov (~> 0.8)
+    simplecov-html (0.12.3)
+    simplecov_json_formatter (0.1.3)
     skylight (5.1.1)
       activesupport (>= 5.2.0)
     slim (4.1.0)
@@ -525,6 +536,7 @@ DEPENDENCIES
   redis (~> 4.0)
   rspec
   rspec-collection_matchers
+  rspec-github
   rspec-html-matchers
   rspec-json_matchers
   rspec-mocks
@@ -534,6 +546,8 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sentry-raven
   shoulda-matchers
+  simplecov
+  simplecov-cobertura
   skylight
   slim
   sorcery

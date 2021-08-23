@@ -114,6 +114,8 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'rspec_junit_formatter'
   gem 'capybara'
+
+  gem 'rspec-github', require: false
 end
 
 group :development do
@@ -152,6 +154,10 @@ group :test do
   gem 'database_cleaner'
   gem 'webmock'
   gem 'vcr'
+
+  # Code coverage gathering and output
+  gem 'simplecov', require: false
+  gem 'simplecov-cobertura', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
