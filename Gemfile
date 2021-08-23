@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.1.0'
 
 # Use postgresql as the database for Active Record
-gem 'pg', '~> 0.18'
+gem 'pg'
 
 # Use Puma as the app server
-gem 'puma', '~> 3.7'
+gem 'puma'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
@@ -55,15 +55,19 @@ gem "versionomy"
 
 # Style
 gem 'foundation-rails', "~> 6.0"
-gem 'foundation_rails_helper', '~> 3.0.0rc1'
 
 # Add jQuery is used by Foundation's JS
 gem 'jquery-rails'
 
-# Authentication
+# Local authentication
 gem 'sorcery'
+
+# OAuth authentication
 gem 'omniauth'
 gem 'omniauth-github'
+
+# Use Rails' CSRF protection in oauth requests
+gem 'omniauth-rails_csrf_protection'
 
 # Templates
 gem 'slim'
@@ -110,6 +114,8 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'rspec_junit_formatter'
   gem 'capybara'
+
+  gem 'rspec-github', require: false
 end
 
 group :development do
@@ -148,6 +154,10 @@ group :test do
   gem 'database_cleaner'
   gem 'webmock'
   gem 'vcr'
+
+  # Code coverage gathering and output
+  gem 'simplecov', require: false
+  gem 'simplecov-cobertura', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

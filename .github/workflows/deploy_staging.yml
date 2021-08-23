@@ -1,0 +1,107 @@
+name: Staging Deployment
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy
+
+    runs-on: ubuntu-latest
+
+    env:
+      SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install deployment SSH key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.SSH_KEY_DEPLOYMENT }}
+        known_hosts: "none"
+        config: |
+          Host *.do.rndsvc.net
+            ProxyCommand ssh -W %h:%p nyc3.do.jump.rndsvc.net
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
+          Host *.jump.rndsvc.net
+            User releasemaker_deployment
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
+            VerifyHostKeyDNS yes
+
+    - name: Set up SSH Agent
+      run: |
+          ssh-agent -a $SSH_AUTH_SOCK
+          ssh-add ~/.ssh/id_rsa
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+
+    - name: Get Ruby version
+      id: ruby_version
+      run: |
+        version=$(cat .ruby-version)
+        echo "${version}"
+        echo "::set-output name=version::${version}"
+
+    - name: Install dependent libraries
+      run: sudo apt-get install libpq-dev libsodium-dev
+
+    - uses: actions/cache@v2
+      with:
+        path: vendor/bundle
+        key: v1-${{ runner.os }}-ruby-${{ steps.ruby_version.outputs.version }}-branch-${{ github.ref }}-${{ hashFiles('Gemfile.lock') }}
+        restore-keys: |
+          v1-${{ runner.os }}-ruby-${{ steps.ruby_version.outputs.version }}-branch-${{ github.ref }}
+          v1-${{ runner.os }}-ruby-${{ steps.ruby_version.outputs.version }}-branch-master
+
+    - name: Install bundle
+      run: |
+        bundle config path vendor/bundle
+        bundle install --jobs 4 --retry 3
+
+    - name: Install sentry-cli
+      run: |
+        mkdir sentry-temp
+        curl -sL https://sentry.io/get-cli/ | INSTALL_DIR=sentry-temp bash
+
+    - name: Wait for tests to pass
+      id: wait_for_tests
+      uses: lewagon/wait-on-check-action@v0.1
+      with:
+        ref: ${{ github.sha }}
+        check-name: RSpec
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        wait-interval: 15 # seconds
+
+    - name: Deploy to staging
+      run: bundle exec cap staging deploy
+
+    - name: Create Sentry Release
+      uses: ./.github/actions/sentry-release
+      with:
+        sentry-auth-token: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        sentry-org-name: releasemaker
+        sentry-project-name: releasemaker-staging
+        release-name: ${{ github.sha }}
+        deployed-to-environment: staging
+
+    - name: Announce failure to Slack
+      if: "failure() && steps.wait_for_tests.outcome == 'success'"
+      uses: ./.github/actions/announce-failed-branch-deployment
+      with:
+        slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        project-name: Drake
+        destination-name: Staging
+
+    - name: Announce failure to Quill
+      if: "failure() && steps.wait_for_tests.outcome == 'success'"
+      uses: ./.github/actions/announce-failed-branch-deployment
+      with:
+        slack-webhook-url: ${{ secrets.QUILL_DEPLOYMENT_WEBHOOK_URL }}
+        project-name: Drake
+        destination-name: Staging

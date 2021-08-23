@@ -2,7 +2,7 @@
 
 json.availableRepos do
   json.array! @available_repos do |repo|
-    json.partial! 'repos/repo.jbuilder', repo: repo
+    json.partial! 'repos/repo', repo: repo
   end
 end
 json.pagination do

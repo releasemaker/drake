@@ -1,0 +1,49 @@
+name: Bundle Update
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 13 1,15 * *"
+
+jobs:
+  update:
+    name: Bundle Update
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install required libraries
+      run: sudo apt-get install libpq-dev libsodium-dev
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: false
+
+    - name: Bundle Update
+      run: bundle update
+
+    - name: Get current date
+      id: date
+      run: |
+        echo "::set-output name=mmmm_yy::$(date +'%B %Y')"
+        echo "::set-output name=yy_mm::$(date +'%Y-%m')"
+
+    - name: Create bot access token
+      id: robopuppy
+      uses: getsentry/action-github-app-token@v1
+      with:
+        app_id: ${{ secrets.BOT_APP_ID }}
+        private_key: ${{ secrets.BOT_PRIVATE_PEM }}
+
+    - name: Open pull request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ steps.robopuppy.outputs.token }}
+        commit-message: bundle update
+        committer: GitHub Actions <actions@github.com>
+        branch: update-bundle/${{ steps.date.outputs.yy_mm }}/${{ github.run_number }}
+        title: "Package Update ${{ steps.date.outputs.mmmm_yy }}"
+        body: "Automated bundle update."

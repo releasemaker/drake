@@ -42,7 +42,7 @@ RSpec.describe RepoProviderWebhookService do
         expect(repo.provider_webhook_data).to be_empty
         described_class.new(repo).perform!
         expect(repo.provider_webhook_data).to_not be_empty
-        repo.update_attributes! enabled: false
+        repo.update! enabled: false
         described_class.new(repo).perform!
         expect(repo.provider_webhook_data).to be_empty
       end

@@ -28,7 +28,7 @@ class RepoProviderWebhookService
         secret: Rails.configuration.x.github.webhook_secret,
       },
     )
-    repo.update_attributes! provider_webhook_data: webhook_data.to_h
+    repo.update! provider_webhook_data: webhook_data.to_h
   end
 
   def webhook_url
@@ -50,6 +50,6 @@ class RepoProviderWebhookService
     rescue Github::Error::NotFound
       nil
     end
-    repo.update_attributes! provider_webhook_data: nil
+    repo.update! provider_webhook_data: nil
   end
 end
