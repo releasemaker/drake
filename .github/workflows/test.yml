@@ -50,6 +50,9 @@ jobs:
         node-version: ${{ steps.nodenv.outputs.node-version }}
         cache: yarn
 
+    - name: Yarn Install
+      run: yarn install
+
     # - name: Check GraphQL schema for uncommitted changes
     #   run: |
     #     bin/rails graphql:schema:idl
