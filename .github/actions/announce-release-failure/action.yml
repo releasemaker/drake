@@ -1,0 +1,45 @@
+description: Send Slack message about a failed deployment of a release
+
+inputs:
+  slack-webhook-url:
+    required: true
+  destination-name:
+    required: true
+  project-name:
+    required: false
+    default: ${{ github.repository }}
+  release-name:
+    required: true
+
+runs:
+
+  using: composite
+
+  steps:
+    - shell: bash
+      run: |
+        PROJECT_NAME=${{ inputs.project-name }}
+        DESTINATION_NAME=${{ inputs.destination-name }}
+        REPOSITORY_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
+        RELEASE_URL="${REPOSITORY_URL}/releases/tag/${{ inputs.release-name }}"
+        BUILD_URL="${REPOSITORY_URL}/actions/runs/${GITHUB_RUN_ID}"
+        BUILD_DESCRIPTION="GitHub Actions" # Could include a build number if there was one
+        payload=$(
+        cat <<EOM
+        {
+            "attachments": [
+                {
+                    "fallback": "${PROJECT_NAME} deployment of ${{ inputs.release-name }} to ${DESTINATION_NAME} failed ${BUILD_URL}",
+                    "color": "#FF6640",
+                    "title": "${PROJECT_NAME} ${{ inputs.release-name }} deployment to ${DESTINATION_NAME} failed",
+                    "fields": [
+                        {"title": "Destination", "short": true, "value": "${DESTINATION_NAME}"},
+                        {"title": "Release", "short": true, "value": "<${RELEASE_URL}/releases/tag/|${{ inputs.release-name }}>"},
+                        {"title": "CircleCI Build", "short": true, "value": "<${BUILD_URL}|${BUILD_DESCRIPTION}>"},
+                    ]
+                }
+            ]
+        }
+        EOM
+        )
+        curl -X POST --data-urlencode payload="$payload" "${{ inputs.slack-webhook-url }}"

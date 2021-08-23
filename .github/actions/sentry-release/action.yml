@@ -1,0 +1,46 @@
+description: Send Slack message about a failed deployment of a branch
+
+inputs:
+  sentry-auth-token:
+    required: true
+  sentry-org-name:
+    required: true
+  sentry-project-name:
+    required: true
+  deployed-to-environment:
+    required: true
+  release-name:
+    required: true
+  repository:
+    required: false
+    default: ${{ github.repository }}
+  sha:
+    required: false
+    default: ${{ github.sha }}
+
+runs:
+
+  using: composite
+
+  steps:
+    - shell: bash
+      run: |
+        echo "::group::Create new release ${{ inputs.release-name }}"
+        sentry-temp/sentry-cli releases new ${{ inputs.release-name }}
+        echo "::endgroup::"
+
+        echo "::group::Set commit"
+        sentry-temp/sentry-cli releases set-commits ${{ inputs.release-name }} --commit ${{ inputs.repository }}@${{ inputs.sha }}
+        echo "::endgroup::"
+
+        echo "::group::Finalize release"
+        sentry-temp/sentry-cli releases finalize ${{ inputs.release-name }}
+        echo "::endgroup::"
+
+        echo "::group::Mark Deployment"
+        sentry-temp/sentry-cli releases deploys ${{ inputs.release-name }} new -e ${{ inputs.deployed-to-environment }}
+        echo "::endgroup::"
+      env:
+        SENTRY_ORG: ${{ inputs.sentry-org-name }}
+        SENTRY_PROJECT: ${{ inputs.sentry-project-name }}
+        SENTRY_AUTH_TOKEN: ${{ inputs.sentry-auth-token }}

@@ -1,0 +1,48 @@
+description: Send Slack message about a failed deployment of a branch
+
+inputs:
+  slack-webhook-url:
+    required: true
+  destination-name:
+    required: true
+  project-name:
+    required: false
+    default: ${{ github.repository }}
+
+runs:
+
+  using: composite
+
+  steps:
+    - shell: bash
+      run: |
+        BRANCH_NAME=${GITHUB_REF/refs\/heads\//}
+        BUILD_SHA=${GITHUB_SHA}
+        PROJECT_NAME=${{ inputs.project-name }}
+        DESTINATION_NAME=${{ inputs.destination-name }}
+        REPOSITORY_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
+        COMMIT_URL="${REPOSITORY_URL}/commit/${BUILD_SHA}"
+        BUILD_URL="${REPOSITORY_URL}/actions/runs/${GITHUB_RUN_ID}"
+        BUILD_DESCRIPTION="GitHub Actions" # Could include a build number if there was one
+        COMMITTER_DESCRIPTION=${{ github.actor }}
+        COMMITTER_URL="${GITHUB_SERVER_URL}/${{ github.actor }}"
+        payload=$(
+        cat <<EOM
+        {
+            "attachments": [
+                {
+                    "fallback": "${PROJECT_NAME} deployment of ${BRANCH_NAME} to ${DESTINATION_NAME} failed ${BUILD_URL}",
+                    "color": "#ddaa00",
+                    "title": "${PROJECT_NAME} deployment failed",
+                    "fields": [
+                        {"title": "Branch", "short": false, "value": "<${COMMIT_URL}|${BRANCH_NAME} at ${BUILD_SHA:(-8)}>"},
+                        {"title": "Destination", "short": true, "value": "${{ inputs.destination-name }}"},
+                        {"title": "Job", "short": true, "value": "<${BUILD_URL}|${BUILD_DESCRIPTION}>"},
+                        {"title": "Committer", "short": true, "value": "<${COMMITTER_URL}|${COMMITTER_DESCRIPTION}>"},
+                    ]
+                }
+            ]
+        }
+        EOM
+        )
+        curl -X POST --data-urlencode payload="$payload" "${{ inputs.slack-webhook-url }}"

@@ -1,0 +1,113 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - "**"
+    tags-ignore:
+      - "**"
+
+jobs:
+  rspec:
+    name: RSpec
+
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: drake_test
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost/drake_test?sslmode=disable
+      RAILS_ENV: test
+      RACK_ENV: test
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install required libraries
+      run: sudo apt-get install libpq-dev libsodium-dev
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+
+    # - name: Check GraphQL schema for uncommitted changes
+    #   run: |
+    #     bin/rails graphql:schema:idl
+    #     git diff --name-status | grep -q schema.graphql && {
+    #       echo "Looks like you changed the GraphQL schema without updating it. Run"
+    #       echo "rails graphql:schema:idl"
+    #       echo "and commit the resulting change in this branch."
+    #       exit 1
+    #     } || exit 0
+
+    - name: Set up database
+      run: bundle exec rake db:create db:structure:load --trace
+
+    - name: RSpec
+      run: bundle exec rspec --require rails_helper --format RSpec::Github::Formatter --format doc
+
+    - name: Upload coverage data to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./coverage/coverage.xml
+        fail_ci_if_error: false
+        verbose: false
+
+    # - name: Announce failure to Slack
+    #   if: ${{ failure() }}
+    #   uses: ./.github/actions/announce-broken-build
+    #   with:
+    #     slack-webhook-url: ${{ secrets.SLACK_TEST_FAILURE_WEBHOOK_URL }}
+    #     project-name: Drake
+    #     build-description: tests
+
+    # - name: Announce failure to Quill
+    #   if: ${{ failure() }}
+    #   uses: ./.github/actions/announce-broken-build
+    #   with:
+    #     slack-webhook-url: ${{ secrets.QUILL_TEST_FAILURE_WEBHOOK_URL }}
+    #     project-name: Drake
+    #     build-description: tests
+
+  # graphql_schema:
+  #   name: GraphQL Schema
+  #
+  #   runs-on: ubuntu-latest
+  #
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #
+  #   - uses: kamilkisiela/graphql-inspector@v2.5.0
+  #     with:
+  #       github-token: ${{ secrets.GITHUB_TOKEN }}
+  #       schema: 'master:schema.graphql'
+
+  # rubocop:
+  #   name: Rubocop
+  #
+  #   runs-on: ubuntu-latest
+  #
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #
+  #   - name: Install required libraries
+  #     run: sudo apt-get install libpq-dev libsodium-dev
+  #
+  #   - name: Set up Ruby
+  #     uses: ruby/setup-ruby@v1
+  #     with:
+  #       bundler-cache: true
+  #
+  #   - name: Rubocop
+  #     run: bundle exec rubocop -f github
