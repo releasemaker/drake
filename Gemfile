@@ -59,10 +59,15 @@ gem 'foundation-rails', "~> 6.0"
 # Add jQuery is used by Foundation's JS
 gem 'jquery-rails'
 
-# Authentication
+# Local authentication
 gem 'sorcery'
+
+# OAuth authentication
 gem 'omniauth'
 gem 'omniauth-github'
+
+# Use Rails' CSRF protection in oauth requests
+gem 'omniauth-rails_csrf_protection'
 
 # Templates
 gem 'slim'

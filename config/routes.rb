@@ -3,8 +3,14 @@ Rails.application.routes.draw do
 
   get '/sign-in', to: 'sessions#new', as: :sign_in
   post '/sign-in', to: 'sessions#create'
-  get '/auth/:provider/callback', to: 'sessions#create_oauth'
+
+  # When OAuth fails
   get '/auth/failure' => 'sessions#failure_oauth', as: :oauth_failure
+  # No longer provided by Omniauth, since starting the Request phase requires a POST
+  get '/auth/:provider', to: redirect('/dashboard')
+  # Start the OAuth callback phase
+  get '/auth/:provider/callback', to: 'sessions#create_oauth'
+
   get '/sign-out', :to => 'sessions#destroy', as: :sign_out
   delete '/sign-out', :to => 'sessions#destroy'
 
