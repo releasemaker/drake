@@ -40,6 +40,16 @@ jobs:
       with:
         bundler-cache: true
 
+    - name: Get Node Version
+      uses: nodenv/actions/node-version@v2.0.10
+      id: nodenv
+
+    - name: Set up Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ steps.nodenv.outputs.node-version }}
+        cache: yarn
+
     # - name: Check GraphQL schema for uncommitted changes
     #   run: |
     #     bin/rails graphql:schema:idl
