@@ -1,6 +1,6 @@
 module ApplicationHelper
   def show_navigation?
-    !(@disable_navigation || false)
+    logged_in? && !(@disable_navigation || false)
   end
 
   def github_auth_path

@@ -4,10 +4,11 @@ h1.sr-only Sign In
 
 .grid-container.fluid
   .grid-x
-    .cell style="padding-top: 1in; padding-bottom: 1in;"
-      = button_to github_auth_path, class: 'button expanded', method: :post do
-        = fa_icon "github"
-        | &nbsp;&nbsp;Sign in with GitHub
+    .cell style="padding-top: 1in; padding-bottom: 1in; text-align: center;"
+      = button_to github_auth_path, class: 'large button', method: :post do
+        = fa_icon "github 2x", style: "vertical-align: middle;"
+        span style="vertical-align: middle;"
+          | &nbsp;&nbsp;Sign in with GitHub
 
   .grid-x
     .cell.large-3.medium-6.small-12.columns
