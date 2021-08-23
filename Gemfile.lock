@@ -336,7 +336,7 @@ GEM
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rbnacl (4.0.2)
+    rbnacl (7.1.1)
       ffi
     react-rails (2.6.1)
       babel-transpiler (>= 0.7.0)
@@ -531,7 +531,7 @@ DEPENDENCIES
   pry-rescue
   puma
   rails (~> 6.1.0)
-  rbnacl (>= 3.2, < 5.0)
+  rbnacl (>= 3.2, < 8.0)
   react-rails
   redis (~> 4.0)
   rspec

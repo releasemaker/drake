@@ -30,7 +30,7 @@ group :development do
   gem 'capistrano-rbenv'
 
   # For modern SSH key support
-  gem 'rbnacl', '>= 3.2', '< 5.0', require: false
+  gem 'rbnacl', '>= 3.2', '< 8.0', require: false
   gem 'ed25519', require: false
   gem 'bcrypt_pbkdf', '~> 1.0', require: false
 end
