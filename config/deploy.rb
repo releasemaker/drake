@@ -5,12 +5,16 @@ lock "~> 3.12"
 
 set :application, "releasemaker"
 
-if ENV['CI']
+if ENV['CI'] && ENV['GITHUB_REPOSITORY']
+  set :repo_url, "git@github.com:#{ENV["GITHUB_REPOSITORY"]}.git"
+  set :branch, ENV['GITHUB_SHA']
+  set :release_name, ENV['RELEASE_NAME']
+elsif ENV['CIRCLECI']
   set :repo_url, ENV['CIRCLE_REPOSITORY_URL']
   set :branch, ENV['CIRCLE_SHA1']
   set :release_name, ENV['CIRCLE_TAG']
 else
-  set :repo_url, 'git@github.com:RobinDaugherty/release_maker-ruby.git'
+  set :repo_url, 'git@github.com:releasemaker/drake.git'
   ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 end
 
