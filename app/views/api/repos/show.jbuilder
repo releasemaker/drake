@@ -1,3 +1,3 @@
 json.repo do
-  json.partial! 'repos/repo.jbuilder', repo: @repo
+  json.partial! 'repos/repo', repo: @repo
 end
