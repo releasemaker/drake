@@ -53,12 +53,6 @@ gem "github_api"
 # Version number manipulation
 gem "versionomy"
 
-# Style
-# gem 'foundation-rails', "~> 6.0"
-
-# Add jQuery is used by Foundation's JS
-gem 'jquery-rails'
-
 # Local authentication
 gem 'sorcery'
 
