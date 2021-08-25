@@ -6,6 +6,9 @@
 
 .*
 
+# CI
+!/.github/*
+
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
