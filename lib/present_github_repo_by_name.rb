@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Responsible for finding a specific repo for a specific user.
 # If the {GithubRepo} exists and the user has access, we return the record that exists.

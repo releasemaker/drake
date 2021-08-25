@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 # Base repository object used for single-table inheritance by Repo classes used for different
 # SVM providers.
-class Repo < ActiveRecord::Base
+class Repo < ApplicationRecord
   has_many :repo_memberships
 
-  validates :provider_uid_or_url, uniqueness: { scope: :type }
+  validates :provider_uid_or_url, uniqueness: {scope: :type}
 
   serialize :provider_data, Hashie::Mash
 

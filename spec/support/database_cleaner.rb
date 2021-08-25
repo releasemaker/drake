@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.configure do |config|
   # We don't use RSpecs transaction fixtures because we use DatabaseCleaner instead.
   # http://weilu.github.io/blog/2012/11/10/conditionally-switching-off-transactional-fixtures/
@@ -14,10 +16,10 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do |example|
-    if example.metadata[:requires_transaction]
-      DatabaseCleaner.strategy = :truncation, { except: tables_not_to_truncate }
+    DatabaseCleaner.strategy = if example.metadata[:requires_transaction]
+      [:truncation, {except: tables_not_to_truncate}]
     else
-      DatabaseCleaner.strategy = :transaction
+      :transaction
     end
     DatabaseCleaner.start
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Our expression of the permissions model that CanCan uses to authorize user actions.
 class Ability
   include CanCan::Ability
@@ -29,8 +31,8 @@ class Ability
   private
 
   def real_user
-    can :read, Repo, repo_memberships: { user_id: user.id }
-    can %i(create update delete), Repo, repo_memberships: { user_id: user.id, admin: true }
+    can :read, Repo, repo_memberships: {user_id: user.id}
+    can %i[create update delete], Repo, repo_memberships: {user_id: user.id, admin: true}
   end
 
   def super_admin

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PullRequestHandler
   def initialize(hook_payload:)
     self.hook = Hashie::Mash.new hook_payload

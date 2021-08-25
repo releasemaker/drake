@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # A {Repo} record that is associated with a Github repository.
 class GithubRepo < Repo
   def self.new_from_api(data)
@@ -16,9 +18,7 @@ class GithubRepo < Repo
     name.split('/').last
   end
 
-  def github_client
-    admin_user.github_client
-  end
+  delegate :github_client, to: :admin_user
 
   ##
   # Used as the first part of the friendly URL for a repo, and identifies the type in the API.

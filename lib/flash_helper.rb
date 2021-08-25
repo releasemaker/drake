@@ -10,14 +10,14 @@ module FlashHelper
   #   </button>
   # </div>
   DEFAULT_KEY_MATCHING = {
-    alert:     :alert,
-    notice:    :success,
-    info:      :info,
+    alert: :alert,
+    notice: :success,
+    info: :info,
     secondary: :secondary,
-    success:   :success,
-    error:     :alert,
-    warning:   :warning,
-    primary:   :primary
+    success: :success,
+    error: :alert,
+    warning: :warning,
+    primary: :primary,
   }.freeze
 
   # Displays the flash messages found in ActionDispatch's +flash+ hash using
@@ -45,9 +45,9 @@ module FlashHelper
   private
 
   def alert_box(value, alert_class, closable)
-    options = { class: "flash callout #{alert_class}" }
-    options[:data] = { closable: '' } if closable
-    content_tag(:div, options) do
+    options = {class: "flash callout #{alert_class}"}
+    options[:data] = {closable: ''} if closable
+    tag.div(options) do
       concat value
       concat close_link if closable
     end
@@ -57,10 +57,10 @@ module FlashHelper
     button_tag(
       class: 'close-button',
       type: 'button',
-      data: { close: '' },
-      aria: { label: 'Dismiss alert' }
+      data: {close: ''},
+      aria: {label: 'Dismiss alert'},
     ) do
-      content_tag(:span, '&times;'.html_safe, aria: { hidden: true })
+      tag.span('&times;'.html_safe, aria: {hidden: true})
     end
   end
 

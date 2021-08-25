@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Handles signing in and out of the application.
 # Relies on OmniAuth[https://github.com/intridea/omniauth] for the heavy lifiting.
 class SessionsController < ApplicationController
@@ -11,7 +13,7 @@ class SessionsController < ApplicationController
 
   def create
     respond_to do |format|
-      if @user = login(credentials[:email], credentials[:password])
+      if (@user = login(credentials[:email], credentials[:password]))
         format.html do
           redirect_back_or_to(dashboard_url)
         end

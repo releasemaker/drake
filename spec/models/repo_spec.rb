@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Repo, type: :model do
@@ -9,7 +11,7 @@ RSpec.describe Repo, type: :model do
     before do
       subject.provider_data = new_data
     end
-    let(:new_data) { { "stuff" => "thing" } }
+    let(:new_data) { {"stuff" => "thing"} }
     it 'converts the assigned value' do
       expect(subject.provider_data).to have_attributes(stuff: "thing")
     end
@@ -20,7 +22,7 @@ RSpec.describe Repo, type: :model do
     before do
       subject.provider_webhook_data = new_data
     end
-    let(:new_data) { { "stuff" => "thing" } }
+    let(:new_data) { {"stuff" => "thing"} }
     it 'converts the assigned value' do
       expect(subject.provider_webhook_data).to have_attributes(stuff: "thing")
     end

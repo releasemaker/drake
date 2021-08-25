@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :github_repo do
     sequence(:name) { |n| "GithubOrg/GithubRepo#{n}" }

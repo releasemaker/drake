@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     with.test_framework :rspec
@@ -17,9 +19,8 @@ module Shoulda
           # Rails 5+
           model.columns.select do |column|
             model.type_for_attribute(column.name).is_a?(::ActiveRecord::Type::Serialized)
-          end.inject({}) do |hash, column|
+          end.each_with_object({}) do |column, hash|
             hash[column.name.to_s] = model.type_for_attribute(column.name).coder
-            hash
           end
         else
           model.serialized_attributes

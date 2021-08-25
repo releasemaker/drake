@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Api::ReposController, type: :request do
@@ -45,7 +47,6 @@ RSpec.describe Api::ReposController, type: :request do
         do_the_thing
         expect(json_body['repos']).not_to include(include('name' => nonmember_repo.name))
       end
-
     end
   end
 
@@ -152,7 +153,13 @@ RSpec.describe Api::ReposController, type: :request do
         let!(:membership) { FactoryBot.create(:repo_membership, repo: repo, user: user) }
 
         it 'does not enable the repo' do
-          expect { do_the_thing rescue CanCan::AccessDenied }.not_to change { repo.reload.enabled }
+          expect {
+            begin
+              do_the_thing
+            rescue
+              CanCan::AccessDenied
+            end
+          }.not_to change { repo.reload.enabled }
         end
 
         it 'does not update the webhook' do
@@ -243,7 +250,7 @@ RSpec.describe Api::ReposController, type: :request do
     }
     let(:params_body) { params.to_json }
     let(:params) {
-      { repo: repo_attributes }
+      {repo: repo_attributes}
     }
     let(:headers) {
       {
@@ -287,7 +294,7 @@ RSpec.describe Api::ReposController, type: :request do
 
       context 'with a repo that the user is an admin of' do
         context 'disabling' do
-          let(:repo_attributes) { { isEnabled: false } }
+          let(:repo_attributes) { {isEnabled: false} }
 
           it 'updates the repo' do
             expect { do_the_thing }.to change { repo.reload.enabled }.to be_falsey
@@ -320,7 +327,7 @@ RSpec.describe Api::ReposController, type: :request do
 
         context 'enabling' do
           let(:repo) { FactoryBot.create(:github_repo, enabled: false) }
-          let(:repo_attributes) { { isEnabled: true } }
+          let(:repo_attributes) { {isEnabled: true} }
 
           it 'updates the repo' do
             expect { do_the_thing }.to change { repo.reload.enabled }.to be_truthy
@@ -353,7 +360,7 @@ RSpec.describe Api::ReposController, type: :request do
 
         context 'changing nothing' do
           let(:repo) { FactoryBot.create(:github_repo) }
-          let(:repo_attributes) { { enabled: true } }
+          let(:repo_attributes) { {enabled: true} }
 
           it 'updates the webhook' do
             do_the_thing

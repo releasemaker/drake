@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # A person who can log in to the application.
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include HasGithubAccount
 
   authenticates_with_sorcery!

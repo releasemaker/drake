@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Load a JSON blob from a fixture.
 # Path is relative to the spec/fixtures folder.

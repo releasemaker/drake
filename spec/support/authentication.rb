@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples :authenticated_endpoint do
   context 'without logging in' do
     it 'redirects to authentication' do

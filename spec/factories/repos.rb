@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :repo do
     sequence(:name) { |n| "repo#{n}" }

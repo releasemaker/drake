@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe SessionsController, type: :request do
@@ -134,7 +136,7 @@ RSpec.describe SessionsController, type: :request do
 
   describe "GET /auth/failure" do
     let(:do_the_thing) { get "/auth/failure", params: params }
-    let(:params) { { message: 'invalid_credentials', strategy: 'github' } }
+    let(:params) { {message: 'invalid_credentials', strategy: 'github'} }
 
     it "sets a flash message" do
       do_the_thing
@@ -165,7 +167,7 @@ RSpec.describe SessionsController, type: :request do
   end
 
   describe 'GET /sign-in' do
-    let(:the_request) { get "/sign-in", params: { format: :html } }
+    let(:the_request) { get "/sign-in", params: {format: :html} }
 
     context 'when not signed in' do
       it 'responds with Success' do
@@ -201,7 +203,7 @@ RSpec.describe SessionsController, type: :request do
         user: {
           email: user.email,
           password: password,
-        }
+        },
       }
     }
     let(:user) { FactoryBot.create(:user, :with_credentials, password: password) }
@@ -234,7 +236,7 @@ RSpec.describe SessionsController, type: :request do
           user: {
             email: user.email,
             password: 'wrongp5ssword',
-          }
+          },
         }
       }
       it 'responds with Unprocessable Entity' do
@@ -260,7 +262,7 @@ RSpec.describe SessionsController, type: :request do
           user: {
             email: FactoryBot.generate(:email),
             password: 'wrongp5ssword',
-          }
+          },
         }
       }
       it 'responds with Unprocessable Entity' do

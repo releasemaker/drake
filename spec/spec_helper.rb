@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if ENV.has_key? 'CI'
   require 'simplecov'
   require "simplecov-cobertura"

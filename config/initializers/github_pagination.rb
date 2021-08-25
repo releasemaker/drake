@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 Rails.application.reloader.to_prepare do
-  # Patche the gem-provided class.
+  # Patch the gem-provided class.
+  # rubocop:disable Lint/ConstantDefinitionInBlock
   module Github
     class ResponseWrapper
       def total_pages
@@ -19,4 +22,5 @@ Rails.application.reloader.to_prepare do
       end
     end
   end
+  # rubocop:enable Lint/ConstantDefinitionInBlock
 end

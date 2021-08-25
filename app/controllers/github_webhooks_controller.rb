@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Handles webhooks sent by Github.
 class GithubWebhooksController < ApplicationApiController
   include GithubWebhook::Processor

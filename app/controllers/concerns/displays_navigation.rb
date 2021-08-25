@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DisplaysNavigation
   extend ActiveSupport::Concern
 
