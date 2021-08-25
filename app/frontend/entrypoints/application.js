@@ -27,11 +27,9 @@
 // Example: Import a stylesheet in app/frontend/index.css
 // import '~/index.css'
 
-// require('raf').polyfill()
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import 'whatwg-fetch';
-import 'intl';
 import '@lib/polyfills/dataset';
 import * as Sentry from '@sentry/browser';
 import React from 'react';
