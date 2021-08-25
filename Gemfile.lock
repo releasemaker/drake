@@ -129,6 +129,7 @@ GEM
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
       railties (>= 3.2)
+    dry-cli (0.7.0)
     ed25519 (1.2.4)
     erubi (1.10.0)
     execjs (2.8.1)
@@ -409,7 +410,6 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    semantic_range (3.0.0)
     sentry-raven (3.1.2)
       faraday (>= 1.0)
     shellany (0.0.1)
@@ -465,6 +465,13 @@ GEM
     vcr (6.0.0)
     versionomy (0.5.0)
       blockenspiel (~> 0.5)
+    vite_rails (3.0.0)
+      railties (>= 5.1, < 8)
+      vite_ruby (~> 3.0)
+    vite_ruby (3.0.0)
+      dry-cli (~> 0.7.0)
+      rack-proxy (~> 0.6, >= 0.6.1)
+      zeitwerk (~> 2.2)
     web-console (4.1.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -474,11 +481,6 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    webpacker (5.4.2)
-      activesupport (>= 5.2)
-      rack-proxy (>= 0.6.1)
-      railties (>= 5.2)
-      semantic_range (>= 2.3.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -559,9 +561,9 @@ DEPENDENCIES
   timecop
   vcr
   versionomy
+  vite_rails
   web-console (>= 3.3.0)
   webmock
-  webpacker
   yard
   yard-activerecord
 

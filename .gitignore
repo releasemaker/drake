@@ -4,8 +4,7 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
-# Ignore bundler config.
-/.bundle
+.*
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -22,27 +21,18 @@
 
 /public/assets
 
-# Ignore Byebug command history file.
-.byebug_history
-
 # Ignore master key for decrypting credentials and more.
 /config/master.key
-/public/packs
-/public/packs-test
+
+# Yarn
 /node_modules
 yarn-debug.log*
-.yarn-integrity
 
 # Rails specific artifacts
 **.war
 *.rbc
 *.sassc
-.rspec
-.redcar/
-.sass-cache
 capybara-*.html
-.rvmrc
-.env*
 /.bundle
 /vendor/bundle
 /log/**
@@ -54,8 +44,17 @@ capybara-*.html
 /public/stylesheets/compiled
 /public/uploads/tmp
 /public/assets
+/public/packs*
 /coverage.data
 /coverage/
 /spec/tmp/*
 spec/examples.txt
 /.yardoc
+
+# dotenv
+!/.env*
+/.env.*.local
+
+# Vite Ruby
+/public/vite*
+*.local

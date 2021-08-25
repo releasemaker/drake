@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithubAlt } from '@fortawesome/free-brands-svg-icons'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
-import { fetchFromBackend, UnexpectedBackendResponseError } from 'lib/backend-data'
+import { fetchFromBackend, UnexpectedBackendResponseError } from '@lib/backend-data'
 import LoadIndicator from 'components/shared/LoadIndicator'
 import AddRepoButton from 'components/AddRepoButton'
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import * as Sentry from '@sentry/browser'
 import { Button, Switch, Colors, Sizes } from 'react-foundation'
 import { Link } from 'react-router-dom'
-import { fetchFromBackend, UnexpectedBackendResponseError } from 'lib/backend-data'
+import { fetchFromBackend, UnexpectedBackendResponseError } from '@lib/backend-data'
 import SyncIndicator from 'components/shared/SyncIndicator'
 
 class AddRepoButton extends React.Component {

@@ -14,7 +14,6 @@
     "@fortawesome/free-brands-svg-icons": "^5.8.2",
     "@fortawesome/free-solid-svg-icons": "^5.8.2",
     "@fortawesome/react-fontawesome": "^0.1.3",
-    "@rails/webpacker": "^5.4.2",
     "@sentry/browser": "^5.2.0",
     "babel-jest": "^24.8.0",
     "babel-loader": "^8.0.6",
@@ -40,6 +39,8 @@
     "uniqid": "^5.0.0",
     "url-parse": "^1.4.7",
     "uuid": "^3.2.1",
+    "vite": "^2.5.0",
+    "vite-plugin-ruby": "^3.0.0",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
@@ -61,8 +62,6 @@
     "jest-json": "^1.0.2",
     "jest-junit": "^6.4.0",
     "jest-prop-type-error": "^1.1.0",
-    "prettier": "^1.14.3",
-    "webpack-cli": "^3.3.2",
-    "webpack-dev-server": "^3.3.1"
+    "prettier": "^1.14.3"
   }
 }

@@ -6,7 +6,7 @@ import { Button, Colors, Sizes } from 'react-foundation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithubAlt } from '@fortawesome/free-brands-svg-icons'
 import { faPlusCircle, faCompactDisc } from '@fortawesome/free-solid-svg-icons'
-import { fetchFromBackend, UnexpectedBackendResponseError } from 'lib/backend-data'
+import { fetchFromBackend, UnexpectedBackendResponseError } from '@lib/backend-data'
 import LoadIndicator from 'components/shared/LoadIndicator'
 
 class RepoIndexRow extends React.PureComponent {
