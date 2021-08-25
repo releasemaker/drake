@@ -3,7 +3,7 @@
 //
 //    <%= vite_client_tag %>
 //    <%= vite_javascript_tag 'application' %>
-console.log('Vite ⚡️ Rails')
+//console.log('Vite ⚡️ Rails')
 
 // If using a TypeScript entrypoint file:
 //     <%= vite_typescript_tag 'application' %>
@@ -27,17 +27,19 @@ console.log('Vite ⚡️ Rails')
 // Example: Import a stylesheet in app/frontend/index.css
 // import '~/index.css'
 
-require('raf').polyfill()
+// require('raf').polyfill()
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import 'whatwg-fetch'
-import 'intl'
-import '@lib/polyfills/dataset'
-import * as Sentry from '@sentry/browser'
-import ReactRailsUJS from 'react_ujs'
+import 'whatwg-fetch';
+import 'intl';
+import '@lib/polyfills/dataset';
+import * as Sentry from '@sentry/browser';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from 'components/App';
 
 if (window.SentryConfig) {
-  const SentryConfig = window.SentryConfig
+  const SentryConfig = window.SentryConfig;
 
   Sentry.init({
     dsn: SentryConfig.dsn,
@@ -54,15 +56,14 @@ if (window.SentryConfig) {
 
       return breadcrumb
     },
-  })
+  });
   Sentry.configureScope((scope) => {
-    scope.setUser(SentryConfig.user)
+    scope.setUser(SentryConfig.user);
     if (SentryConfig.actingForUser) {
-      scope.setTag('acting_for_user_id', SentryConfig.actingForUser.id)
-      scope.setTag('acting_for_user', SentryConfig.actingForUser.email)
+      scope.setTag('acting_for_user_id', SentryConfig.actingForUser.id);
+      scope.setTag('acting_for_user', SentryConfig.actingForUser.email);
     }
-  })
+  });
 }
 
-const componentRequireContext = require.context('components', true)
-ReactRailsUJS.useContext(componentRequireContext)
+ReactDOM.render(React.createElement(App), document.getElementById('js-app'));
