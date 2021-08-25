@@ -32,9 +32,10 @@ var config = {
   },
   resolve: {
     alias: {
-      '@lib': resolve(__dirname, 'app/frontend/lib'),
-      '@images': resolve(__dirname, 'app/frontend/images'),
-      'components': resolve(__dirname, 'app/frontend/components'),
+      '~components': resolve(__dirname, 'app/frontend/components'),
+      '~images': resolve(__dirname, 'app/frontend/images'),
+      '~lib': resolve(__dirname, 'app/frontend/lib'),
+      '~pages': resolve(__dirname, 'app/frontend/pages'),
     },
   },
 }

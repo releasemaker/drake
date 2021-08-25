@@ -56,13 +56,13 @@ table.repos {
 #not-found-page {
   height: 100vh;
   min-height: 4in;
-  background: url("@images/andrew-neel-133200-web.jpg");
+  background: url("~images/andrew-neel-133200-web.jpg");
   background-size: cover;
 }
 
 #error-page {
   height: 100vh;
   min-height: 4in;
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1)), url("@images/alistair-macrobert-688941-web.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1)), url("~images/alistair-macrobert-688941-web.jpg");
   background-size: cover;
 }

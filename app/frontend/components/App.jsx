@@ -1,12 +1,12 @@
 import React from 'react'
 import * as Sentry from '@sentry/browser'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-import AddRepoPage from 'components/AddRepoPage'
-import RepoPage from 'components/RepoPage'
-import RepoIndexPage from 'components/RepoIndexPage'
-import ErrorTestPage from 'components/ErrorTestPage'
-import ErrorPage from 'components/ErrorPage'
-import NotFoundPage from 'components/NotFoundPage'
+import AddRepoPage from '~pages/AddRepo'
+import RepoPage from '~pages/Repo'
+import RepoIndexPage from '~pages/RepoIndex'
+import ErrorTestPage from '~pages/ErrorTest'
+import ErrorPage from '~pages/Error'
+import NotFoundPage from '~pages/NotFound'
 
 class App extends React.Component {
   constructor(props) {

@@ -3,8 +3,8 @@ import PropTypes from "prop-types"
 import * as Sentry from '@sentry/browser'
 import { Button, Colors, Sizes } from 'react-foundation'
 import { Link } from 'react-router-dom'
-import LoadIndicator from 'components/shared/LoadIndicator'
-import { fetchFromBackend, UnexpectedBackendResponseError } from '@lib/backend-data'
+import LoadIndicator from '~components/LoadIndicator'
+import { fetchFromBackend, UnexpectedBackendResponseError } from '~lib/backend-data'
 
 export class TestUncaughtRejectionError extends Error {
   constructor(message) {

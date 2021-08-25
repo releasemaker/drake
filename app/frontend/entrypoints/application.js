@@ -1,11 +1,11 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import 'whatwg-fetch';
-import '@lib/polyfills/dataset';
+import '~lib/polyfills/dataset';
 import * as Sentry from '@sentry/browser';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from 'components/App';
+import App from '~components/App';
 
 if (window.SentryConfig) {
   const SentryConfig = window.SentryConfig;
