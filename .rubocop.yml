@@ -83,8 +83,6 @@ Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
 RSpec/ContextWording:
   Enabled: false
-RSpec/ContextWording:
-  Enabled: false
 RSpec/EmptyLineAfterHook:
   Enabled: false
 RSpec/EmptyLineAfterSubject:
