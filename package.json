@@ -63,11 +63,9 @@
     "eslint-plugin-jest": "^24.4.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.24.0",
-    "jest": "^27.0.6",
-    "jest-enzyme": "^7.0.1",
-    "jest-json": "^1.0.4",
-    "jest-junit": "^12.2.0",
-    "jest-prop-type-error": "^1.1.0",
     "prettier": "^2.3.2"
+  },
+  "resolutions": {
+    "color-string": "^1.6.0"
   }
 }
