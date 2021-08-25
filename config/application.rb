@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'boot'
 
 require "rails"
@@ -27,9 +29,9 @@ module ReleaseMaker
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
-    extra_paths = %W(
+    extra_paths = %W[
       #{config.root}/lib
-    )
+    ]
     config.autoload_paths += extra_paths
     config.eager_load_paths += extra_paths
 

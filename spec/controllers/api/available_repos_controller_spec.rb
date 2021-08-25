@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Api::AvailableReposController, type: :request do
@@ -101,7 +103,7 @@ RSpec.describe Api::AvailableReposController, type: :request do
           skip
         end
 
-        let(:params) { { q: search_term } }
+        let(:params) { {q: search_term} }
 
         context 'that matches a repo' do
           let(:search_term) { "Hello" }

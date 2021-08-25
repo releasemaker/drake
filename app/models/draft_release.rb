@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DraftRelease
   def initialize(repo:)
     self.repo = repo

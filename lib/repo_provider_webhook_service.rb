@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class RepoProviderWebhookService
   def initialize(repo)
     @repo = repo
   end
 
   def perform!
-    if repo.enabled? && !repo.provider_webhook_data.present?
+    if repo.enabled? && repo.provider_webhook_data.blank?
       add_to_provider
     elsif !repo.enabled && repo.provider_webhook_data.present?
       remove_from_provider
@@ -20,7 +22,7 @@ class RepoProviderWebhookService
       repo.owner_name,
       repo.repo_name,
       name: "web",
-      events: %w(push pull_request),
+      events: %w[push pull_request],
       active: true,
       config: {
         url: webhook_url,

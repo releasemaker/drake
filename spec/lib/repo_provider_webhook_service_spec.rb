@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe RepoProviderWebhookService do
@@ -22,7 +24,7 @@ RSpec.describe RepoProviderWebhookService do
       )
     }
 
-    context 'making API calls', vcr: { cassette_name: 'webhook_service' } do
+    context 'making API calls', vcr: {cassette_name: 'webhook_service'} do
       let(:repo_provider_webhook_data) { nil }
       let(:repo_enabled) { true }
       let!(:user) { FactoryBot.create(:user) }
@@ -74,7 +76,7 @@ RSpec.describe RepoProviderWebhookService do
           end
         end
         context 'when provider_webhook_data is set' do
-          let(:repo_provider_webhook_data) { { id: 42 } }
+          let(:repo_provider_webhook_data) { {id: 42} }
           it 'does not call github' do
             expect(hooks_api).to_not receive(:create)
             expect(hooks_api).to_not receive(:delete)
@@ -96,7 +98,7 @@ RSpec.describe RepoProviderWebhookService do
         end
 
         context 'when provider_webhook_data is set' do
-          let(:repo_provider_webhook_data) { { id: 42 } }
+          let(:repo_provider_webhook_data) { {id: 42} }
 
           it 'removes the github webhook' do
             expect(hooks_api).to receive(:delete).with(repo.owner_name, repo.repo_name, 42)

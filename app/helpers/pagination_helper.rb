@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PaginationHelper
   # The current page number being shown.
   def page

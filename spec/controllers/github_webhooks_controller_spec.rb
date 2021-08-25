@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe GithubWebhooksController, type: :request do
@@ -26,8 +28,8 @@ RSpec.describe GithubWebhooksController, type: :request do
 
       context 'when the signature is correct' do
         before do
-          allow_any_instance_of(GithubWebhooksController).to receive(:authenticate_github_request!).
-            and_return(true)
+          allow_any_instance_of(GithubWebhooksController).to receive(:authenticate_github_request!)
+            .and_return(true)
         end
 
         it 'responds with OK' do
@@ -44,8 +46,8 @@ RSpec.describe GithubWebhooksController, type: :request do
 
       context 'when the signature is not correct' do
         before do
-          allow_any_instance_of(GithubWebhooksController).to receive(:authenticate_github_request!).
-            and_raise(GithubWebhook::Processor::SignatureError.new('Expected correct signature'))
+          allow_any_instance_of(GithubWebhooksController).to receive(:authenticate_github_request!)
+            .and_raise(GithubWebhook::Processor::SignatureError.new('Expected correct signature'))
         end
 
         it 'responds with Forbidden' do
@@ -73,8 +75,8 @@ RSpec.describe GithubWebhooksController, type: :request do
 
       context 'when the signature is correct' do
         before do
-          allow_any_instance_of(GithubWebhooksController).to receive(:authenticate_github_request!).
-            and_return(true)
+          allow_any_instance_of(GithubWebhooksController).to receive(:authenticate_github_request!)
+            .and_return(true)
         end
 
         it 'responds with OK' do
@@ -90,8 +92,8 @@ RSpec.describe GithubWebhooksController, type: :request do
 
       context 'when the signature is not correct' do
         before do
-          allow_any_instance_of(GithubWebhooksController).to receive(:authenticate_github_request!).
-            and_raise(GithubWebhook::Processor::SignatureError.new('Expected correct signature'))
+          allow_any_instance_of(GithubWebhooksController).to receive(:authenticate_github_request!)
+            .and_raise(GithubWebhook::Processor::SignatureError.new('Expected correct signature'))
         end
 
         it 'responds with Forbidden' do

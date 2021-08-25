@@ -1,3 +1,23 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: repos
+#
+#  id                    :bigint           not null, primary key
+#  enabled               :boolean
+#  name                  :string
+#  provider_data         :json
+#  provider_uid_or_url   :string
+#  provider_webhook_data :json
+#  type                  :string
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#
+# Indexes
+#
+#  index_repos_on_type_and_provider_uid_or_url  (type,provider_uid_or_url) UNIQUE
+#
 require 'rails_helper'
 
 RSpec.describe Repo, type: :model do
@@ -9,7 +29,7 @@ RSpec.describe Repo, type: :model do
     before do
       subject.provider_data = new_data
     end
-    let(:new_data) { { "stuff" => "thing" } }
+    let(:new_data) { {"stuff" => "thing"} }
     it 'converts the assigned value' do
       expect(subject.provider_data).to have_attributes(stuff: "thing")
     end
@@ -20,7 +40,7 @@ RSpec.describe Repo, type: :model do
     before do
       subject.provider_webhook_data = new_data
     end
-    let(:new_data) { { "stuff" => "thing" } }
+    let(:new_data) { {"stuff" => "thing"} }
     it 'converts the assigned value' do
       expect(subject.provider_webhook_data).to have_attributes(stuff: "thing")
     end

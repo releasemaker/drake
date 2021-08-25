@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::ErrorController < ApplicationApiController
   do_not_require_login
   skip_authorization_check

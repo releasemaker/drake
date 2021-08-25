@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Contains functionality for a {::User} to interact with Github's API.
 module HasGithubAccount
   extend ActiveSupport::Concern
@@ -14,7 +16,7 @@ module HasGithubAccount
 
   # Creates a Github API client object that will have the user's API token.
   # Returns nil if the user has no Github account.
-  def github_client(opts={})
+  def github_client(opts = {})
     return unless has_github?
 
     @github_client ||= Github.new oauth_token: github_identity.token

@@ -1,9 +1,10 @@
-# rubocop:disable Style/RegexpLiteral
+# frozen_string_literal: true
+
 require 'active_support/inflector'
 
 notification :terminal_notifier
 
-ignore %r{^(tmp|log|run)/}
+ignore %r{^(tmp|log|run|bin)/}
 
 guard 'bundler' do
   watch('Gemfile')
@@ -14,9 +15,7 @@ end
 # https://github.com/yujinakayama/guard-rubocop#advanced-tips
 group :red_green_refactor, halt_on_fail: true do
   rspec_options = {
-    all_on_start: false,
-    run_all: false,
-    failed_mode: :none,
+    failed_mode: :keep,
   }
   rspec_format = "--format documentation"
 
@@ -27,25 +26,20 @@ group :red_green_refactor, halt_on_fail: true do
     rspec_format += " --format html --out ./tmp/spec_results.html"
   end
 
-  rspec_options[:cmd] = "bin/rspec #{rspec_format}"
+  rspec_options[:cmd] = "bundle exec rspec #{rspec_format}"
 
   guard 'rspec', rspec_options do
     watch(%r{^spec/.+_spec\.rb$})
-    watch(%r{^app/(.+)\.rb$})                           { |m| "spec/#{m[1]}_spec.rb" }
-    watch(%r{^app/admin/(.*)\.rb$})                     { |m| "spec/request/#{m[1]}_spec.rb" }
-    watch(%r{^lib/(.+)\.rb$})                           { |m| "spec/lib/#{m[1]}_spec.rb" }
+    watch(%r{^app/(.+)\.rb$}) { |m| "spec/#{m[1]}_spec.rb" }
+    watch(%r{^app/admin/(.*)\.rb$}) { |m| "spec/request/#{m[1]}_spec.rb" }
+    watch(%r{^lib/(.+)\.rb$}) { |m| "spec/lib/#{m[1]}_spec.rb" }
   end
 
   rubocop_options = {
-    cli: %w(-D --format fuubar),
+    cli: %w[-A --format fuubar],
     all_on_start: false,
     keep_failed: false,
   }
-
-  if ENV['RUBOCOP_OPEN_BROWSER']
-    rubocop_options[:launchy] = './tmp/rubocop_results.html'
-    rubocop_options[:cli] += %w(--format html -o ./tmp/rubocop_results.html)
-  end
 
   guard :rubocop, rubocop_options do
     watch('Guardfile')

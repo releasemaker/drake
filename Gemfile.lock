@@ -65,6 +65,9 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
+    annotate (3.1.1)
+      activerecord (>= 3.2, < 7.0)
+      rake (>= 10.4, < 14.0)
     ast (2.4.2)
     awesome_print (1.9.2)
     babel-source (5.8.35)
@@ -384,9 +387,13 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.11.0)
       parser (>= 3.0.1.1)
-    rubocop-rspec (2.4.0)
-      rubocop (~> 1.0)
-      rubocop-ast (>= 1.1.0)
+    rubocop-performance (1.11.5)
+      rubocop (>= 1.7.0, < 2.0)
+      rubocop-ast (>= 0.4.0)
+    rubocop-rails (2.11.3)
+      activesupport (>= 4.2.0)
+      rack (>= 1.1)
+      rubocop (>= 1.7.0, < 2.0)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
     sentry-raven (3.1.2)
@@ -427,6 +434,9 @@ GEM
     sshkit (1.21.2)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    standard (1.2.0)
+      rubocop (= 1.19.1)
+      rubocop-performance (= 1.11.5)
     temple (0.8.2)
     terminal-notifier (2.0.0)
     terminal-notifier-guard (1.7.0)
@@ -470,6 +480,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  annotate
   bcrypt_pbkdf
   better_errors
   binding_of_caller
@@ -517,7 +528,7 @@ DEPENDENCIES
   rspec-mocks
   rspec-rails
   rspec_junit_formatter
-  rubocop-rspec
+  rubocop-rails
   sentry-raven
   shoulda-matchers
   simplecov
@@ -528,6 +539,7 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   spring-watcher-listen
+  standard (>= 0.10)
   terminal-notifier
   terminal-notifier-guard
   timecop

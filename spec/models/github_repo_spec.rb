@@ -1,3 +1,23 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: repos
+#
+#  id                    :bigint           not null, primary key
+#  enabled               :boolean
+#  name                  :string
+#  provider_data         :json
+#  provider_uid_or_url   :string
+#  provider_webhook_data :json
+#  type                  :string
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#
+# Indexes
+#
+#  index_repos_on_type_and_provider_uid_or_url  (type,provider_uid_or_url) UNIQUE
+#
 require 'rails_helper'
 
 RSpec.describe GithubRepo, type: :model do
@@ -27,7 +47,7 @@ RSpec.describe GithubRepo, type: :model do
       end
     end
 
-    context 'with one repo from a direct lookup', vcr: { cassette_name: 'github_repo' } do
+    context 'with one repo from a direct lookup', vcr: {cassette_name: 'github_repo'} do
       let(:access_token) { Rails.configuration.x.github.test_auth_token }
       let(:repository) {
         github_client.repositories.get(owner_name, repo_name)

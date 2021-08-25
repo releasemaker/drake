@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -105,8 +107,10 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'rspec_junit_formatter'
   gem 'capybara'
-
   gem 'rspec-github', require: false
+
+  # Include model attributes in the model files
+  gem 'annotate'
 end
 
 group :development do
@@ -128,7 +132,8 @@ group :development do
   gem 'guard-bundler', require: false
   gem 'guard-pow', require: false
   gem 'guard-rspec', require: false
-  gem 'rubocop-rspec', require: false
+  gem 'standard', '>= 0.10', require: false
+  gem 'rubocop-rails', require: false
   install_if -> { RUBY_PLATFORM =~ /darwin/ } do
     gem 'terminal-notifier-guard', require: false
     gem 'terminal-notifier', require: false

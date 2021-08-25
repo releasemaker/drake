@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe DraftRelease, vcr: { cassette_name: 'draft_release' } do
+RSpec.describe DraftRelease, vcr: {cassette_name: 'draft_release'} do
   subject(:instance) { described_class.new(repo: repo) }
 
   let(:repo) {
@@ -82,8 +84,8 @@ RSpec.describe DraftRelease, vcr: { cassette_name: 'draft_release' } do
         instance.body = "\r\n"
       end
       it 'appends the new content to the body, ending with a newline' do
-        expect { append_to_body }.to change(instance, :body).
-          to("- New content\r\n")
+        expect { append_to_body }.to change(instance, :body)
+          .to("- New content\r\n")
       end
     end
     context 'when the body ends with a newline' do
@@ -91,8 +93,8 @@ RSpec.describe DraftRelease, vcr: { cassette_name: 'draft_release' } do
         instance.body = "- Existing content\r\n"
       end
       it 'appends the new content to the body, ending with a newline' do
-        expect { append_to_body }.to change(instance, :body).
-          to("- Existing content\r\n- New content\r\n")
+        expect { append_to_body }.to change(instance, :body)
+          .to("- Existing content\r\n- New content\r\n")
       end
     end
     context 'when the body ends with multiple newlines' do
@@ -100,8 +102,8 @@ RSpec.describe DraftRelease, vcr: { cassette_name: 'draft_release' } do
         instance.body = "- Existing content\r\n\r\n"
       end
       it 'collapses them into one and appends the new content to the body, ending with a newline' do
-        expect { append_to_body }.to change(instance, :body).
-          to("- Existing content\r\n- New content\r\n")
+        expect { append_to_body }.to change(instance, :body)
+          .to("- Existing content\r\n- New content\r\n")
       end
     end
     context 'when the body does not end with a newline' do
@@ -109,8 +111,8 @@ RSpec.describe DraftRelease, vcr: { cassette_name: 'draft_release' } do
         instance.body = "- Existing content"
       end
       it 'appends a newline and the new content to the body, ending with a newline' do
-        expect { append_to_body }.to change(instance, :body).
-          to("- Existing content\r\n- New content\r\n")
+        expect { append_to_body }.to change(instance, :body)
+          .to("- Existing content\r\n- New content\r\n")
       end
     end
   end

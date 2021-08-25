@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class Api::AvailableReposController < ApplicationApiController
   authorize_resource :repo
   include PaginationHelper
 
   def index
-    github_repos = current_user.github_client.
-      repositories.
-      all(page: page, per_page: per_page)
+    github_repos = current_user.github_client
+      .repositories
+      .all(page: page, per_page: per_page)
 
     @paginated_content = github_repos
     @available_repos = repo_list_from_response github_repos
@@ -17,8 +19,8 @@ class Api::AvailableReposController < ApplicationApiController
   def repo_list_from_response(response)
     # Unpersisted {Repo} records representing repositories in the response.
     # The response just needs to support Enumerable.
-    matching_repos = response.
-      map { |data| GithubRepo.new_from_api(data) }
+    matching_repos = response
+      .map { |data| GithubRepo.new_from_api(data) }
 
     # Any existing {Repo} objects that match the list of available repositories being shown.
     matching_existing_repos = matching_repos.map(&:type).uniq.map { |repo_class|
