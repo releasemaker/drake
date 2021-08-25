@@ -5,8 +5,8 @@ class User < ApplicationRecord
   include HasGithubAccount
 
   authenticates_with_sorcery!
-  has_many :user_identities
-  has_many :repo_memberships
+  has_many :user_identities, dependent: :destroy
+  has_many :repo_memberships, dependent: :destroy
   has_many :repos, through: :repo_memberships
 
   validates :email, uniqueness: true, allow_nil: true

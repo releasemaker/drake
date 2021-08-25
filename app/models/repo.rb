@@ -3,7 +3,7 @@
 # Base repository object used for single-table inheritance by Repo classes used for different
 # SVM providers.
 class Repo < ApplicationRecord
-  has_many :repo_memberships
+  has_many :repo_memberships, dependent: :destroy
 
   validates :provider_uid_or_url, uniqueness: {scope: :type}
 
