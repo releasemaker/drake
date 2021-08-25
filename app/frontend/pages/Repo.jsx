@@ -1,9 +1,9 @@
 import React from "react"
 import PropTypes from "prop-types"
 import * as Sentry from '@sentry/browser'
-import RepoSettings from 'components/RepoSettings'
-import LoadIndicator from 'components/shared/LoadIndicator'
-import { fetchFromBackend, UnexpectedBackendResponseError } from 'lib/backend-data'
+import RepoSettings from '~components/RepoSettings'
+import LoadIndicator from '~components/LoadIndicator'
+import { fetchFromBackend, UnexpectedBackendResponseError } from '~lib/backend-data'
 
 class RepoPage extends React.Component {
   constructor(props) {

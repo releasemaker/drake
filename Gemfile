@@ -12,8 +12,8 @@ gem 'puma'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker'
+# Frontend tooling
+gem 'vite_rails'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
@@ -52,12 +52,6 @@ gem "github_api"
 
 # Version number manipulation
 gem "versionomy"
-
-# Style
-gem 'foundation-rails', "~> 6.0"
-
-# Add jQuery is used by Foundation's JS
-gem 'jquery-rails'
 
 # Local authentication
 gem 'sorcery'

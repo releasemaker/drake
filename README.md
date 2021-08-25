@@ -20,48 +20,45 @@ To run or develop this project:
 This is a Rails application that uses:
 
 * Postgres as a relational database. It [manages changes to the structure of the database](http://edgeguides.rubyonrails.org/active_record_migrations.html).
+* vite to build and serve frontend assets
 
 ### Prerequisites
 
-This project uses `rbenv` to install and select the correct version of Ruby.
+This project uses [rbenv](https://github.com/rbenv/rbenv)
+to install and select a consistent version of Ruby.
 This is optional, but it is highly recommended.
-You can also use rvm for example, but you will need to configure it within this project.
 
 The `pg` gem requires that Postgres client libraries be installed.
 
-### Configuration
+### GitHub OAuth
 
-The following environment variables are used:
-
-- `WEBHOOK_PROTOCOL`: 'https' by default.
-- `GITHUB_AUTH_TOKEN`: Personal Access Token used during tests where the Github API is going to be called. When recording VCR episodes, this will need to be set.
-
-The following are required in production:
-
-- `DATABASE_URL`: Database used to store operational data.
-- `GITHUB_OAUTH_CLIENT_ID`
-- `GITHUB_OAUTH_SECRET`
-- `GITHUB_WEBHOOK_SECRET`: Webhook secret configured on Github
-- `WEBHOOK_HOST`
-- `SENTRY_DSN`: Used by Sentry. Should not be set in development unless developing changes to Sentry integration.
-
-### Github OAuth
-
-Callback URL for Github is `/auth/github/callback`
+To enable OAuth authentication against GitHub, an OAuth application needs to exist.
+Callback URL for your GitHub OAuth app is `/auth/github/callback`
 
 ## Development
 
+### Setup
+
 It is recommended that you use [puma-dev](https://github.com/puma/puma-dev)
 so that the application runs
-on a real-looking hostname, and doesn't clash with other applications.
-This is best managed using Powder, which can be installed using `gem install powder`.
+on a real-looking hostname with HTTPS.
 
-To set this application up:
+1. If you don't already have rbenv set up, add rbenv to your shell rc file (run `rbenv init` for instructions)
+1. [Install puma-dev](https://github.com/puma/puma-dev)
+   - (This readme assumes you used the subdomain `.localdev`, but the default is `.test`)
+1. [Add the puma-dev CA certificate to your browser/keychain](https://github.com/puma/puma-dev#puma-dev-root-ca)
+1. Open a new shell in the project
+1. `rbenv install` to install the correct version of Ruby
+1. From this project run `ln -s $(pwd) ~/.puma-dev/releasemaker`
+1. Copy `.env.development` to `.env.development.local`
+1. Edit `.env.development.local` to set up your environment
+   - Including pointing to your puma-dev key+cert so that vite's dev server can enable HTTPS
 
-    powder link
+### Day-to-day
 
-Then visit [http://releasemaker.localdev](http://releasemaker.localdev).
-The app will be started automatically.
+1. Start `bin/vite dev` and leave it running
+1. Visit [https://releasemaker.localdev](https://releasemaker.localdev) and the app will be started automatically.
+1. Run `bundle exec guard` so you can follow TDD!
 
 ### Better Errors
 
@@ -71,7 +68,7 @@ It is presented when an error occurs during an HTML request.
 
 If an error occurs during a JSON request, the response will include some basic information about the error that occurred.
 
-Visiting [/__better_errors](http://releasemaker.localdev/__better_errors) will present the console
+Visiting [/__better_errors](https://releasemaker.localdev/__better_errors) will present the console
 for the most recent error that occurred.
 
 ### Tests
@@ -80,12 +77,9 @@ We use [rspec](https://www.relishapp.com/rspec).
 
 VCR is used to record actual API responses and play them back during test runs.
 
-If the VCR episodes need to be re-recorded, you will need to have:
+If VCR episodes need to be recorded, you need to have a GitHub account with the following repositories:
+- `release-maker-tester-no-releases`
+- `release-maker-tester-with-draft-release` with one draft release
+- `release-maker-tester-with-prior-release` with one published release
 
-- `GITHUB_AUTH_TOKEN` environment variable set to your personal access token.
-- `GITHUB_TEST_REPO_OWNER` environment variable set to your Github username.
-- `GITHUB_TEST_REPO_UID` set to the uid of the `release-maker-tester-no-releases` repo.
-- Repository named `release-maker-tester-no-releases`
-- Repository named `release-maker-tester-with-draft-release` with one draft release.
-- Repository named `release-maker-tester-with-prior-release` with one completed release.
-
+Copy `.env.test` to `.env.test.local` and edit it to set your account information.

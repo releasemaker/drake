@@ -2,9 +2,9 @@ import React from "react"
 import PropTypes from "prop-types"
 import * as Sentry from '@sentry/browser'
 import { Button, Switch, Colors, Sizes } from 'react-foundation'
-import AddRepoButton from 'components/AddRepoButton'
-import SyncIndicator from 'components/shared/SyncIndicator'
-import { fetchFromBackend, UnexpectedBackendResponseError } from 'lib/backend-data'
+import AddRepoButton from '~components/AddRepoButton'
+import SyncIndicator from '~components/SyncIndicator'
+import { fetchFromBackend, UnexpectedBackendResponseError } from '~lib/backend-data'
 
 class RepoSettings extends React.Component {
   constructor(props) {

@@ -2,14 +2,14 @@ import React from "react"
 import PropTypes from "prop-types"
 import * as Sentry from '@sentry/browser'
 import { Link } from 'react-router-dom'
+import { Button, Colors, Sizes } from 'react-foundation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithubAlt } from '@fortawesome/free-brands-svg-icons'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
-import { fetchFromBackend, UnexpectedBackendResponseError } from 'lib/backend-data'
-import LoadIndicator from 'components/shared/LoadIndicator'
-import AddRepoButton from 'components/AddRepoButton'
+import { faPlusCircle, faCompactDisc } from '@fortawesome/free-solid-svg-icons'
+import { fetchFromBackend, UnexpectedBackendResponseError } from '~lib/backend-data'
+import LoadIndicator from '~components/LoadIndicator'
 
-class AddRepoRow extends React.PureComponent {
+class RepoIndexRow extends React.PureComponent {
   render() {
     return (
       <tr>
@@ -20,57 +20,35 @@ class AddRepoRow extends React.PureComponent {
             aria-label="GitHub"
           />
           {' '}
-          {this.props.isEnabled
-            ? (
-              <Link to={this.props.path}>
-                {this.props.name}
-              </Link>
-            ) : this.props.name}
-        </td>
-        <td className='add-button'>
-          {this.props.isEnabled
-            ? (
-              <FontAwesomeIcon
-                icon={faCheck}
-                size='sm'
-                aria-label="Enabled"
-              />
-            ) : (
-              <AddRepoButton
-                path={this.props.path}
-                onEnabled={this.props.onRepoEnabled}
-              />
-            )
-          }
+          <Link to={this.props.path}>{this.props.name}</Link>
         </td>
       </tr>
     )
   }
 }
 
-AddRepoRow.propTypes = {
+RepoIndexRow.propTypes = {
   isEnabled: PropTypes.bool.isRequired,
   repoType: PropTypes.string.isRequired,
   providerUid: PropTypes.string.isRequired,
   name: PropTypes.string,
   path: PropTypes.string,
-  onRepoEnabled: PropTypes.func,
 }
 
-class AddRepoPage extends React.Component {
+class RepoIndexPage extends React.Component {
   constructor(props) {
     super(props)
 
     const query = new URLSearchParams(props.location.search)
 
     // Restore the cache only if the user navigated back to this page.
-    const availableRepos = this.props.history.action == 'POP' &&
-      this.props.location.state && this.props.location.state.availableRepos
+    const repos = this.props.history.action == 'POP' &&
+      this.props.location.state && this.props.location.state.repos
 
     // Get whatever state we want to restore from the location state.
     // This will allow seamless navigation back to this page, since we set the state when we finished fetching.
     this.state = {
-      availableRepos,
+      repos,
       searchTerm: query.get('q') || '',
       isFetchingRepos: false,
       totalPageCount: null,
@@ -79,16 +57,16 @@ class AddRepoPage extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.state.availableRepos) {
+    if (!this.state.repos) {
       this.fetchRepos()
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (nextState.availableRepos !== this.state.availableRepos && !nextState.isFetchingRepos) {
+    if (nextState.repos !== this.state.repos && !nextState.isFetchingRepos) {
       // Store the available repos in our location state so it will be restored when navigating back.
       this.props.history.replace({ ...this.props.location, state: {
-        availableRepos: this.state.availableRepos,
+        repos: this.state.repos,
       } })
     }
 
@@ -104,14 +82,14 @@ class AddRepoPage extends React.Component {
 
   fetchNextPageOfRepos() {
     const nextPageNum = this.state.fetchedPageCount + 1
-    return fetchFromBackend(`/api/availableRepos?page=${nextPageNum}`, {
+    return fetchFromBackend(`/api/repos?page=${nextPageNum}`, {
       method: 'GET',
     }).then((response) => {
       if (response.ok) {
         response.json().then((json) => {
           const morePagesToFetch = json.pagination.currentPageNum < json.pagination.totalPages
           this.setState({
-            availableRepos: [...this.state.availableRepos || [], ...json.availableRepos],
+            repos: [...this.state.repos || [], ...json.repos],
             totalPageCount: json.pagination.totalPages,
             fetchedPageCount: json.pagination.currentPageNum,
             isFetchingRepos: morePagesToFetch,
@@ -131,41 +109,42 @@ class AddRepoPage extends React.Component {
     })
   }
 
-  handleRepoEnabled = (repo_path, updated_repo) => {
-    const availableRepos = this.state.availableRepos.map((repo) => repo.path === repo_path ? updated_repo : repo)
-    this.setState({ availableRepos })
-  }
-
   handleSearchTermChanged = (event) => {
-    let search
-
     const searchTerm = event.target.value
     this.setState({ searchTerm })
 
     const query = new URLSearchParams(this.props.location.search)
-    if (searchTerm !== '') {
-      query.set('q', searchTerm)
-      search = query.toString()
-    } else {
-      search = null
-    }
-
-    this.props.history.push({ ...this.props.location, search })
+    query.set('q', searchTerm)
+    this.props.history.push({ ...this.props.location, search: query.toString() })
   }
 
   reposToShow() {
     if (this.state.searchTerm !== '') {
       const searchTerm = this.state.searchTerm.toLowerCase()
-      return this.state.availableRepos.filter((repo) => repo.name.toLowerCase().includes(searchTerm))
+      return this.state.repos.filter((repo) => repo.name.toLowerCase().includes(searchTerm) && repo.isEnabled)
     } else {
-      return this.state.availableRepos.filter((repo) => !repo.isEnabled)
+      return this.state.repos.filter((repo) => repo.isEnabled)
     }
   }
 
   render () {
     return (
       <React.Fragment>
-        <h1>Add Repo</h1>
+        <h1>Projects</h1>
+        <div>
+          <Link to='/repos/new'>
+            <Button
+              color={Colors.SUCCESS}
+            >
+              <FontAwesomeIcon
+                icon={faPlusCircle}
+                size='sm'
+              />
+              {' '}
+              Add Repository
+            </Button>
+          </Link>
+        </div>
         <div>
           <input
             type='text'
@@ -174,18 +153,17 @@ class AddRepoPage extends React.Component {
             placeholder='Filter'
           />
         </div>
-        {this.state.availableRepos && (
+        {this.state.repos && (
           <table className='repos'>
             <tbody>
               {this.reposToShow().map((repo) => (
-                <AddRepoRow
+                <RepoIndexRow
                   key={repo.path}
                   isEnabled={repo.isEnabled}
                   name={repo.name}
                   repoType={repo.repoType}
                   providerUid={repo.providerUid}
                   path={repo.path}
-                  onRepoEnabled={this.handleRepoEnabled}
                 />
               ))}
             </tbody>
@@ -197,16 +175,16 @@ class AddRepoPage extends React.Component {
   }
 }
 
-AddRepoPage.propTypes = {
+RepoIndexPage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
     replace: PropTypes.func.isRequired,
   }).isRequired,
   location: PropTypes.shape({
     state: PropTypes.shape({
-      availableRepos: PropTypes.array,
+      repos: PropTypes.array,
     }),
   }).isRequired,
 }
 
-export default AddRepoPage
+export default RepoIndexPage

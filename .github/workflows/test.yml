@@ -66,6 +66,9 @@ jobs:
     - name: Set up database
       run: bundle exec rake db:create db:structure:load --trace
 
+    - name: Compile frontend assets
+      run: bin/vite build
+
     - name: RSpec
       run: bundle exec rspec --require rails_helper --format RSpec::Github::Formatter --format doc
 
