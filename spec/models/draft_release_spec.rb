@@ -33,9 +33,9 @@ RSpec.describe DraftRelease, vcr: { cassette_name: 'draft_release' } do
           body: "",
         )
       end
-      it 'points to the master branch' do
+      it 'points to the default branch' do
         expect(instance).to have_attributes(
-          target_commitish: "master",
+          target_commitish: nil,
         )
       end
 
