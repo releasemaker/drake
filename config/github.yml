@@ -13,8 +13,5 @@ test:
   test_repo_uid: <%= ENV['GITHUB_TEST_REPO_UID'] || 104763724 %>
   test_auth_token: <%= ENV['GITHUB_AUTH_TOKEN'] || "GITHUB_AUTH_TOKEN" %>
 
-staging:
-  <<: *default
-
 production:
   <<: *default
