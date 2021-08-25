@@ -10,7 +10,7 @@ gem 'pg'
 gem 'puma'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails', '~> 6.0'
 
 # Frontend tooling
 gem 'vite_rails'
