@@ -1,105 +1,127 @@
-#
-# For more information see https://github.com/bbatsov/rubocop/blob/master/config/default.yml
-#
-# However, do not include entire blocks here just because you want to change them.
-# Include only the specific lines that you're changing from the defaults.
-#
 ---
-require: rubocop-rspec
+require:
+  - standard
+  - rubocop-rails
+
+inherit_gem:
+  # Since we'll be invoking 'rubocop' directly, we need to include the standardrb config.
+  standard: config/base.yml
+  rubocop-rails: config/default.yml
+
 AllCops:
+  TargetRubyVersion: 2.7
   Exclude:
-  - "Gemfile.lock"
-  - "db/schema.rb"
-  - "tmp/**/*"
-  - "config.ru"
-  DisplayCopNames: true
-  DisplayStyleGuide: true
-  StyleGuideCopsOnly: false
+    - "Gemfile.lock"
+    - "bin/*"
+    - "config.ru"
+  SuggestExtensions: false
+
+#
+# Override standardrb rules:
+#
+
+Lint/InterpolationCheck:
+  Exclude:
+    - "db/seeds.rb"
+
+Lint/NumberConversion:
+  # This seems to be pointless, and possibly harmless when we call #to_i just to make sure it's not a string.
+  Enabled: no
+
+Style/LambdaCall:
+  Exclude:
+    # jbuilder will be going away eventually. But for now, it has some long blocks.
+    - "**/*.jbuilder"
+
+Style/Semicolon:
+  Exclude:
+    # Semicolons are quite useful in specs and avoiding them results in much more convoluted code.
+    - "spec/**/*.rb"
+
+Style/FrozenStringLiteralComment:
+  # https://github.com/rubocop-hq/rubocop/issues/7197 https://github.com/testdouble/standard/pull/181
+  Enabled: yes
+
+Style/StringLiterals:
+  # Why should anyone care what kinds of quotes are used? Use what you use.
+  Enabled: no
+
+Style/StringLiteralsInInterpolation:
+  # Why should anyone care what kinds of quotes are used? Use what you use.
+  Enabled: no
+
+Style/TrailingCommaInArguments:
+  # Trailing commas on lists are the cleanest, easiest, least ambiguous way.
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInArrayLiteral:
+  # Trailing commas on lists are the cleanest, easiest, least ambiguous way.
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  # Trailing commas on lists are the cleanest, easiest, least ambiguous way.
+  EnforcedStyleForMultiline: comma
+
+Bundler/GemComment:
+  Enabled: true
+  OnlyFor:
+    - limiting_version_specifiers
+    - github
+    - git
+    - path
+
+#
+# Add Rails cops, which standardrb doesn't enable.
+#
+
 Rails:
   Enabled: true
 
-Bundler/OrderedGems:
-  Enabled: false
-Metrics/LineLength:
-  Max: 120
-  Exclude:
-  - 'db/**/*.rb'
-Metrics/MethodLength:
-  Exclude:
-  - 'db/**/*.rb'
-Metrics/BlockLength:
-  Exclude:
-  - 'Guardfile'
-  - 'spec/**/*.rb'
-  - 'app/controllers/api/**/*.rb'
-  - 'app/admin/**/*.rb'
-  - 'app/views/**/*.arb'
-Layout/AlignParameters:
-  EnforcedStyle: with_fixed_indentation
-Layout/DotPosition:
-  EnforcedStyle: trailing
-Layout/IndentArray:
-  EnforcedStyle: consistent
-Layout/IndentHash:
-  EnforcedStyle: consistent
-Layout/MultilineOperationIndentation:
-  EnforcedStyle: indented
-Layout/MultilineMethodCallIndentation:
-  EnforcedStyle: indented
-Lint/AmbiguousBlockAssociation:
-  Exclude:
-  - 'spec/**/*.rb'
-Style/BracesAroundHashParameters:
-  Enabled: false
-Style/BlockDelimiters:
-  EnforcedStyle: semantic
-  Exclude:
-  - 'spec/factories/**/*.rb'
-Style/ClassCheck:
-  Enabled: false
-Style/Documentation:
-  Exclude:
-  - 'db/**/*.rb'
-Style/LambdaCall:
-  Exclude:
-  - '**/*.jbuilder'
-Style/NumericLiterals:
-  Exclude:
-  - 'spec/**/*.rb'
-Style/RegexpLiteral:
-  Exclude:
-  - 'Guardfile'
-Style/StringLiterals:
-  Enabled: false
-Style/StringLiteralsInInterpolation:
-  Enabled: false
-Style/SymbolArray:
-  Enabled: false
-Style/TrailingCommaInArrayLiteral:
-  EnforcedStyleForMultiline: comma
-Style/TrailingCommaInHashLiteral:
-  EnforcedStyleForMultiline: comma
-Style/TrailingCommaInArguments:
-  EnforcedStyleForMultiline: comma
-RSpec/ContextWording:
-  Enabled: false
-RSpec/EmptyLineAfterHook:
-  Enabled: false
-RSpec/EmptyLineAfterSubject:
-  Enabled: false
-RSpec/ExampleLength:
-  Max: 10
-RSpec/ImplicitSubject:
-  Enabled: false
-RSpec/LetSetup:
-  Enabled: false
-RSpec/MessageSpies:
-  Enabled: false
-RSpec/MultipleExpectations:
-  Max: 5
-RSpec/NestedGroups:
-  Max: 6
-RSpec/ScatteredLet:
-  Enabled: false
-RSpec/ScatteredSetup:
-  Enabled: false
+Rails/ActiveRecordCallbacksOrder: # (new in 2.7)
+  Enabled: true
+Rails/AddColumnIndex: # (new in 2.11)
+  Enabled: true
+Rails/AfterCommitOverride: # (new in 2.8)
+  Enabled: true
+Rails/AttributeDefaultBlockValue: # (new in 2.9)
+  Enabled: true
+Rails/EagerEvaluationLogMessage: # (new in 2.11)
+  Enabled: true
+Rails/EnvironmentVariableAccess: # (new in 2.10)
+  Enabled: true
+Rails/ExpandedDateRange: # (new in 2.11)
+  Enabled: true
+Rails/FindById: # (new in 2.7)
+  Enabled: true
+Rails/I18nLocaleAssignment: # (new in 2.11)
+  Enabled: true
+Rails/Inquiry: # (new in 2.7)
+  Enabled: true
+Rails/MailerName: # (new in 2.7)
+  Enabled: true
+Rails/MatchRoute: # (new in 2.7)
+  Enabled: true
+Rails/NegateInclude: # (new in 2.7)
+  Enabled: true
+Rails/Pluck: # (new in 2.7)
+  Enabled: true
+Rails/PluckInWhere: # (new in 2.7)
+  Enabled: true
+Rails/RenderInline: # (new in 2.7)
+  Enabled: true
+Rails/RenderPlainText: # (new in 2.7)
+  Enabled: true
+Rails/ShortI18n: # (new in 2.7)
+  Enabled: true
+Rails/SquishedSQLHeredocs: # (new in 2.8)
+  Enabled: false # https://github.com/rubocop-hq/rubocop-rails/issues/365
+Rails/TimeZoneAssignment: # (new in 2.10)
+  Enabled: true
+Rails/UnusedIgnoredColumns: # (new in 2.11)
+  Enabled: true
+Rails/WhereEquals: # (new in 2.9)
+  Enabled: true
+Rails/WhereExists: # (new in 2.7)
+  Enabled: true
+Rails/WhereNot: # (new in 2.8)
+  Enabled: true

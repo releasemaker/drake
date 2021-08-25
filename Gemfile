@@ -128,7 +128,8 @@ group :development do
   gem 'guard-bundler', require: false
   gem 'guard-pow', require: false
   gem 'guard-rspec', require: false
-  gem 'rubocop-rspec', require: false
+  gem 'standard', '>= 0.10', require: false
+  gem 'rubocop-rails', require: false
   install_if -> { RUBY_PLATFORM =~ /darwin/ } do
     gem 'terminal-notifier-guard', require: false
     gem 'terminal-notifier', require: false
