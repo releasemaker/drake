@@ -20,7 +20,7 @@ RSpec.describe PullRequestHandler do
     context 'when the pull request was closed and merged' do
       let(:hook_payload) { parsed_json_fixture('github/hooks/merged_pull_request') }
 
-      context 'and it was merged into master' do
+      context 'and it was merged into the default branch' do
         it 'creates a DraftRelease and calls append_to_body' do
           expect(DraftRelease).to receive(:new).with(
             repo: repo,

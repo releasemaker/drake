@@ -49,7 +49,6 @@ class DraftRelease
   def empty_draft_release
     Hashie::Mash.new(
       tag_name: next_release_version,
-      target_commitish: 'master',
       name: next_release_version,
       body: '',
       draft: true, # TOOD: force this on save
