@@ -1,5 +1,23 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: repos
+#
+#  id                    :bigint           not null, primary key
+#  enabled               :boolean
+#  name                  :string
+#  provider_data         :json
+#  provider_uid_or_url   :string
+#  provider_webhook_data :json
+#  type                  :string
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#
+# Indexes
+#
+#  index_repos_on_type_and_provider_uid_or_url  (type,provider_uid_or_url) UNIQUE
+#
 # Base repository object used for single-table inheritance by Repo classes used for different
 # SVM providers.
 class Repo < ApplicationRecord

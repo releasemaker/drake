@@ -107,8 +107,10 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'rspec_junit_formatter'
   gem 'capybara'
-
   gem 'rspec-github', require: false
+
+  # Include model attributes in the model files
+  gem 'annotate'
 end
 
 group :development do
