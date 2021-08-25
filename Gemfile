@@ -9,9 +9,6 @@ gem 'pg'
 # Use Puma as the app server
 gem 'puma'
 
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-
 # Frontend tooling
 gem 'vite_rails'
 
@@ -30,9 +27,9 @@ group :development do
   gem 'capistrano-rbenv'
 
   # For modern SSH key support
-  gem 'rbnacl', '>= 3.2', '< 5.0', require: false
+  gem 'rbnacl', '>= 3.2', require: false
   gem 'ed25519', require: false
-  gem 'bcrypt_pbkdf', '~> 1.0', require: false
+  gem 'bcrypt_pbkdf', require: false
 end
 
 # Reduces boot times through caching; required in config/boot.rb
@@ -115,7 +112,7 @@ end
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'listen', '>= 3.0.5'
 
   # Access an IRB console on exception pages
   gem 'better_errors'
@@ -123,7 +120,7 @@ group :development do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-watcher-listen'
   gem 'spring-commands-rspec'
 
   gem 'guard', require: false
