@@ -43,7 +43,7 @@
     "swiper": "^4.2.2",
     "tween": "^0.9.0",
     "uniqid": "^5.0.0",
-    "url-parse": "^1.4.7",
+    "url-parse": "^1.5.2",
     "uuid": "^3.2.1",
     "vite": "^2.5.0",
     "vite-plugin-ruby": "^3.0.0",
