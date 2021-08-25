@@ -9,6 +9,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@lib': resolve(__dirname, 'app/frontend/lib'),
+      '@images': resolve(__dirname, 'app/frontend/images'),
     },
   },
 })
