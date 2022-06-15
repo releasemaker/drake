@@ -37,8 +37,10 @@ end
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
-# Authenticate webhooks
-gem 'github_webhook'
+# Authenticate webhooks.
+# Lock the version because the project released a breaking change as a minor version bump, which removes the ability
+# to differentiate errors from the library.
+gem 'github_webhook', '~> 1.3.0'
 
 # A useful console
 gem 'pry-rails'
