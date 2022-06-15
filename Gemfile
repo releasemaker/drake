@@ -40,7 +40,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # Authenticate webhooks.
 # Lock the version because the project released a breaking change as a minor version bump, which removes the ability
 # to differentiate errors from the library.
-gem 'github_webhook', '~> 1.3.0'
+gem 'github_webhook', '~> 1.4.0'
 
 # A useful console
 gem 'pry-rails'
