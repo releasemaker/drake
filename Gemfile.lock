@@ -458,7 +458,7 @@ GEM
     vcr (6.1.0)
     versionomy (0.5.0)
       blockenspiel (~> 0.5)
-    vite_rails (3.0.9)
+    vite_rails (3.0.10)
       railties (>= 5.1, < 8)
       vite_ruby (~> 3.0)
     vite_ruby (3.1.6)
