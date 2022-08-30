@@ -46,7 +46,7 @@
     "uniqid": "^5.4.0",
     "url-parse": "^1.5.3",
     "uuid": "^8.3.2",
-    "vite": "^2.9.1",
+    "vite": "^2.9.13",
     "vite-plugin-ruby": "^3.0.9",
     "whatwg-fetch": "^3.6.2"
   },
